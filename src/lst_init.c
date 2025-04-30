@@ -6,7 +6,7 @@
 /*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 23:41:42 by ticasali          #+#    #+#             */
-/*   Updated: 2025/04/28 04:47:55 by ticasali         ###   ########.fr       */
+/*   Updated: 2025/04/30 17:50:38 by ticasali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,4 +74,18 @@ bool	set_node_val(t_env *node, char *env)
 		return (false);
 	}
 	return (true);
+}
+
+void	free_lst(t_env *lst)
+{
+	t_env	*cpy;
+	t_env	*del;
+
+	cpy = lst;
+	while (cpy != NULL)
+	{
+		del = cpy;
+		cpy = cpy->next;
+		free(del);
+	}
 }

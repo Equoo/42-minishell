@@ -6,7 +6,7 @@
 #    By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/25 01:28:43 by ticasali          #+#    #+#              #
-#    Updated: 2025/04/30 04:48:21 by ticasali         ###   ########.fr        #
+#    Updated: 2025/04/30 16:38:17 by ticasali         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -47,7 +47,7 @@ endif
 
 -include $(DEPS)
 
-CFLAGS =			-Wall -Wextra -Werror -MMD -g3 -I./include 
+CFLAGS =			-Wall -Wextra -Werror -lreadline -MMD -g3 -I./include 
 #-I./libft/headers
 #LIBS =			-L./libft -lft
 
