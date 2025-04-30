@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   commands_exec.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
+/*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 06:22:53 by dderny            #+#    #+#             */
-/*   Updated: 2025/04/28 07:27:34 by dderny           ###   ########.fr       */
+/*   Updated: 2025/04/30 04:52:06 by ticasali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include <errno.h>
 #include <fcntl.h>
-#include <ft_printf.h>
+//#include <ft_printf.h>
 #include <stdio.h>
 #include <sys/types.h>
 #include <sys/wait.h>

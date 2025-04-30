@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+         #
+#    By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/25 01:28:43 by ticasali          #+#    #+#              #
-#    Updated: 2025/04/28 10:23:04 by dderny           ###   ########.fr        #
+#    Updated: 2025/04/30 04:48:21 by ticasali         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,6 +15,16 @@ NAME =				minishell
 DIR_SRCS =			src
 
 SRCS =				$(DIR_SRCS)/main.c 				\
+					$(DIR_SRCS)/compare.c 			\
+					$(DIR_SRCS)/concat.c			\
+					$(DIR_SRCS)/convert.c 			\
+					$(DIR_SRCS)/env.c				\
+					$(DIR_SRCS)/export.c			\
+					$(DIR_SRCS)/length.c			\
+					$(DIR_SRCS)/lst_init.c			\
+					$(DIR_SRCS)/print.c				\
+					$(DIR_SRCS)/strdup.c 			\
+					$(DIR_SRCS)/unset.c 			\
 
 PIPEX_SRCS =		$(DIR_SRCS)/pipex.c 				\
 					$(DIR_SRCS)/commands/commands.c			\
@@ -37,14 +47,15 @@ endif
 
 -include $(DEPS)
 
-CFLAGS =			-Wall -Wextra -Werror -MMD -g3 -I./include -I./libft/headers
-LIBS =			-L./libft -lft
+CFLAGS =			-Wall -Wextra -Werror -MMD -g3 -I./include 
+#-I./libft/headers
+#LIBS =			-L./libft -lft
 
-all:				libft
+all:				#libft
 					$(MAKE) -j $(nproc) $(NAME)
 
-libft:
-					@$(MAKE) -C libft
+#libft:
+#					@$(MAKE) -C libft
 
 exec:
 					$(MAKE) MODE=pipex
@@ -54,19 +65,21 @@ $(DIR_OBJS)/%.o:	$(DIR_SRCS)/%.c
 					$(CC) $(CFLAGS) -c $< -o $@
 
 $(NAME):			$(OBJS)
-					$(CC) $(CFLAGS) -o $@ $^ $(LIBS)
+					$(CC) $(CFLAGS) -o $@ $^
+#  $(LIBS)
 
 clean:
-					$(MAKE) -C libft clean
+#					$(MAKE) -C libft clean
 					$(RM) -r $(DIR_OBJS)
 
 fclean:				clean
-					$(MAKE) -C libft fclean
+#					$(MAKE) -C libft fclean
 					$(RM) $(NAME)
 
 re:					fclean all
 
-.PHONY:				all clean fclean re exec libft
+.PHONY:				all clean fclean re exec
+#libft
 
 .DEFAULT_GOAL = all
 
