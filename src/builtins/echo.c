@@ -1,27 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   compare.c                                          :+:      :+:    :+:   */
+/*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/28 00:24:50 by ticasali          #+#    #+#             */
-/*   Updated: 2025/04/28 01:00:52 by ticasali         ###   ########.fr       */
+/*   Created: 2025/04/29 00:32:08 by ticasali          #+#    #+#             */
+/*   Updated: 2025/04/30 21:17:38 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include <libft.h>
+#include <stdbool.h>
+#include <unistd.h>
 
-int	ft_strcmp(char *s1, char *s2)
+void	ft_echo(char *str, int fd, bool	flag)
 {
-	size_t	ct;
-
-	ct = 0;
-	while (s1[ct] != '\0' && s2[ct] != '\0')
-	{
-		if (s1[ct] != s2[ct])
-			return (s1[ct] - s2[ct]);
-		++ct;
-	}
-	return (s1[ct] - s2[ct]);
+	write(fd, str, ft_strlen(str));
+	if (flag == true)
+		write(fd, "\n", 1);
 }

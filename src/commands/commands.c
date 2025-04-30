@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   commands.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 05:53:23 by dderny            #+#    #+#             */
-/*   Updated: 2025/04/30 04:52:19 by ticasali         ###   ########.fr       */
+/*   Updated: 2025/04/30 20:44:21 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "commands.h"
-//#include <libft.h>
+#include <libft.h>
 #include <stddef.h>
 #include <stdlib.h>
 
@@ -54,23 +54,22 @@ int	commands_append(t_commands *cmds, t_command cmd)
 void	commands_destroy(t_commands *cmds)
 {
 	size_t	i;
-	//size_t	j;
+	size_t	j;
 
 	i = 0;
 	while (i < cmds->len)
 	{
-		if (cmds->array[i].binary)
-			free(cmds->array[i].binary);
 		if (cmds->array[i].args)
 		{
-			//j = 0;
-			//while (cmds->array[i].args[j])
-			//{
-			//	free(cmds->array[i].args[j]);
-			//	j++;
-			//}
+			j = 0;
+			while (cmds->array[i].args[j])
+				free(cmds->array[i].args[j++]);
 			free(cmds->array[i].args);
 		}
+		if (cmds->array[i].in.type & (IO_HEREDOC | IO_INFILE))
+			free(cmds->array[i].in.file.path);
+		if (cmds->array[i].out.type & IO_OUTFILE)
+			free(cmds->array[i].out.file.path);
 		i++;
 	}
 	free(cmds->array);

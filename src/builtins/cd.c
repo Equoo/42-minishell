@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 01:01:41 by ticasali          #+#    #+#             */
-/*   Updated: 2025/04/30 10:05:44 by ticasali         ###   ########.fr       */
+/*   Updated: 2025/04/30 21:15:40 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,20 +19,19 @@ bool	ft_cd(t_ctrl *ctrl, char *path)
 	char	buffer[4096];
 
 	if (chdir(path) == -1)
-	{
-		if (errno == EACCES)
-			return (false);		//perror Permission Denied
-		if (errno == ENOTDIR)
-			return (false);		//perror Is not a directory
-		if (errno == ENOENT)
-			return (false);		//perror Directory not exist
-		if (errno == EFAULT)
-			return (false);		//perror Cant acces in this memory adress
-		if (errno == EIO)
-			return (false);		//perror An I/O error appens
-		if (errno == ENAMETOOLONG)
-			return (false);		//perror Path is too long
-	}
+		return (false);
+		//if (errno == EACCES)
+		//	return (false);		//perror Permission Denied
+		//if (errno == ENOTDIR)
+		//	return (false);		//perror Is not a directory
+		//if (errno == ENOENT)
+		//	return (false);		//perror Directory not exist
+		//if (errno == EFAULT)
+		//	return (false);		//perror Cant acces in this memory adress
+		//if (errno == EIO)
+		//	return (false);		//perror An I/O error appens
+		//if (errno == ENAMETOOLONG)
+		//	return (false);		//perror Path is too long
 	else
 	{
 		ctrl->pwd = getcwd(buffer, 4096);

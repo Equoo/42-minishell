@@ -1,29 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   expand_env.c                                       :+:      :+:    :+:   */
+/*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/30 10:10:42 by ticasali          #+#    #+#             */
-/*   Updated: 2025/04/30 16:22:46 by ticasali         ###   ########.fr       */
+/*   Created: 2025/04/25 05:04:12 by ticasali          #+#    #+#             */
+/*   Updated: 2025/05/01 00:45:58 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include <libft.h>
+#include <unistd.h>
+#include "environ.h"
 
-char	*expand_env(t_env *lst, char *to_find)
+void	ft_env(t_env *lst)
 {
 	t_env	*cpy;
 
 	cpy = lst;
 	while (cpy != NULL)
 	{
-		if (ft_strcmp(lst->key, to_find) == 0)
-			return (lst->value);
+		if (cpy->key != NULL && cpy->value != NULL)
+		{
+			ft_putstr_fd(cpy->key, STDOUT_FILENO);
+			ft_putchar_fd('=', STDOUT_FILENO);
+			ft_putstr_fd(cpy->value, STDOUT_FILENO);
+			ft_putchar_fd('\n', STDOUT_FILENO);
+		}
 		cpy = cpy->next;
 	}
-	return (NULL);
 }
-
-

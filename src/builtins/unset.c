@@ -3,14 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 00:23:22 by ticasali          #+#    #+#             */
-/*   Updated: 2025/04/28 04:52:38 by ticasali         ###   ########.fr       */
+/*   Updated: 2025/04/30 23:44:56 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "environ.h"
+#include "libft.h"
+#include <stdlib.h>
 
 void	ft_unset(t_env *lst, char *key)
 {
@@ -24,7 +26,7 @@ void	ft_unset(t_env *lst, char *key)
 	{
 		del = cpy;
 		*lst = *del->next;
-		free_node(del);
+		free_env(del);
 	}
 	while (cpy->next != NULL)
 	{
@@ -32,14 +34,14 @@ void	ft_unset(t_env *lst, char *key)
 		{
 			del = cpy->next;
 			cpy->next = del->next;
-			free_node(del);
+			free_env(del);
 			return ;
 		}
 		cpy = cpy->next;
 	}
 }
 
-void	free_node(t_env *node)
+void	free_env(t_env *node)
 {
 	free(node->key);
 	free(node->value);

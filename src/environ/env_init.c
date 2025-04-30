@@ -1,18 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lst_init.c                                         :+:      :+:    :+:   */
+/*   env_init.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 23:41:42 by ticasali          #+#    #+#             */
-/*   Updated: 2025/04/30 17:50:38 by ticasali         ###   ########.fr       */
+/*   Updated: 2025/05/01 00:21:22 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "environ.h"
+#include <libft.h>
+#include <stddef.h>
+#include <stdlib.h>
 
-t_env	*lst_init(char **env)
+t_env	*env_init(char **env)
 {
 	t_env	*lst;
 	size_t	ct;
@@ -21,9 +24,9 @@ t_env	*lst_init(char **env)
 	lst = NULL;
 	while (env[ct] != NULL)
 	{
-		if (add_node(&lst, env[ct], ct) == false)
+		if (add_env(&lst, env[ct], ct) == false)
 		{
-//			return (free_lst(lst));
+			free_envs(lst);
 			return (NULL);
 		}
 		++ct;
@@ -31,14 +34,14 @@ t_env	*lst_init(char **env)
 	return (lst);
 }
 
-bool	add_node(t_env **lst, char *env, size_t ct)
+bool	add_env(t_env **lst, char *env, size_t ct)
 {
 	t_env	*node;
 	t_env	*cpy;
 	node = malloc(sizeof(t_env));
 	if (node == NULL)
 		return (false);
-	if (set_node_val(node, env) == false)
+	if (set_env_val(node, env) == false)
 	{
 		free(node);
 		return (false);
@@ -55,7 +58,7 @@ bool	add_node(t_env **lst, char *env, size_t ct)
 	return (true);
 }
 
-bool	set_node_val(t_env *node, char *env)
+bool	set_env_val(t_env *node, char *env)
 {
 	size_t	ct;
 
@@ -76,7 +79,7 @@ bool	set_node_val(t_env *node, char *env)
 	return (true);
 }
 
-void	free_lst(t_env *lst)
+void	free_envs(t_env *lst)
 {
 	t_env	*cpy;
 	t_env	*del;
@@ -88,4 +91,19 @@ void	free_lst(t_env *lst)
 		cpy = cpy->next;
 		free(del);
 	}
+}
+
+size_t	ft_envslen(t_env *lst)
+{
+	size_t	ct;
+	t_env	*cpy;
+
+	ct = 0;
+	cpy = lst;
+	while (cpy != NULL)
+	{
+		cpy = cpy->next;
+		++ct;
+	}
+	return (ct);
 }

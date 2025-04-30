@@ -1,20 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   echo.c                                             :+:      :+:    :+:   */
+/*   expand_env.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/29 00:32:08 by ticasali          #+#    #+#             */
-/*   Updated: 2025/04/29 00:42:55 by ticasali         ###   ########.fr       */
+/*   Created: 2025/04/30 10:10:42 by ticasali          #+#    #+#             */
+/*   Updated: 2025/04/30 21:21:26 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "environ.h"
+#include <libft.h>
 
-void	ft_echo(char *str, int fd, bool	flag)
+char	*expand_env(t_env *lst, char *to_find)
 {
-	write(fd, str, ft_strlen(str));
-	if (flag == true)
-		write(fd, "\n", 1);
+	t_env	*cpy;
+
+	cpy = lst;
+	while (cpy != NULL)
+	{
+		if (ft_strcmp(lst->key, to_find) == 0)
+			return (lst->value);
+		cpy = cpy->next;
+	}
+	return (NULL);
 }
+
+

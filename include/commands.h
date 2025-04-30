@@ -6,7 +6,7 @@
 /*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 05:53:34 by dderny            #+#    #+#             */
-/*   Updated: 2025/04/28 07:27:38 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/01 01:19:15 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ typedef struct s_inout
 	int				fd;
 	union
 	{
-		size_t		pipeout;
 		t_filerdir	file;
 		t_heredoc	heredoc;
 	};

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+         #
+#    By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/25 01:28:43 by ticasali          #+#    #+#              #
-#    Updated: 2025/04/30 16:38:17 by ticasali         ###   ########.fr        #
+#    Updated: 2025/05/01 00:59:38 by dderny           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,47 +15,49 @@ NAME =				minishell
 DIR_SRCS =			src
 
 SRCS =				$(DIR_SRCS)/main.c 				\
-					$(DIR_SRCS)/compare.c 			\
-					$(DIR_SRCS)/concat.c			\
-					$(DIR_SRCS)/convert.c 			\
-					$(DIR_SRCS)/env.c				\
-					$(DIR_SRCS)/export.c			\
-					$(DIR_SRCS)/length.c			\
-					$(DIR_SRCS)/lst_init.c			\
-					$(DIR_SRCS)/print.c				\
-					$(DIR_SRCS)/strdup.c 			\
-					$(DIR_SRCS)/unset.c 			\
-
-PIPEX_SRCS =		$(DIR_SRCS)/pipex.c 				\
-					$(DIR_SRCS)/commands/commands.c			\
-					$(DIR_SRCS)/commands/commands_utils.c	\
-					$(DIR_SRCS)/commands/commands_exec.c	\
+					$(DIR_SRCS)/load_ctrl.c 			\
+					$(DIR_SRCS)/get_signal.c 			\
+					$(DIR_SRCS)/readline.c 			\
+					$(DIR_SRCS)/commands/commands_exec.c 			\
+					$(DIR_SRCS)/commands/commands_utils.c 			\
+					$(DIR_SRCS)/commands/commands.c 			\
+					$(DIR_SRCS)/commands/pipeline.c 			\
+					$(DIR_SRCS)/environ/env_init.c 			\
+					$(DIR_SRCS)/environ/env_to_array.c 			\
+					$(DIR_SRCS)/environ/expand_env.c 			\
+					$(DIR_SRCS)/environ/length.c 			\
+					$(DIR_SRCS)/environ/strdup.c 			\
+					$(DIR_SRCS)/builtins/cd.c 			\
+					$(DIR_SRCS)/builtins/echo.c 			\
+					$(DIR_SRCS)/builtins/env.c 			\
+					$(DIR_SRCS)/builtins/exit.c 			\
+					$(DIR_SRCS)/builtins/export.c 			\
+					$(DIR_SRCS)/builtins/pwd.c 			\
+					$(DIR_SRCS)/builtins/unset.c 			\
+					$(DIR_SRCS)/parsing/parsing.c 			\
+					$(DIR_SRCS)/parsing/arg.c 			\
+					$(DIR_SRCS)/parsing/env_var.c 			\
+					$(DIR_SRCS)/parsing/errors.c 			\
+					$(DIR_SRCS)/parsing/pipe.c 			\
+					$(DIR_SRCS)/parsing/quotes.c 			\
+					$(DIR_SRCS)/parsing/redirection.c 			\
+					$(DIR_SRCS)/parsing/token.c 			\
 
 DIR_OBJS =			.objs
 
 OBJS =				$(SRCS:$(DIR_SRCS)/%.c=$(DIR_OBJS)/%.o)
 DEPS = 				$(SRCS:$(DIR_SRCS)/%.c=$(DIR_OBJS)/%.d)
 
-ifdef MODE
-	ifeq ($(MODE), pipex)
-		NAME =			pipex
-		SRCS =				$(PIPEX_SRCS)
-		OBJS =				$(PIPEX_SRCS:$(DIR_SRCS)/%.c=$(DIR_OBJS)/%.o)
-		DEPS = 				$(PIPEX_SRCS:$(DIR_SRCS)/%.c=$(DIR_OBJS)/%.d)
-	endif
-endif
-
 -include $(DEPS)
 
-CFLAGS =			-Wall -Wextra -Werror -lreadline -MMD -g3 -I./include 
-#-I./libft/headers
-#LIBS =			-L./libft -lft
+CFLAGS =			-Wall -Wextra -Werror -MMD -g3 -I./include -I./libft/headers
+LIBS =				-L./libft -lft -lreadline
 
-all:				#libft
+all:				libft
 					$(MAKE) -j $(nproc) $(NAME)
 
-#libft:
-#					@$(MAKE) -C libft
+libft:
+					@$(MAKE) -C libft
 
 exec:
 					$(MAKE) MODE=pipex
@@ -65,21 +67,19 @@ $(DIR_OBJS)/%.o:	$(DIR_SRCS)/%.c
 					$(CC) $(CFLAGS) -c $< -o $@
 
 $(NAME):			$(OBJS)
-					$(CC) $(CFLAGS) -o $@ $^
-#  $(LIBS)
+					$(CC) $(CFLAGS) -o $@ $^ $(LIBS)
 
 clean:
-#					$(MAKE) -C libft clean
+					$(MAKE) -C libft clean
 					$(RM) -r $(DIR_OBJS)
 
 fclean:				clean
-#					$(MAKE) -C libft fclean
+					$(MAKE) -C libft fclean
 					$(RM) $(NAME)
 
 re:					fclean all
 
-.PHONY:				all clean fclean re exec
-#libft
+.PHONY:				all clean fclean re exec libft
 
 .DEFAULT_GOAL = all
 

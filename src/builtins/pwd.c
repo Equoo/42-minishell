@@ -1,33 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   print.c                                            :+:      :+:    :+:   */
+/*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/28 00:19:21 by ticasali          #+#    #+#             */
-/*   Updated: 2025/04/28 05:21:54 by ticasali         ###   ########.fr       */
+/*   Created: 2025/04/29 00:43:59 by ticasali          #+#    #+#             */
+/*   Updated: 2025/05/01 00:42:53 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
+#include <stdio.h>
+#include <unistd.h>
 
-
-void	ft_putchar(char c)
+void	ft_pwd(int fd)
 {
-	write(1, &c, 1);
-}
-
-void	ft_putstr(char *str)
-{
-	size_t	ct;
-
-	ct = 0;
-	if (str == NULL)
-		return ;
-	while (str[ct] != '\0')
+	char	*buffer;
+	buffer = getcwd(NULL, 0);
+	if (buffer == NULL)
 	{
-		ft_putchar(str[ct]);
-		++ct;
+		perror("getcwd");
+		return;
 	}
+	write(fd, buffer, ft_strlen(buffer));
 }

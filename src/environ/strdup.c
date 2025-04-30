@@ -3,34 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   strdup.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 00:00:22 by ticasali          #+#    #+#             */
-/*   Updated: 2025/04/30 07:13:46 by ticasali         ###   ########.fr       */
+/*   Updated: 2025/05/01 00:21:40 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
-
-char	*ft_strdup(char *str)
-{
-	size_t	ct;
-	char	*ret;
-
-	ct = 0;
-	if (str == NULL)
-		return (NULL);
-	ret = malloc(sizeof(char) * ft_strlen(str) + 1);
-	if (ret == NULL)
-		return (NULL);
-	while (str[ct] != '\0')
-	{
-		ret[ct] = str[ct];
-		++ct;
-	}
-	ret[ct] = '\0';
-	return (ret);
-}
+#include "environ.h"
+#include <stdbool.h>
+#include <stdlib.h>
 
 char	*ft_strdup_select(char *str, char c)
 {

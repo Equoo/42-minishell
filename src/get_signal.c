@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   get_signal.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 10:14:31 by ticasali          #+#    #+#             */
-/*   Updated: 2025/04/30 10:29:52 by ticasali         ###   ########.fr       */
+/*   Updated: 2025/05/01 00:22:48 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
 #include <signal.h>
+#include <stdbool.h>
 
-bool	set_signal(t_ctrl *ctrl)
+bool	set_signal()
 {
 	struct sigaction	sa;
 
@@ -38,4 +38,5 @@ bool	set_signal(t_ctrl *ctrl)
 		return (false);
 	if ((sigaction(SIGCHLD, &sa, 0)) == -1)
 		return (false);
+	return (true);
 }

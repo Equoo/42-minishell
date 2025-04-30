@@ -3,14 +3,31 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 00:32:45 by ticasali          #+#    #+#             */
-/*   Updated: 2025/04/28 04:54:30 by ticasali         ###   ########.fr       */
+/*   Updated: 2025/05/01 00:55:57 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "environ.h"
+#include <libft.h>
+#include <stdlib.h>
+#include <unistd.h>
+
+static void	print_export(char **table)
+{
+	size_t	ct;
+
+	ct = 0;
+	while (table[ct] != NULL)
+	{
+		ft_putstr_fd("declare -x ", STDOUT_FILENO);
+		ft_putstr_fd(table[ct], STDOUT_FILENO);
+		ft_putchar_fd('\n', STDOUT_FILENO);
+		++ct;
+	}
+}
 
 bool	ft_export_no_arg(t_env *lst)
 {
@@ -20,13 +37,13 @@ bool	ft_export_no_arg(t_env *lst)
 	size_t	ct_sort;
 
 	ct_sort = 0;
-	table = lst_to_tab(lst);
+	table = env_to_array(lst);
 	if (table == NULL)
 		return (false);
-	while (ct_sort < ft_lstlen(lst) - 1)
+	while (ct_sort < ft_envslen(lst) - 1)
 	{
 		ct = 0;
-		while (ct < ft_lstlen(lst) - 1)
+		while (ct < ft_envslen(lst) - 1)
 		{
 			if (ft_strcmp(table[ct], table[ct + 1]) > 0)
 			{
@@ -40,20 +57,6 @@ bool	ft_export_no_arg(t_env *lst)
 	}
 	print_export(table);
 	return (true);
-}
-
-void	print_export(char **table)
-{
-	size_t	ct;
-
-	ct = 0;
-	while (table[ct] != NULL)
-	{
-		ft_putstr("declare -x ");
-		ft_putstr(table[ct]);
-		ft_putchar('\n');
-		++ct;
-	}
 }
 
 bool	ft_export(t_env *lst, char *key, char *val)

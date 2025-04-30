@@ -3,16 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   readline.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:02:12 by ticasali          #+#    #+#             */
-/*   Updated: 2025/04/30 18:06:23 by ticasali         ###   ########.fr       */
+/*   Updated: 2025/05/01 01:22:49 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "commands.h"
 #include "minishell.h"
+#include "parsing.h"
 #include <readline/history.h>
 #include <readline/readline.h>
+#include <stdlib.h>
 
 void	ft_readline(t_ctrl *ctrl)
 {
@@ -21,9 +24,16 @@ void	ft_readline(t_ctrl *ctrl)
 	while (ctrl->end == false)
 	{
 		input = readline("-->");
+		if (!input)
+		{
+			ctrl->end = true;
+			break ;
+		}
 		add_history(input);
-		ctrl->commands = parsing(input);
-		//Exec Pipex
+		parse_command(ctrl, input);
+		execute_pipeline(ctrl);
+		commands_destroy(&ctrl->commands);
+		free(input);
+		ctrl->commands = commands_init(8);
 	}
-	//free_all_struct
 }

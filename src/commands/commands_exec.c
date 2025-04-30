@@ -3,18 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   commands_exec.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 06:22:53 by dderny            #+#    #+#             */
-/*   Updated: 2025/04/30 04:52:06 by ticasali         ###   ########.fr       */
+/*   Updated: 2025/05/01 01:14:26 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include <errno.h>
 #include <fcntl.h>
-//#include <ft_printf.h>
+#include <ft_printf.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <unistd.h>
@@ -44,18 +45,17 @@ int	command_exec(t_commands cmds, int i, char **environ)
 		return (-1);
 	}
 	if (VERBOSE)
-		ft_printf("%s: in %d out %d\n", cmd->binary, cmd->in.type ? cmd->in.fd :
+		ft_printf("%s: in %d out %d\n", cmd->args[0], cmd->in.type ? cmd->in.fd :
 			-1, cmd->out.type ? cmd->out.fd : -1);
 	exec_fds(cmd);
 	commands_close_fds(cmds);
-	if (cmd->binary && cmd->args && !errno && !access(cmd->binary, R_OK | X_OK))
-		execve(cmd->binary, cmd->args, environ);
-	// if (cmd->out.type == F_PIPE)
-	// close(cmds.array[cmd->out.pipeout].in.fd);
+	if (cmd->args[0] && cmd->args && !errno && !access(cmd->args[0], R_OK | X_OK))
+		execve(cmd->args[0], cmd->args, environ);
 	close(STDIN_FILENO);
 	close(STDOUT_FILENO);
 	if (!errno)
 		return (0);
-	perror(cmd->binary);
+	perror(cmd->args[0]);
+	exit(127);
 	return (127);
 }
