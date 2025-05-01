@@ -6,7 +6,7 @@
 /*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 13:44:01 by dderny            #+#    #+#             */
-/*   Updated: 2025/05/01 11:47:24 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/01 12:39:04 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ static void	set_cmd_outfile(t_command *cmd, char *token, t_token_type type)
 	cmd->out.type = IO_OUTFILE;
 	cmd->out.file.path = token;
 	cmd->out.file.append = (type == TOKEN_APPEND);
+	errno = 0;
 }
 
 static void	set_cmd_infile(t_command *cmd, char *token)
@@ -66,6 +67,7 @@ static void	set_cmd_infile(t_command *cmd, char *token)
 	}
 	cmd->in.type = IO_INFILE;
 	cmd->in.file.path = token;
+	errno = 0;
 }
 
 int	parse_redirection(t_ctrl *ctrl, char *str, t_command *cmd)
@@ -90,6 +92,5 @@ int	parse_redirection(t_ctrl *ctrl, char *str, t_command *cmd)
 		cmd->in.type = IO_HEREDOC;
 	else if (type == TOKEN_ROUT || type == TOKEN_APPEND)
 		set_cmd_outfile(cmd, token, type);
-	errno = 0;
 	return (i);
 }
