@@ -6,7 +6,7 @@
 /*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 06:22:53 by dderny            #+#    #+#             */
-/*   Updated: 2025/05/01 12:54:58 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/01 14:29:21 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 #include <stdlib.h>
 #include <sys/types.h>
 #include <sys/wait.h>
+#include <sys/stat.h>
 #include <libft.h>
 #include <unistd.h>
 
@@ -37,8 +38,12 @@ int	command_exec(void *ctrl, int i, char **environ)
 {
 	t_command	*cmd;
 	pid_t		child;
+	struct stat	info;
 
 	cmd = ((t_ctrl *)ctrl)->commands.array + i;
+	// for binary without /
+	// 		check if is builtin
+	// 		search in PATH for the binary
 	child = fork();
 	if (child)
 	{
@@ -50,14 +55,26 @@ int	command_exec(void *ctrl, int i, char **environ)
 			-1, cmd->out.type ? cmd->out.fd : -1);
 	exec_fds(cmd);
 	commands_close_fds(((t_ctrl *)ctrl)->commands);
-	if (cmd->args[0] && cmd->args && !errno && !access(cmd->args[0], R_OK | X_OK))
+	info = (struct stat){0};
+	stat(cmd->args[0], &info);
+	if (cmd->args[0] && cmd->args && !errno && !S_ISDIR(info.st_mode) && !access(cmd->args[0], R_OK | X_OK))
 		execve(cmd->args[0], cmd->args, environ);
 	close(STDIN_FILENO);
 	close(STDOUT_FILENO);
-	if (!errno)
+	free(environ);
+	if (!errno && !S_ISDIR(info.st_mode))
 		return (0);
-	perror(cmd->args[0]);
-	free_ctrl(ctrl);
-	exit(127);
+	if (S_ISDIR(info.st_mode))
+	{
+		ft_dprintf(STDERR_FILENO, "minishell: %s: is a directory\n", cmd->args[0]);
+		free_ctrl(ctrl);
+		exit(126);
+	}
+	else
+	{
+		perror(cmd->args[0]);
+		free_ctrl(ctrl);
+		exit(127);
+	}
 	return (127);
 }
