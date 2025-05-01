@@ -3,16 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   builtin.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
+/*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 23:38:28 by dderny            #+#    #+#             */
-/*   Updated: 2025/05/01 00:01:10 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/01 06:28:51 by ticasali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef BUILTIN_H
 # define BUILTIN_H
-
 # include "minishell.h"
 
 bool	ft_export_no_arg(t_env *lst);
@@ -24,6 +23,5 @@ void	ft_pwd(int fd);
 void	ft_echo(char *str, int fd, bool	flag);
 void	ft_exit(t_ctrl *ctrl, char *val);
 void	print_export(char **table);
-
 
 #endif

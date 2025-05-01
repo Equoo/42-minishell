@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   length.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
+/*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 00:01:24 by ticasali          #+#    #+#             */
-/*   Updated: 2025/04/30 23:59:57 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/01 08:11:46 by ticasali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,4 +21,3 @@ size_t	ft_strlen_select(char *str, char c)
 		++ct;
 	return (ct);
 }
-

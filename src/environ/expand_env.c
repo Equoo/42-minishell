@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_env.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
+/*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 10:10:42 by ticasali          #+#    #+#             */
-/*   Updated: 2025/04/30 21:21:26 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/01 08:11:38 by ticasali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,5 +26,3 @@ char	*expand_env(t_env *lst, char *to_find)
 	}
 	return (NULL);
 }
-
-

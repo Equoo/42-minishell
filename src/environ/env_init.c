@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_init.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
+/*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 23:41:42 by ticasali          #+#    #+#             */
-/*   Updated: 2025/05/01 00:21:22 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/01 08:09:37 by ticasali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ bool	add_env(t_env **lst, char *env, size_t ct)
 {
 	t_env	*node;
 	t_env	*cpy;
+
 	node = malloc(sizeof(t_env));
 	if (node == NULL)
 		return (false);

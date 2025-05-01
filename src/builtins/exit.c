@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
+/*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 23:27:37 by ticasali          #+#    #+#             */
-/*   Updated: 2025/05/01 00:56:13 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/01 06:37:01 by ticasali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,8 @@ bool	check_ascii(char *str)
 	check = 0;
 	if (str[ct] != '-' && str[ct] != '+' && (str[ct] < 48 || str[ct] > 57))
 		return (false);
-	if ((str[ct] == '-' || str[ct] == '+') && (str[ct + 1] < 48 || str[ct] > 57))
+	if ((str[ct] == '-' || str[ct] == '+')
+		&& (str[ct + 1] < 48 || str[ct] > 57))
 		return (false);
 	if (str[ct] == '-' || str[ct] == '+')
 		++ct;

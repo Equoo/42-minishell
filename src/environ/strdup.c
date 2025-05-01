@@ -3,16 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   strdup.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
+/*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 00:00:22 by ticasali          #+#    #+#             */
-/*   Updated: 2025/05/01 00:21:40 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/01 08:42:55 by ticasali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "environ.h"
 #include <stdbool.h>
 #include <stdlib.h>
+
+bool	swap_bool(bool quote)
+{
+	if (quote == false)
+		return (true);
+	return (false);
+}
 
 char	*ft_strdup_select(char *str, char c)
 {
@@ -32,6 +39,27 @@ char	*ft_strdup_select(char *str, char c)
 	return (ret);
 }
 
+size_t	alloc_len_quote(char *str, char c)
+{
+	size_t	ret;
+	bool	simpl;
+	bool	doubl;
+
+	doubl = false;
+	simpl = false;
+	ret = 0;
+	while (str[ret] != '\0'
+		&& (str[ret] != c && simpl == false && doubl == false))
+	{
+		if (str[ret] == 39)
+			simpl = swap_bool(simpl);
+		if (str[ret] == '"')
+			doubl = swap_bool(doubl);
+		ret++;
+	}
+	return (ret);
+}
+
 char	*ft_strdup_quote(char *str, char c)
 {
 	size_t	ct;
@@ -42,46 +70,16 @@ char	*ft_strdup_quote(char *str, char c)
 	doubl = false;
 	simpl = false;
 	ct = 0;
-	while (str[ct] != '\0' && (str[ct] != c && simpl == false && doubl == false))
-	{
-		if (str[ct] == 39)
-		{
-			if (simpl == false)
-				simpl = true;
-			else
-				simpl = false;
-		}
-		if (str[ct] == '"')
-		{
-			if (doubl == false)
-				doubl = true;
-			else
-				doubl = false;
-		}
-		ct++;
-	}
-	ret = malloc(sizeof(char) * ct + 1);
+	ret = malloc(sizeof(char) * alloc_len_quote(str, c) + 1);
 	if (ret == NULL)
 		return (NULL);
-	ct = 0;
-	doubl = false;
-	simpl = false;
-	while (str[ct] != '\0' && (str[ct] != c && simpl == false && doubl == false))
+	while (str[ct] != '\0'
+		&& (str[ct] != c && simpl == false && doubl == false))
 	{
 		if (str[ct] == 39)
-		{
-			if (simpl == false)
-				simpl = true;
-			else
-				simpl = false;
-		}
+			simpl = swap_bool(simpl);
 		if (str[ct] == '"')
-		{
-			if (doubl == false)
-				doubl = true;
-			else
-				doubl = false;
-		}
+			doubl = swap_bool(doubl);
 		ret[ct] = str[ct];
 		ct++;
 	}
