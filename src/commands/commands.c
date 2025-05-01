@@ -6,7 +6,7 @@
 /*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 05:53:23 by dderny            #+#    #+#             */
-/*   Updated: 2025/04/30 20:44:21 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/01 11:15:21 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,8 @@ void	commands_destroy(t_commands *cmds)
 	size_t	i;
 	size_t	j;
 
+	if (!cmds->array)
+		return ;
 	i = 0;
 	while (i < cmds->len)
 	{

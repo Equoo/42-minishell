@@ -6,7 +6,7 @@
 /*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 14:36:42 by dderny            #+#    #+#             */
-/*   Updated: 2025/05/01 00:59:03 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/01 11:36:52 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include <unistd.h>
 #include "ft_printf.h"
 #include "environ.h"
+#include "minishell.h"
 #include "parsing.h"
 
 static bool isvalidchar(char surrounder, char c)
@@ -51,7 +52,6 @@ char *sub_token(t_ctrl *ctrl, char *str, size_t *len, bool isexpand)
 		i++;
 	}
 	total_len += i;
-	printf("Total %zu\n", total_len);
 	token = malloc(total_len);
 	if (!token)
 		return (NULL);
@@ -62,7 +62,8 @@ char *sub_token(t_ctrl *ctrl, char *str, size_t *len, bool isexpand)
 	while (str[i] && isvalidchar(next_surrounder, str[i]))
 	{
 		check_quotes(str[i], &surrounder, &next_surrounder);
-		printf("Char %c, i: %zu, j: %zu, surrounder: %c\n", str[i], i, j, surrounder);
+		if (VERBOSE)
+			ft_printf("Char %c, i: %u, j: %u, surrounder: %c\n", str[i], i, j, surrounder);
 		if (surrounder != '\'' && isexpand && str[i] == '$')
 		{
 			expand = get_env(env_to_array(ctrl->environ), str + i + 1, &i);

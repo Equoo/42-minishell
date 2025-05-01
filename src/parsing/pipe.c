@@ -6,7 +6,7 @@
 /*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 13:44:01 by dderny            #+#    #+#             */
-/*   Updated: 2025/04/30 20:19:28 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/01 12:14:08 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,8 @@ int	parse_pipe(t_ctrl *ctrl, char *str, t_command *cmd, t_vector *args)
 {
 	const char		*null = NULL;
 	size_t			i;
-	
-	i = 0;
-	if (str[i] == '|')
-		i++;
+
+	i = 1;
 	while (str[i] && ft_isspace(str[i]))
 		i++;
 	if (args->actual_size > 0)
@@ -43,11 +41,8 @@ int	parse_pipe(t_ctrl *ctrl, char *str, t_command *cmd, t_vector *args)
 		if (!args->data)
 			return (-1);
 		*cmd = (t_command){.in.type = IO_PIPE, .in.fd = -1, .out.fd = -1, .args = NULL};
+		return (i);
 	}
-	else
-	{
-		token_error(NULL, '|');
-		return (-1);		
-	}
-	return (i);
+	token_error(NULL, '|');
+	return (-1);
 }

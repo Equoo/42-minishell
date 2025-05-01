@@ -6,10 +6,11 @@
 /*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 02:06:04 by ticasali          #+#    #+#             */
-/*   Updated: 2025/05/01 01:03:52 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/01 12:18:38 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "environ.h"
 #include "minishell.h"
 #include <stdio.h>
 
@@ -29,5 +30,6 @@ int	main(int ac, char **av, char **env)
 		return (-1);
 	}
 	ft_readline(&ctrl);
+	free_envs(ctrl.environ);
 	return (0);
 }
