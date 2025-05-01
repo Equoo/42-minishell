@@ -6,7 +6,7 @@
 /*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 23:41:42 by ticasali          #+#    #+#             */
-/*   Updated: 2025/05/01 12:43:03 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/01 16:51:09 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ t_env	*env_init(char **env)
 
 	ct = 0;
 	lst = NULL;
-	while (env[ct] != NULL)
+	while (env[ct])
 	{
 		if (add_env(&lst, env[ct], ct) == false)
 		{

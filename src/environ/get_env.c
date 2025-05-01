@@ -1,28 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   expand_env.c                                       :+:      :+:    :+:   */
+/*   get_env.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 10:10:42 by ticasali          #+#    #+#             */
-/*   Updated: 2025/05/01 08:11:38 by ticasali         ###   ########.fr       */
+/*   Updated: 2025/05/01 16:54:52 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "environ.h"
 #include <libft.h>
 
-char	*expand_env(t_env *lst, char *to_find)
+char	*get_env(t_env *lst, char *to_find)
 {
-	t_env	*cpy;
+	t_env	*tmp;
 
-	cpy = lst;
-	while (cpy != NULL)
+	tmp = lst;
+	while (tmp)
 	{
-		if (ft_strcmp(lst->key, to_find) == 0)
-			return (lst->value);
-		cpy = cpy->next;
+		if (!ft_strcmp(tmp->key, to_find))
+			return (tmp->value);
+		tmp = tmp->next;
 	}
 	return (NULL);
 }

@@ -6,7 +6,7 @@
 /*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 00:28:00 by dderny            #+#    #+#             */
-/*   Updated: 2025/05/01 12:48:01 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/01 16:53:51 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static int	parse_per_types(t_ctrl *ctrl, char *strcmd, t_command *cmd, t_vector 
 		else
 			i += parse_arg(ctrl, strcmd + i, args);
 	}
-	if (errno)
+	if (errno && cmd->args)
 		ft_freearray((void **)cmd->args);
 	return (0);
 }

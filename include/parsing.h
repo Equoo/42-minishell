@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 13:54:09 by dderny            #+#    #+#             */
-/*   Updated: 2025/05/01 06:33:07 by ticasali         ###   ########.fr       */
+/*   Updated: 2025/05/01 15:09:42 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define PARSING_H
 
 # include "commands.h"
+# include "environ.h"
 # include "ft_vector.h"
 # include "minishell.h"
 
@@ -27,7 +28,7 @@ typedef enum e_token_type
 	TOKEN_HEREDOC,
 	TOKEN_ARG,
 	TOKEN_VAR,
-}	t_token_type;
+}				t_token_type;
 
 typedef bool	(*t_fchar)(char surrounder, char c);
 
@@ -35,15 +36,15 @@ typedef int		(*t_fparse)(t_ctrl *ctrl, char *str, t_command cmd);
 
 int				token_error(char *path, char c);
 
-char			*get_env(char **env, char *key, size_t *len);
+int				parse_expand(t_env *lst, char *key, size_t *len, char **value);
 
 char			*sub_token(t_ctrl *ctrl, char *str, size_t *len, bool isexpand);
 
 int				check_quotes(char c, char *surrounder, char *next_surrounder);
 
 int				parse_redirection(t_ctrl *ctrl, char *str, t_command *cmd);
-int				parse_pipe(t_ctrl *ctrl, char *str,
-					t_command *cmd, t_vector *args);
+int				parse_pipe(t_ctrl *ctrl, char *str, t_command *cmd,
+					t_vector *args);
 int				parse_arg(t_ctrl *ctrl, char *str, t_vector *args);
 
 int				parse_command(t_ctrl *ctrl, char *strcmd);

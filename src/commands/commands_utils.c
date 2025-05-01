@@ -6,7 +6,7 @@
 /*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 06:21:21 by dderny            #+#    #+#             */
-/*   Updated: 2025/05/01 01:18:33 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/01 14:39:52 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ void commands_close_fds(t_commands cmds)
 			close(array[i].in.fd);
 		if (array[i].out.fd && array[i].out.fd != -1)
 			close(array[i].out.fd);
+		array[i].in.fd = -1;
+		array[i].out.fd = -1;
 		i++;
 	}
 }

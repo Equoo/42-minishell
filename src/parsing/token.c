@@ -6,7 +6,7 @@
 /*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 14:36:42 by dderny            #+#    #+#             */
-/*   Updated: 2025/05/01 12:32:51 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/01 17:12:41 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include "ft_printf.h"
-#include "environ.h"
 #include "minishell.h"
 #include "parsing.h"
 
@@ -31,6 +30,7 @@ static bool isvalidchar(char quotes, char c)
 static size_t	token_len(t_ctrl *ctrl, char *str, bool isexpand)
 {
 	size_t	total_len;
+	char	*expand;
 	char	quotes[2];
 	size_t	i;
 
@@ -40,10 +40,12 @@ static size_t	token_len(t_ctrl *ctrl, char *str, bool isexpand)
 	while (str[i] && isvalidchar(quotes[0], str[i]))
 	{
 		check_quotes(str[i], &quotes[0], &quotes[1]);
-		if (isexpand && str[i] == '$')
-			total_len += ft_strlen(get_env(env_to_array(ctrl->environ), str + i + 1, &i));
-		if ((!quotes[0] && ft_isspace(str[i]))
-			|| (quotes[1] == '\'' && str[i] == '\'') || (quotes[1] == '"' && str[i] == '"'))
+		if (quotes[0] == '"' && isexpand && str[i] == '$')
+		{
+			if (parse_expand(ctrl->environ, str + i, &i, &expand))
+				total_len += ft_strlen(expand) - 1;
+		}
+		else if (quotes[0] == str[i])
 			total_len--;
 		i++;
 	}
@@ -71,11 +73,13 @@ static size_t	construct_token(t_ctrl *ctrl, char *str, bool isexpand, char *toke
 		check_quotes(str[i], &quotes[0], &quotes[1]);
 		if (VERBOSE)
 			ft_printf("Char %c, i: %u, j: %u, quotes[0]: %c\n", str[i], i, j, quotes[0]);
-		if (quotes[0] != '\'' && isexpand && str[i] == '$')
+		if (quotes[0] == '"' && isexpand && str[i] == '$')
 		{
-			expand = get_env(env_to_array(ctrl->environ), str + i + 1, &i);
-			ft_strlcpy(str + j, expand, ft_strlen(expand));
-			j += ft_strlen(expand);
+			if (parse_expand(ctrl->environ, str + i, &i, &expand))
+			{
+				ft_memcpy(token + j, expand, ft_strlen(expand));
+				j += ft_strlen(expand);
+			}
 		}
 		else if (quotes[0] != str[i])
 			token[j++] = str[i];
@@ -96,7 +100,7 @@ char *sub_token(t_ctrl *ctrl, char *str, size_t *len, bool isexpand)
 		*len = 0;
 		return (NULL);
 	}
-	token = malloc(total_len);
+	token = ft_calloc(total_len, sizeof(char));
 	if (!token)
 		return (NULL);
 	*len += construct_token(ctrl, str, isexpand, token);

@@ -6,7 +6,7 @@
 /*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 00:32:21 by dderny            #+#    #+#             */
-/*   Updated: 2025/05/01 14:32:29 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/01 14:40:15 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,27 +61,27 @@ int	execute_pipeline(t_ctrl *ctrl)
 	if (VERBOSE)
 		verbose_pipeline(*cmds);
 	j = -1;
-	while (++j < ctrl->commands.len)
+	while (++j < cmds->len)
 	{
-		if (ctrl->commands.array[j].args == NULL || ctrl->commands.array[j].status == -1)
+		if (cmds->array[j].args == NULL || cmds->array[j].status == -1)
 			continue ;
 		errno = 0;
-		if (ctrl->commands.array[j].in.type & IO_INFILE)
-			ctrl->commands.array[j].in.fd = open_file(ctrl->commands.array[j].in.file.path, O_RDONLY);
-		if (ctrl->commands.array[j].out.type & IO_PIPE && j + 1 < ctrl->commands.len && ctrl->commands.array[j + 1].in.type == IO_PIPE)
-			open_pipe(&ctrl->commands.array[j].out, &ctrl->commands.array[j + 1].in);
+		if (cmds->array[j].in.type & IO_INFILE)
+			cmds->array[j].in.fd = open_file(cmds->array[j].in.file.path, O_RDONLY);
+		if (cmds->array[j].out.type & IO_PIPE && j + 1 < cmds->len && cmds->array[j + 1].in.type == IO_PIPE)
+			open_pipe(&cmds->array[j].out, &cmds->array[j + 1].in);
 		if (command_exec(ctrl, j, env_to_array(ctrl->environ)) + 1)
 			return (1);
 	}
-	commands_close_fds(ctrl->commands);
+	commands_close_fds(*cmds);
 	j = -1;
-	while (++j < ctrl->commands.len)
+	while (++j < cmds->len)
 	{
-		if (!ctrl->commands.array[j].args || ctrl->commands.array[j].status == -1)
+		if (!cmds->array[j].args || cmds->array[j].status == -1)
 			continue ;
-		if (ctrl->commands.array[j].pid != -1)
-			waitpid(ctrl->commands.array[j].pid, &ctrl->commands.array[j].status, 0);
-		ft_printf("%s exit with status: %d\n", ctrl->commands.array[j].args[0], ctrl->commands.array[j].status);
+		if (cmds->array[j].pid != -1)
+			waitpid(cmds->array[j].pid, &cmds->array[j].status, 0);
+		ft_printf("%s exit with status: %d\n", cmds->array[j].args[0], cmds->array[j].status);
 	}
 	return (0);
 }

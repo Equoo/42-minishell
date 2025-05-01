@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   environ.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 05:54:54 by dderny            #+#    #+#             */
-/*   Updated: 2025/05/01 06:29:54 by ticasali         ###   ########.fr       */
+/*   Updated: 2025/05/01 14:46:46 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,14 @@ bool	set_env_val(t_env *node, char *env);
 void	free_env(t_env *node);
 void	free_envs(t_env *lst);
 
+
 size_t	ft_envslen(t_env *lst);
 
 char	**env_to_array(t_env *lst);
 
 char	*ft_strdup_select(char *str, char c);
 
-char	*expand_env(t_env *lst, char *to_find);
+char	*get_env(t_env *lst, char *to_find);
 size_t	ft_strlen_select(char *str, char c);
 bool	add_node_env(t_env *lst, char *key, char *val);
 

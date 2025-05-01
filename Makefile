@@ -6,7 +6,7 @@
 #    By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/25 01:28:43 by ticasali          #+#    #+#              #
-#    Updated: 2025/05/01 00:59:38 by dderny           ###   ########.fr        #
+#    Updated: 2025/05/01 14:48:04 by dderny           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,7 +24,7 @@ SRCS =				$(DIR_SRCS)/main.c 				\
 					$(DIR_SRCS)/commands/pipeline.c 			\
 					$(DIR_SRCS)/environ/env_init.c 			\
 					$(DIR_SRCS)/environ/env_to_array.c 			\
-					$(DIR_SRCS)/environ/expand_env.c 			\
+					$(DIR_SRCS)/environ/get_env.c 			\
 					$(DIR_SRCS)/environ/length.c 			\
 					$(DIR_SRCS)/environ/strdup.c 			\
 					$(DIR_SRCS)/builtins/cd.c 			\
@@ -36,7 +36,7 @@ SRCS =				$(DIR_SRCS)/main.c 				\
 					$(DIR_SRCS)/builtins/unset.c 			\
 					$(DIR_SRCS)/parsing/parsing.c 			\
 					$(DIR_SRCS)/parsing/arg.c 			\
-					$(DIR_SRCS)/parsing/env_var.c 			\
+					$(DIR_SRCS)/parsing/parse_expand.c 			\
 					$(DIR_SRCS)/parsing/errors.c 			\
 					$(DIR_SRCS)/parsing/pipe.c 			\
 					$(DIR_SRCS)/parsing/quotes.c 			\
