@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_init.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 23:41:42 by ticasali          #+#    #+#             */
-/*   Updated: 2025/05/01 08:09:37 by ticasali         ###   ########.fr       */
+/*   Updated: 2025/05/01 12:43:03 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ void	free_envs(t_env *lst)
 	{
 		del = cpy;
 		cpy = cpy->next;
-		free(del);
+		free_env(del);
 	}
 }
 

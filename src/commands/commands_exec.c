@@ -6,7 +6,7 @@
 /*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 06:22:53 by dderny            #+#    #+#             */
-/*   Updated: 2025/05/01 01:14:26 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/01 12:54:58 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 #include <stdlib.h>
 #include <sys/types.h>
 #include <sys/wait.h>
+#include <libft.h>
 #include <unistd.h>
 
 static void	exec_fds(t_command *cmd)
@@ -32,12 +33,12 @@ static void	exec_fds(t_command *cmd)
 		dup2(cmd->out.fd, STDOUT_FILENO);
 }
 
-int	command_exec(t_commands cmds, int i, char **environ)
+int	command_exec(void *ctrl, int i, char **environ)
 {
 	t_command	*cmd;
 	pid_t		child;
 
-	cmd = cmds.array + i;
+	cmd = ((t_ctrl *)ctrl)->commands.array + i;
 	child = fork();
 	if (child)
 	{
@@ -48,7 +49,7 @@ int	command_exec(t_commands cmds, int i, char **environ)
 		ft_printf("%s: in %d out %d\n", cmd->args[0], cmd->in.type ? cmd->in.fd :
 			-1, cmd->out.type ? cmd->out.fd : -1);
 	exec_fds(cmd);
-	commands_close_fds(cmds);
+	commands_close_fds(((t_ctrl *)ctrl)->commands);
 	if (cmd->args[0] && cmd->args && !errno && !access(cmd->args[0], R_OK | X_OK))
 		execve(cmd->args[0], cmd->args, environ);
 	close(STDIN_FILENO);
@@ -56,6 +57,7 @@ int	command_exec(t_commands cmds, int i, char **environ)
 	if (!errno)
 		return (0);
 	perror(cmd->args[0]);
+	free_ctrl(ctrl);
 	exit(127);
 	return (127);
 }

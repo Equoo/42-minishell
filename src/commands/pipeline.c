@@ -6,7 +6,7 @@
 /*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 00:32:21 by dderny            #+#    #+#             */
-/*   Updated: 2025/05/01 01:19:09 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/01 12:52:28 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 int	verbose_pipeline(t_commands cmds)
 {
 	size_t i;
-	
+
 	i = 0;
 	while (i < cmds.len)
 	{
@@ -70,7 +70,7 @@ int	execute_pipeline(t_ctrl *ctrl)
 			ctrl->commands.array[j].in.fd = open_file(ctrl->commands.array[j].in.file.path, O_RDONLY);
 		if (ctrl->commands.array[j].out.type & IO_PIPE && j + 1 < ctrl->commands.len && ctrl->commands.array[j + 1].in.type == IO_PIPE)
 			open_pipe(&ctrl->commands.array[j].out, &ctrl->commands.array[j + 1].in);
-		if (command_exec(ctrl->commands, j, env_to_array(ctrl->environ)) + 1)
+		if (command_exec(ctrl, j, env_to_array(ctrl->environ)) + 1)
 			return (1);
 	}
 	commands_close_fds(ctrl->commands);

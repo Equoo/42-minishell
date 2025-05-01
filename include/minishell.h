@@ -6,7 +6,7 @@
 /*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 01:47:35 by ticasali          #+#    #+#             */
-/*   Updated: 2025/05/01 11:11:55 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/01 12:54:32 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ typedef struct s_ctrl
 }	t_ctrl;
 
 int			load_ctrl(t_ctrl *ctrl, char **env);
+void		free_ctrl(t_ctrl *ctrl);
 
 int			execute_pipeline(t_ctrl *ctrl);
 
