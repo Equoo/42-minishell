@@ -6,7 +6,7 @@
 /*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 14:36:42 by dderny            #+#    #+#             */
-/*   Updated: 2025/05/02 15:28:34 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/02 22:27:53 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static size_t	token_len(t_ctrl *ctrl, char *str, bool isexpand)
 	while (str[i] && isvalidchar(quotes[0], str[i]))
 	{
 		check_quotes(str[i], &quotes[0], &quotes[1]);
-		if (quotes[0] == '"' && isexpand && str[i] == '$')
+		if (quotes[0] == '"' && isexpand && str[i] == '$' && !ft_isdigit(str[i + 1]))
 		{
 			if (parse_expand(ctrl->environ, str + i, &i, &expand))
 				total_len += ft_strlen(expand) - 1;
@@ -73,7 +73,7 @@ static size_t	construct_token(t_ctrl *ctrl, char *str, bool isexpand, char *toke
 		check_quotes(str[i], &quotes[0], &quotes[1]);
 		if (VERBOSE)
 			ft_printf("Char %c, i: %u, j: %u, quotes[0]: %c\n", str[i], i, j, quotes[0]);
-		if (quotes[0] == '"' && isexpand && str[i] == '$')
+		if (quotes[0] == '"' && isexpand && str[i] == '$' && !ft_isdigit(str[i + 1]))
 		{
 			if (parse_expand(ctrl->environ, str + i, &i, &expand))
 			{
