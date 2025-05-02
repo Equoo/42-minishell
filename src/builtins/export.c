@@ -6,12 +6,13 @@
 /*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 00:32:45 by ticasali          #+#    #+#             */
-/*   Updated: 2025/05/02 22:20:01 by ticasali         ###   ########.fr       */
+/*   Updated: 2025/05/02 22:23:49 by ticasali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "environ.h"
 #include <libft.h>
+#include "ft_printf.h"
 #include <stdlib.h>
 #include <unistd.h>
 #include "minishell.h"
@@ -72,7 +73,7 @@ bool	ft_export_exec(t_ctrl *ctrl, char *key, char *val)
 	check = false;
 	if (!(key[0] >= 48 && key[0] <= 57) && !(key[0] >= 65 && key[0] <= 90) && !(key[0] >= 97 && key[0] <= 122) && !(key[0] == '_'))
 	{
-		dprintf(STDERR_FILENO, "Bad identifier\n");
+		ft_dprintf(STDERR_FILENO, "Bad identifier\n");
 		return (false);
 	}
 	if (cpy == NULL)
