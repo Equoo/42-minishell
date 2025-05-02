@@ -6,7 +6,7 @@
 #    By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/25 01:28:43 by ticasali          #+#    #+#              #
-#    Updated: 2025/05/01 14:48:04 by dderny           ###   ########.fr        #
+#    Updated: 2025/05/02 15:22:18 by dderny           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,6 +37,7 @@ SRCS =				$(DIR_SRCS)/main.c 				\
 					$(DIR_SRCS)/parsing/parsing.c 			\
 					$(DIR_SRCS)/parsing/arg.c 			\
 					$(DIR_SRCS)/parsing/parse_expand.c 			\
+					$(DIR_SRCS)/parsing/expand_all.c 			\
 					$(DIR_SRCS)/parsing/errors.c 			\
 					$(DIR_SRCS)/parsing/pipe.c 			\
 					$(DIR_SRCS)/parsing/quotes.c 			\

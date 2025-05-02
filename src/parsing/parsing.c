@@ -6,7 +6,7 @@
 /*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 00:28:00 by dderny            #+#    #+#             */
-/*   Updated: 2025/05/01 16:53:51 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/02 15:21:59 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,16 @@
 #include "minishell.h"
 #include <errno.h>
 #include <fcntl.h>
+#include <stdlib.h>
 #include <sys/wait.h>
 
 static int	parse_per_types(t_ctrl *ctrl, char *strcmd, t_command *cmd, t_vector *args)
 {
 	size_t			i;
 
+	strcmd = expand_all(ctrl, strcmd);
+	if (!strcmd)
+		return (1);
 	i = 0;
 	while (!errno && strcmd[i])
 	{
@@ -40,6 +44,7 @@ static int	parse_per_types(t_ctrl *ctrl, char *strcmd, t_command *cmd, t_vector 
 	}
 	if (errno && cmd->args)
 		ft_freearray((void **)cmd->args);
+	free(strcmd);
 	return (0);
 }
 
