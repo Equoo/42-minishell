@@ -6,7 +6,7 @@
 /*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 00:32:45 by ticasali          #+#    #+#             */
-/*   Updated: 2025/05/02 20:16:15 by ticasali         ###   ########.fr       */
+/*   Updated: 2025/05/02 20:25:31 by ticasali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,31 +61,16 @@ bool	ft_export_no_arg(t_env *lst)
 	return (true);
 }
 
-int	ft_export(t_ctrl *ctrl, char **flag)
+bool	ft_export_exec(t_ctrl *ctrl, char *key, char *val)
 {
 	t_env	*cpy;
 	bool	check;
-	size_t	ct;
-	char	*key;
-	char	*val;
 
-	ct = 0;
-	if (flag[1] == NULL)
-		ft_export_no_arg(ctrl->environ);
-	key = ft_strdup_select(flag[1], '=');
-	while (flag[1][ct] != '\0' && flag[1][ct] != '=')
-		++ct;
-	if (flag[1][ct] == '\0')
-		val = NULL;
-	else if (flag[1][ct + 1] == '\0')
-		val = ft_calloc(sizeof(char), 1);
-	else
-		val = ft_strdup(&flag[1][ct + 1]);
 	cpy = ctrl->environ;
 	check = false;
 	if (cpy == NULL)
 		if (add_node_env(ctrl->environ, key, val) == false)
-			return (-1);
+			return (false);
 	while (cpy->next != NULL)
 	{
 		if (ft_strcmp(cpy->key, key) == 0)
@@ -98,8 +83,8 @@ int	ft_export(t_ctrl *ctrl, char **flag)
 	}
 	if (check == false)
 		if (add_node_env(ctrl->environ, key, val) == false)
-			return (-1);
-	return (0);
+			return (false);
+	return (true);
 }
 
 bool	add_node_env(t_env *lst, char *key, char *val)
@@ -120,4 +105,28 @@ bool	add_node_env(t_env *lst, char *key, char *val)
 		cpy = cpy->next;
 	cpy->next = node;
 	return (true);
+}
+
+int	ft_export(t_ctrl *ctrl, char **flag)
+{
+	char	*key;
+	char	*val;
+	size_t	ct;
+
+	ct = 0;
+	if (flag[1] == NULL)
+		ft_export_no_arg(ctrl->environ);
+	key = ft_strdup_select(flag[1], '=');
+	while (flag[1][ct] != '\0' && flag[1][ct] != '=')
+		++ct;
+	if (flag[1][ct] == '\0')
+		val = NULL;
+	else if (flag[1][ct + 1] == '\0')
+		val = ft_calloc(sizeof(char), 1);
+	else
+		val = ft_strdup(&flag[1][ct + 1]);
+	if (ft_export_exec(ctrl, key, val) == true)
+		return (0);
+	else
+		return (-1);
 }

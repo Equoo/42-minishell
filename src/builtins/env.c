@@ -6,7 +6,7 @@
 /*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 05:04:12 by ticasali          #+#    #+#             */
-/*   Updated: 2025/05/02 18:41:53 by ticasali         ###   ########.fr       */
+/*   Updated: 2025/05/02 20:20:26 by ticasali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ int	ft_env(t_ctrl *ctrl, char **flag)
 {
 	t_env	*cpy;
 
+	if (flag[1] != NULL)
+		return (-1);
 	cpy = ctrl->environ;
 	while (cpy != NULL)
 	{

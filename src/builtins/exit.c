@@ -6,12 +6,13 @@
 /*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 23:27:37 by ticasali          #+#    #+#             */
-/*   Updated: 2025/05/02 18:33:09 by ticasali         ###   ########.fr       */
+/*   Updated: 2025/05/02 20:29:24 by ticasali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "limits.h"
+#include "libft.h"
 
 short	ft_atos(char *str)
 {
@@ -67,7 +68,7 @@ bool	check_ascii(char *str)
 
 int	ft_exit(t_ctrl *ctrl, char **flag)
 {
-	if (ft_arraylen(flag) > 2)
+	if (ft_arraylen((void **)(flag)) > 2)
 	{
 		//perror (Bad Argument for Exit)
 		return (-1);

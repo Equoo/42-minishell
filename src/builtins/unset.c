@@ -6,7 +6,7 @@
 /*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 00:23:22 by ticasali          #+#    #+#             */
-/*   Updated: 2025/05/02 18:55:01 by ticasali         ###   ########.fr       */
+/*   Updated: 2025/05/02 20:28:01 by ticasali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	ft_unset(t_ctrl *ctrl, char **flag)
 
 	cpy = ctrl->environ;
 	if (cpy == NULL)
-		return ;
+		return (-1);
 	if (ft_strcmp(cpy->key, flag[1]) == 0)
 	{
 		del = cpy;
@@ -36,10 +36,11 @@ int	ft_unset(t_ctrl *ctrl, char **flag)
 			del = cpy->next;
 			cpy->next = del->next;
 			free_env(del);
-			return ;
+			return (0);
 		}
 		cpy = cpy->next;
 	}
+	return (-1);
 }
 
 void	free_env(t_env *node)
