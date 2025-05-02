@@ -6,7 +6,7 @@
 /*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 13:49:26 by dderny            #+#    #+#             */
-/*   Updated: 2025/05/01 17:09:58 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/02 22:26:44 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int parse_expand(t_env *lst, char *key, size_t *out_len, char **value)
 	size_t	len;
 
 	len = 1;
-	while (key[len] && (ft_isalpha(key[len]) || key[len] == '_'))
+	while (key[len] && (ft_isalnum(key[len]) || key[len] == '_'))
 		len++;
 	if (len == 1)
 	{

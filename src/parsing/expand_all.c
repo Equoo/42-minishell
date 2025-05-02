@@ -6,7 +6,7 @@
 /*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 15:15:39 by dderny            #+#    #+#             */
-/*   Updated: 2025/05/02 15:55:30 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/02 22:27:31 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static size_t	construct_len(t_ctrl *ctrl, char *str)
 	while (str[i])
 	{
 		check_quotes(str[i], &quotes[0], &quotes[1]);
-		if (!quotes[0] && str[i] == '$')
+		if (!quotes[0] && str[i] == '$' && !ft_isdigit(str[i + 1]))
 		{
 			if (parse_expand(ctrl->environ, str + i, &i, &expand))
 				total_len += ft_strlen(expand) - 1;
@@ -61,7 +61,7 @@ static void	construct_string(t_ctrl *ctrl, char *str, char *strout)
 	while (str[i])
 	{
 		check_quotes(str[i], &quotes[0], &quotes[1]);
-		if (!quotes[0] && str[i] == '$')
+		if (!quotes[0] && str[i] == '$' && !ft_isdigit(str[i + 1]))
 		{
 			if (parse_expand(ctrl->environ, str + i, &i, &expand))
 			{
