@@ -6,7 +6,7 @@
 /*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 05:53:23 by dderny            #+#    #+#             */
-/*   Updated: 2025/05/02 17:22:18 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/02 22:57:20 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,8 @@ void	commands_destroy(t_commands *cmds)
 	i = 0;
 	while (i < cmds->len)
 	{
+		if (cmds->array[i].binary)
+			free(cmds->array[i].binary);
 		if (cmds->array[i].args)
 		{
 			j = 0;
