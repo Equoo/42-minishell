@@ -6,7 +6,7 @@
 /*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 00:32:45 by ticasali          #+#    #+#             */
-/*   Updated: 2025/05/02 22:32:26 by ticasali         ###   ########.fr       */
+/*   Updated: 2025/05/02 22:48:13 by ticasali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,15 +66,26 @@ bool	ft_export_exec(t_ctrl *ctrl, char *key, char *val)
 {
 	t_env	*cpy;
 	bool	check;
+	size_t	ct;
 
+	ct = 0;
 	if (!val)
 		return (true);
 	cpy = ctrl->environ;
 	check = false;
-	if (!(key[0] >= 48 && key[0] <= 57) && !(key[0] >= 65 && key[0] <= 90) && !(key[0] >= 97 && key[0] <= 122) && !(key[0] == '_'))
+	if (!(key[0] >= 65 && key[0] <= 90) && !(key[0] >= 97 && key[0] <= 122) && !(key[0] == '_'))
 	{
 		ft_dprintf(STDERR_FILENO, "Bad identifier\n");
 		return (false);
+	}
+	while (key[ct] != '\0')
+	{
+		if (!(key[ct] >= 48 && key[ct] <= 57) && !(key[ct] >= 65 && key[ct] <= 90) && !(key[ct] >= 97 && key[ct] <= 122) && !(key[ct] == '_'))
+		{
+			ft_dprintf(STDERR_FILENO, "Bad identifier\n");
+			return (false);
+		}
+		++ct;
 	}
 	if (cpy == NULL)
 		if (add_node_env(ctrl->environ, key, val) == false)
