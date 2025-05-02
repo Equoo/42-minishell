@@ -6,7 +6,7 @@
 /*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 00:32:21 by dderny            #+#    #+#             */
-/*   Updated: 2025/05/02 14:26:02 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/02 17:28:52 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 #include <stddef.h>
 #include <sys/wait.h>
 
-int	verbose_pipeline(t_commands cmds)
+static int	verbose_pipeline(t_commands cmds)
 {
 	size_t i;
 
@@ -27,18 +27,15 @@ int	verbose_pipeline(t_commands cmds)
 	{
 		t_command cmd = cmds.array[i];
 		ft_printf("Command %u:\n", i);
-		size_t j = 0;
+		size_t j = -1;
 		ft_printf("\tArgs:\n");
-		while (cmd.args[j])
-		{
+		while (cmd.args[++j])
 			ft_printf("\t\tArg %u: \"%s\"\n", j, cmd.args[j]);
-			j++;
-		}
 		ft_printf("\tInput type: %d\n", cmd.in.type);
 		if (cmd.in.type == IO_INFILE)
 			ft_printf("\t\tInput file: %s\n", cmd.in.file.path);
 		else if (cmd.in.type == IO_HEREDOC)
-			ft_printf("\t\tInput heredoc: %s\n", cmd.in.file.path);
+			ft_printf("\t\tInput heredoc: %s by %s\n", cmd.in.heredoc.end, cmd.in.heredoc.tmpfile);
 		else if (cmd.in.type == IO_PIPE)
 			ft_printf("\t\tInput pipe from last\n");
 		ft_printf("\tOutput type: %d\n", cmd.out.type);
@@ -51,14 +48,10 @@ int	verbose_pipeline(t_commands cmds)
 	return (0);
 }
 
-int	execute_pipeline(t_ctrl *ctrl)
+static int	execute_each(t_ctrl *ctrl, t_commands *cmds)
 {
-	t_commands	*cmds;
 	size_t			j;
 
-	cmds = &ctrl->commands;
-	if (VERBOSE)
-		verbose_pipeline(*cmds);
 	j = -1;
 	while (++j < cmds->len)
 	{
@@ -67,20 +60,48 @@ int	execute_pipeline(t_ctrl *ctrl)
 		errno = 0;
 		if (cmds->array[j].in.type & IO_INFILE)
 			cmds->array[j].in.fd = open_file(cmds->array[j].in.file.path, O_RDONLY);
+		if (cmds->array[j].in.type & IO_HEREDOC)
+			cmds->array[j].in.fd = open_file(cmds->array[j].in.heredoc.tmpfile, O_RDONLY);
 		if (cmds->array[j].out.type & IO_PIPE && j + 1 < cmds->len && cmds->array[j + 1].in.type == IO_PIPE)
 			open_pipe(&cmds->array[j].out, &cmds->array[j + 1].in);
 		if (command_exec(ctrl, j) + 1)
 			return (1);
 	}
-	commands_close_fds(*cmds);
-	j = -1;
-	while (++j < cmds->len)
+	return (0);
+}
+
+static void wait_for_children(t_commands *cmds)
+{
+	size_t	i;
+	int		status;
+
+	i = 0;
+	while (i < cmds->len)
 	{
-		if (!cmds->array[j].args || cmds->array[j].status == -1)
-			continue ;
-		if (cmds->array[j].pid != -1)
-			waitpid(cmds->array[j].pid, &cmds->array[j].status, 0);
-		ft_printf("%s exit with status: %d\n", cmds->array[j].args[0], cmds->array[j].status);
+		if (cmds->array[i].pid > 0)
+		{
+			waitpid(cmds->array[i].pid, &status, 0);
+			if (WIFEXITED(status))
+				cmds->array[i].status = WEXITSTATUS(status);
+			else
+				cmds->array[i].status = 1;
+			ft_printf("%s exit with status: %d\n", cmds->array[i].args[0], cmds->array[i].status);
+		}
+		i++;
 	}
+}
+
+int	execute_pipeline(t_ctrl *ctrl)
+{
+	t_commands	*cmds;
+
+	cmds = &ctrl->commands;
+	if (VERBOSE)
+		verbose_pipeline(*cmds);
+
+	if (execute_each(ctrl, cmds))
+		return (1);
+	commands_close_fds(*cmds);
+	wait_for_children(cmds);
 	return (0);
 }

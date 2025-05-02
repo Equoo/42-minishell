@@ -6,18 +6,19 @@
 /*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 05:53:34 by dderny            #+#    #+#             */
-/*   Updated: 2025/05/02 14:26:47 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/02 17:17:27 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef COMMANDS_H
 # define COMMANDS_H
 
-# include "environ.h"
 # include <stdbool.h>
 # include <stddef.h>
 # include <stdint.h>
 # include <unistd.h>
+
+# define TMPFILE_LEN 37
 
 typedef enum e_inout_type
 {
@@ -36,8 +37,7 @@ typedef struct s_filerdir
 
 typedef struct s_heredoc
 {
-	int				tmpfd;
-	char			*tmpfile;
+	char			tmpfile[TMPFILE_LEN];
 	char			*end;
 }					t_heredoc;
 

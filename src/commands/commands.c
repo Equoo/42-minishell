@@ -6,7 +6,7 @@
 /*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 05:53:23 by dderny            #+#    #+#             */
-/*   Updated: 2025/05/01 12:54:08 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/02 17:22:18 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ void	commands_destroy(t_commands *cmds)
 				free(cmds->array[i].args[j++]);
 			free(cmds->array[i].args);
 		}
-		if (cmds->array[i].in.type & (IO_HEREDOC | IO_INFILE))
+		if (cmds->array[i].in.type & IO_INFILE)
 			free(cmds->array[i].in.file.path);
 		if (cmds->array[i].out.type & IO_OUTFILE)
 			free(cmds->array[i].out.file.path);
