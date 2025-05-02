@@ -6,7 +6,7 @@
 /*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 06:22:53 by dderny            #+#    #+#             */
-/*   Updated: 2025/05/03 00:42:02 by ticasali         ###   ########.fr       */
+/*   Updated: 2025/05/03 01:23:01 by ticasali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ static int	check_and_execute(t_command *cmd, t_env *envs)
 	free(environ);
 	return (0);
 }
-
+/*
 static int	exec_builtins(t_ctrl *ctrl, t_command *cmd)
 {
 	const char		built_names[][32] = {"echo", "cd", "pwd",
@@ -86,7 +86,7 @@ static int	exec_builtins(t_ctrl *ctrl, t_command *cmd)
 	}
 	return (0);
 }
-
+*/
 static int	get_binary_path(t_ctrl *ctrl, t_command *cmd)
 {
 	char		*path;
@@ -97,7 +97,7 @@ static int	get_binary_path(t_ctrl *ctrl, t_command *cmd)
 		//return (1);
 	path = get_path(ctrl->environ, cmd->args[0]);
 	if (path)
-		cmd->binary = path;
+		cmd->args[0] = path;
 	else
 	{
 		if (errno)

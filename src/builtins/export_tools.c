@@ -6,7 +6,7 @@
 /*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 00:24:15 by ticasali          #+#    #+#             */
-/*   Updated: 2025/05/03 00:36:48 by ticasali         ###   ########.fr       */
+/*   Updated: 2025/05/03 01:08:11 by ticasali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "ft_printf.h"
 #include "environ.h"
 #include "builtin.h"
+#include <stdlib.h>
 
 bool	secure_export(char *key)
 {

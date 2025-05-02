@@ -6,7 +6,7 @@
 /*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 00:32:45 by ticasali          #+#    #+#             */
-/*   Updated: 2025/05/03 00:37:05 by ticasali         ###   ########.fr       */
+/*   Updated: 2025/05/03 01:07:59 by ticasali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,9 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include "minishell.h"
+#include "builtin.h"
 
-static void	print_export(char **table)
+void	print_export(char **table)
 {
 	size_t	ct;
 
