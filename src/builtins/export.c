@@ -6,7 +6,7 @@
 /*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 00:32:45 by ticasali          #+#    #+#             */
-/*   Updated: 2025/05/02 22:23:49 by ticasali         ###   ########.fr       */
+/*   Updated: 2025/05/02 22:30:06 by ticasali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,10 @@ int	ft_export(t_ctrl *ctrl, char **flag)
 
 	ct = 0;
 	if (flag[1] == NULL)
+	{
 		ft_export_no_arg(ctrl->environ);
+		return (0);
+	}
 	key = ft_strdup_select(flag[1], '=');
 	while (flag[1][ct] != '\0' && flag[1][ct] != '=')
 		++ct;
