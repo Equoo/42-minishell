@@ -6,7 +6,7 @@
 /*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 01:01:41 by ticasali          #+#    #+#             */
-/*   Updated: 2025/05/02 18:40:47 by ticasali         ###   ########.fr       */
+/*   Updated: 2025/05/02 20:16:57 by ticasali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ char	*get_path_env(t_env *lst, char *to_find)
 int		ft_cd(t_ctrl *ctrl, char **flag)
 {
 	char	*buffer;
-	char	*new_pwd;
 
 	buffer = get_path_env(ctrl->environ, "PWD");
 	if (flag[1] == NULL)
@@ -45,8 +44,8 @@ int		ft_cd(t_ctrl *ctrl, char **flag)
 		return (-1);
 	else
 	{
-		ft_export(ctrl->environ, "OLDPWD", buffer);
-		ft_export(ctrl->environ, "PWD", ft_strdup(getcwd(new_pwd, 4096)));
+		ft_export(ctrl->environ, ft_strjoin("OLDPWD=", buffer));
+		ft_export(ctrl->environ, ft_strjoin("PWD=", getcwd(NULL, 0)));
 		return (0);
 	}
 	return (-1);

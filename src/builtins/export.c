@@ -6,7 +6,7 @@
 /*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 00:32:45 by ticasali          #+#    #+#             */
-/*   Updated: 2025/05/02 19:01:43 by ticasali         ###   ########.fr       */
+/*   Updated: 2025/05/02 20:16:15 by ticasali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,13 +65,26 @@ int	ft_export(t_ctrl *ctrl, char **flag)
 {
 	t_env	*cpy;
 	bool	check;
+	size_t	ct;
 	char	*key;
 	char	*val;
 
-	cpy = lst;
+	ct = 0;
+	if (flag[1] == NULL)
+		ft_export_no_arg(ctrl->environ);
+	key = ft_strdup_select(flag[1], '=');
+	while (flag[1][ct] != '\0' && flag[1][ct] != '=')
+		++ct;
+	if (flag[1][ct] == '\0')
+		val = NULL;
+	else if (flag[1][ct + 1] == '\0')
+		val = ft_calloc(sizeof(char), 1);
+	else
+		val = ft_strdup(&flag[1][ct + 1]);
+	cpy = ctrl->environ;
 	check = false;
 	if (cpy == NULL)
-		if (add_node_env(ctrl->environ, ft_strdup(key), ft_strdup(val)) == false)
+		if (add_node_env(ctrl->environ, key, val) == false)
 			return (-1);
 	while (cpy->next != NULL)
 	{
@@ -84,7 +97,7 @@ int	ft_export(t_ctrl *ctrl, char **flag)
 		cpy = cpy->next;
 	}
 	if (check == false)
-		if (add_node_env(ctrl->environ, ft_strdup(key), ft_strdup(val)) == false)
+		if (add_node_env(ctrl->environ, key, val) == false)
 			return (-1);
 	return (0);
 }
