@@ -6,14 +6,13 @@
 /*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 00:32:21 by dderny            #+#    #+#             */
-/*   Updated: 2025/05/01 14:40:15 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/02 14:26:02 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 #include "minishell.h"
 #include "commands.h"
-#include "environ.h"
 #include <errno.h>
 #include <fcntl.h>
 #include <stddef.h>
@@ -70,7 +69,7 @@ int	execute_pipeline(t_ctrl *ctrl)
 			cmds->array[j].in.fd = open_file(cmds->array[j].in.file.path, O_RDONLY);
 		if (cmds->array[j].out.type & IO_PIPE && j + 1 < cmds->len && cmds->array[j + 1].in.type == IO_PIPE)
 			open_pipe(&cmds->array[j].out, &cmds->array[j + 1].in);
-		if (command_exec(ctrl, j, env_to_array(ctrl->environ)) + 1)
+		if (command_exec(ctrl, j) + 1)
 			return (1);
 	}
 	commands_close_fds(*cmds);

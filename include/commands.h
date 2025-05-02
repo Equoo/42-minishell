@@ -6,13 +6,14 @@
 /*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 05:53:34 by dderny            #+#    #+#             */
-/*   Updated: 2025/05/01 12:51:30 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/02 14:26:47 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef COMMANDS_H
 # define COMMANDS_H
 
+# include "environ.h"
 # include <stdbool.h>
 # include <stddef.h>
 # include <stdint.h>
@@ -75,6 +76,6 @@ void				commands_close_fds(t_commands cmds);
 int					open_file(char *path, int flags);
 int					open_pipe(t_inout *in_pipe, t_inout *out_pipe);
 
-int					command_exec(void *ctrl, int i, char **environ);
+int					command_exec(void *ctrl, int i);
 
 #endif
