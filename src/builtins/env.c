@@ -3,22 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
+/*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 05:04:12 by ticasali          #+#    #+#             */
-/*   Updated: 2025/05/01 00:45:58 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/02 18:41:53 by ticasali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <libft.h>
 #include <unistd.h>
 #include "environ.h"
+# include "minishell.h"
 
-void	ft_env(t_env *lst)
+
+int	ft_env(t_ctrl *ctrl, char **flag)
 {
 	t_env	*cpy;
 
-	cpy = lst;
+	cpy = ctrl->environ;
 	while (cpy != NULL)
 	{
 		if (cpy->key != NULL && cpy->value != NULL)
@@ -30,4 +32,5 @@ void	ft_env(t_env *lst)
 		}
 		cpy = cpy->next;
 	}
+	return (0);
 }

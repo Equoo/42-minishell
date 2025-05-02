@@ -6,7 +6,7 @@
 /*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 23:38:28 by dderny            #+#    #+#             */
-/*   Updated: 2025/05/01 06:28:51 by ticasali         ###   ########.fr       */
+/*   Updated: 2025/05/02 18:56:51 by ticasali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,15 @@
 # define BUILTIN_H
 # include "minishell.h"
 
+int	ft_export(t_ctrl *ctrl, char **flag);
+int	ft_cd(t_ctrl *ctrl, char **flag);
+int	ft_unset(t_env *lst, char *key);
+int	ft_env(t_ctrl *ctrl, char **flag);
+int	ft_pwd(t_ctrl *ctrl, char **flag);
+int	ft_echo(t_ctrl *ctrl, char **flag);
+int	ft_exit(t_ctrl *ctrl, char *val);
+
 bool	ft_export_no_arg(t_env *lst);
-bool	ft_export(t_env *lst, char *key, char *val);
-bool	ft_cd(t_ctrl *ctrl, char *path);
-void	ft_unset(t_env *lst, char *key);
-void	ft_env(t_env *lst);
-void	ft_pwd(int fd);
-void	ft_echo(char *str, int fd, bool	flag);
-void	ft_exit(t_ctrl *ctrl, char *val);
 void	print_export(char **table);
 
 #endif

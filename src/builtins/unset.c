@@ -3,34 +3,35 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
+/*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 00:23:22 by ticasali          #+#    #+#             */
-/*   Updated: 2025/05/01 12:43:28 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/02 18:55:01 by ticasali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "environ.h"
 #include "libft.h"
 #include <stdlib.h>
+#include "minishell.h"
 
-void	ft_unset(t_env *lst, char *key)
+int	ft_unset(t_ctrl *ctrl, char **flag)
 {
 	t_env	*cpy;
 	t_env	*del;
 
-	cpy = lst;
+	cpy = ctrl->environ;
 	if (cpy == NULL)
 		return ;
-	if (ft_strcmp(cpy->key, key) == 0)
+	if (ft_strcmp(cpy->key, flag[1]) == 0)
 	{
 		del = cpy;
-		*lst = *del->next;
+		*ctrl->environ = *del->next;
 		free_env(del);
 	}
 	while (cpy->next != NULL)
 	{
-		if (ft_strcmp(cpy->next->key, key) == 0)
+		if (ft_strcmp(cpy->next->key, flag[1]) == 0)
 		{
 			del = cpy->next;
 			cpy->next = del->next;

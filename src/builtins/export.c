@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
+/*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 00:32:45 by ticasali          #+#    #+#             */
-/*   Updated: 2025/05/01 00:55:57 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/02 18:59:30 by ticasali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 #include <libft.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include "minishell.h"
+
 
 static void	print_export(char **table)
 {
@@ -59,16 +61,18 @@ bool	ft_export_no_arg(t_env *lst)
 	return (true);
 }
 
-bool	ft_export(t_env *lst, char *key, char *val)
+int	ft_export(t_ctrl *ctrl, char **flag)
 {
 	t_env	*cpy;
 	bool	check;
+	char	*key;
+	char	*val;
 
-	cpy = lst;
+	cpy = ctrl->environ;
 	check = false;
 	if (cpy == NULL)
-		if (add_node_env(lst, ft_strdup(key), ft_strdup(val)) == false)
-			return (false);
+		if (add_node_env(ctrl->environ, ft_strdup(key), ft_strdup(val)) == false)
+			return (-1);
 	while (cpy->next != NULL)
 	{
 		if (ft_strcmp(cpy->key, key) == 0)
@@ -80,9 +84,9 @@ bool	ft_export(t_env *lst, char *key, char *val)
 		cpy = cpy->next;
 	}
 	if (check == false)
-		if (add_node_env(lst, ft_strdup(key), ft_strdup(val)) == false)
-			return (false);
-	return (true);
+		if (add_node_env(ctrl->environ, ft_strdup(key), ft_strdup(val)) == false)
+			return (-1);
+	return (0);
 }
 
 bool	add_node_env(t_env *lst, char *key, char *val)

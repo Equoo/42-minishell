@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
+/*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 01:01:41 by ticasali          #+#    #+#             */
-/*   Updated: 2025/05/02 18:00:33 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/02 18:40:47 by ticasali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "builtin.h"
 #include "minishell.h"
 
-static char	*get_path_env(t_env *lst, char *to_find)
+char	*get_path_env(t_env *lst, char *to_find)
 {
 	t_env	*cpy;
 
@@ -29,18 +29,25 @@ static char	*get_path_env(t_env *lst, char *to_find)
 }
 
 
-bool	ft_cd(t_ctrl *ctrl, char *path)
+int		ft_cd(t_ctrl *ctrl, char **flag)
 {
 	char	*buffer;
+	char	*new_pwd;
 
 	buffer = get_path_env(ctrl->environ, "PWD");
-	if (chdir(path) == -1)
-		return (false);
+	if (flag[1] == NULL)
+	{
+		if (chdir(get_path_env(ctrl->environ, "HOME")) == -1)
+			return (-1);
+		return (0);
+	}
+	if (chdir(flag[1]) == -1)
+		return (-1);
 	else
 	{
 		ft_export(ctrl->environ, "OLDPWD", buffer);
-		ft_export(ctrl->environ, "PWD", getcwd(NULL, 0));
-		return (true);
+		ft_export(ctrl->environ, "PWD", ft_strdup(getcwd(new_pwd, 4096)));
+		return (0);
 	}
-	return (false);
+	return (-1);
 }
