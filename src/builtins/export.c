@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 00:32:45 by ticasali          #+#    #+#             */
-/*   Updated: 2025/05/02 20:25:31 by ticasali         ###   ########.fr       */
+/*   Updated: 2025/05/02 22:02:22 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,8 @@ bool	ft_export_exec(t_ctrl *ctrl, char *key, char *val)
 	t_env	*cpy;
 	bool	check;
 
+	if (!val)
+		return (true);
 	cpy = ctrl->environ;
 	check = false;
 	if (cpy == NULL)
