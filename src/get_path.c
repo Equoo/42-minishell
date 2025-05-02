@@ -3,18 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   get_path.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 14:41:59 by ticasali          #+#    #+#             */
-/*   Updated: 2025/05/02 16:16:47 by ticasali         ###   ########.fr       */
+/*   Updated: 2025/05/02 18:17:10 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "environ.h"
+#include "libft.h"
+#include <errno.h>
+#include <stdlib.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 
-void	*ft_free_path(void **array, char *s1, char *s2)
+static void	*ft_free_path(char **array, char *s2)
 {
 	int	i;
 
@@ -22,13 +25,12 @@ void	*ft_free_path(void **array, char *s1, char *s2)
 	while (array[i])
 		free(array[i++]);
 	free(array);
-	free(s1);
-	free(s2);
+	if (s2 != NULL)
+		free(s2);
 	return (NULL);
 }
 
-
-char	*concat_path(char *s1, char c, char *s2)
+static char	*concat_path(char *s1, char c, char *s2)
 {
 	size_t	ct;
 	size_t	ct_ret;
@@ -41,19 +43,61 @@ char	*concat_path(char *s1, char c, char *s2)
 		return (NULL);
 	while (s1[ct] != '\0')
 	{
-		ret[ct_ret] = s2[ct];
+		ret[ct_ret] = s1[ct];
 		++ct;
 		++ct_ret;
 	}
 	ret[ct_ret] = c;
 	ct = 0;
-	while (s1[ct] != '\0')
+	while (s2[ct] != '\0')
 	{
 		ret[++ct_ret] = s2[ct];
 		++ct;
 	}
 	ret[++ct_ret] = '\0';
 	return (ret);
+}
+
+static bool	check_stat(char	*path)
+{
+	struct stat	st;
+
+	if (stat(path, &st) == -1)
+		return (false);
+	if (errno == ENOENT)
+		errno = 0;
+	if (S_ISDIR(st.st_mode))
+		return (false);
+	return (true);
+}
+
+
+static char	*pars_path(char *path, char *to_find)
+{
+	size_t	ct;
+	char	**tab;
+	char	*temp;
+
+	ct = 0;
+	if (path == NULL)
+		return (NULL);
+	tab = ft_split(path, ':');
+	if (tab == NULL)
+		return (NULL);
+	while (tab[ct] != NULL)
+	{
+		temp = concat_path(tab[ct], '/', to_find);
+		if (temp == NULL)
+			return (ft_free_path(tab, NULL));
+		if (check_stat(temp) == true)
+		{
+			ft_free_path(tab, to_find);
+			return (temp);
+		}
+		free(temp);
+		++ct;
+	}
+	return (ft_free_path(tab, NULL));
 }
 
 char	*get_path(t_env *lst, char *command)
@@ -70,41 +114,3 @@ char	*get_path(t_env *lst, char *command)
 	return (NULL);
 }
 
-char	*pars_path(char *path, char *to_find)
-{
-	size_t	ct;
-	char	**tab;
-	char	*temp;
-
-	ct = 0;
-	if (path == NULL)
-		return (NULL);
-	tab = ft_split(path, ":");
-	if (tab == NULL)
-		return (NULL);
-	while (tab[ct] != NULL)
-	{
-		temp = concat_path(tab[ct], '/', to_find);
-		if (temp == NULL)
-			return (ft_freearray(tab, path, to_find));
-		if (check_stat(temp) == true)
-		{
-			ft_freearray(tab, path, to_find);
-			return (temp);
-		}
-		free(temp);
-		++ct;
-	}
-	return (ft_freearray(tab, path, to_find));
-}
-
-bool	check_stat(char	*path)
-{
-	struct stat	st;
-
-	if (stat(path, &st) == -1)
-		return (false);
-	if (S_ISDIR(st.st_mode))
-		return (false);
-	return (true);
-}

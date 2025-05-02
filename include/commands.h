@@ -6,13 +6,14 @@
 /*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 05:53:34 by dderny            #+#    #+#             */
-/*   Updated: 2025/05/02 17:17:27 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/02 17:38:46 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef COMMANDS_H
 # define COMMANDS_H
 
+# include "environ.h"
 # include <stdbool.h>
 # include <stddef.h>
 # include <stdint.h>
@@ -67,6 +68,8 @@ typedef struct s_commands
 	size_t			size;
 	size_t			len;
 }					t_commands;
+
+char				*get_path(t_env *lst, char *command);
 
 t_commands			commands_init(size_t size);
 int					commands_append(t_commands *cmds, t_command cmd);

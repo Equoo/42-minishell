@@ -6,10 +6,11 @@
 /*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 06:22:53 by dderny            #+#    #+#             */
-/*   Updated: 2025/05/02 14:57:37 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/02 18:17:45 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "builtin.h"
 #include "commands.h"
 #include "minishell.h"
 #include <errno.h>
@@ -62,6 +63,49 @@ static int	check_and_execute(t_command *cmd, t_env *envs)
 	return (0);
 }
 
+static int	test_builtins(t_ctrl *ctrl, t_command *cmd)
+{
+	if (ft_strcmp(cmd->args[0], "echo") == 0)
+		ft_echo(cmd->args[1], STDOUT_FILENO, 1);
+	else if (ft_strcmp(cmd->args[0], "cd") == 0)
+		ft_cd(ctrl, cmd->args[1]);
+	else if (ft_strcmp(cmd->args[0], "pwd") == 0)
+		ft_pwd(STDOUT_FILENO);
+	else if (ft_strcmp(cmd->args[0], "export") == 0)
+		ft_export(ctrl->environ, cmd->args[1], cmd->args[2]);
+	else if (ft_strcmp(cmd->args[0], "unset") == 0)
+		ft_unset(ctrl->environ, cmd->args[1]);
+	else if (ft_strcmp(cmd->args[0], "env") == 0)
+		ft_env(ctrl->environ);
+	else if (ft_strcmp(cmd->args[0], "exit") == 0)
+		ft_exit(ctrl, cmd->args[1]);
+	else
+		return (0);
+	return (1);
+}
+
+static int	get_binary_path(t_ctrl *ctrl, t_command *cmd)
+{
+	char		*path;
+
+	if (ft_strchr(cmd->args[0], '/'))
+		return (0);
+	if (test_builtins(ctrl, cmd))
+		return (1);
+	path = get_path(ctrl->environ, cmd->args[0]);
+	if (path)
+		cmd->args[0] = path;
+	else
+	{
+		if (errno)
+			ft_dprintf(STDERR_FILENO, "minishell: %s: %s\n", cmd->args[0], strerror(errno));
+		else
+		 	ft_dprintf(STDERR_FILENO, "minishell: %s: command not found\n", cmd->args[0]);
+		return (1);
+	}
+	return (0);
+}
+
 int	command_exec(void *ctrl, int i)
 {
 	t_command	*cmd;
@@ -69,9 +113,10 @@ int	command_exec(void *ctrl, int i)
 	int			status;
 
 	cmd = ((t_ctrl *)ctrl)->commands.array + i;
-	// for binary without /
-	// 		check if is builtin
-	// 		search in PATH for the binary
+
+	if (get_binary_path(ctrl, cmd))
+		return (1);
+
 	child = fork();
 	if (child)
 	{
