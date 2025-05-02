@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 01:01:41 by ticasali          #+#    #+#             */
-/*   Updated: 2025/05/02 20:26:40 by ticasali         ###   ########.fr       */
+/*   Updated: 2025/05/02 22:45:28 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ char	*get_path_env(t_env *lst, char *to_find)
 	cpy = lst;
 	while (cpy != NULL)
 	{
-		if (ft_strcmp(lst->key, to_find) == 0)
-			return (lst->value);
+		if (ft_strcmp(cpy->key, to_find) == 0)
+			return (cpy->value);
 		cpy = cpy->next;
 	}
 	return (NULL);
@@ -44,7 +44,7 @@ int		ft_cd(t_ctrl *ctrl, char **flag)
 		return (-1);
 	else
 	{
-		ft_export_exec(ctrl, ft_strdup("OLDPWD"), buffer);
+		ft_export_exec(ctrl, ft_strdup("OLDPWD"), ft_strdup(buffer));
 		ft_export_exec(ctrl, ft_strdup("PWD"), getcwd(NULL, 0));
 		return (0);
 	}

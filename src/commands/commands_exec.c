@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   commands_exec.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 06:22:53 by dderny            #+#    #+#             */
-/*   Updated: 2025/05/02 20:29:38 by ticasali         ###   ########.fr       */
+/*   Updated: 2025/05/02 22:33:44 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ static int	check_and_execute(t_command *cmd, t_env *envs)
 	return (0);
 }
 
-static int	test_builtins(t_ctrl *ctrl, t_command *cmd)
+static int	exec_builtins(t_ctrl *ctrl, t_command *cmd)
 {
 	const char		built_names[][32] = {"echo", "cd", "pwd", "export", "unset", "env", "exit"};
 	const t_builtin	built_funcs[] = {&ft_echo, &ft_cd, &ft_pwd, &ft_export, &ft_unset, &ft_env, &ft_exit};
@@ -85,7 +85,7 @@ static int	get_binary_path(t_ctrl *ctrl, t_command *cmd)
 
 	if (ft_strchr(cmd->args[0], '/'))
 		return (0);
-	if (test_builtins(ctrl, cmd))
+	if (exec_builtins(ctrl, cmd))
 		return (1);
 	path = get_path(ctrl->environ, cmd->args[0]);
 	if (path)
@@ -111,7 +111,6 @@ int	command_exec(void *ctrl, int i)
 
 	if (get_binary_path(ctrl, cmd))
 		return (1);
-
 	child = fork();
 	if (child)
 	{
