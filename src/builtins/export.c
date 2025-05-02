@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
+/*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 00:32:45 by ticasali          #+#    #+#             */
-/*   Updated: 2025/05/02 22:02:22 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/02 22:20:01 by ticasali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,11 @@ bool	ft_export_exec(t_ctrl *ctrl, char *key, char *val)
 		return (true);
 	cpy = ctrl->environ;
 	check = false;
+	if (!(key[0] >= 48 && key[0] <= 57) && !(key[0] >= 65 && key[0] <= 90) && !(key[0] >= 97 && key[0] <= 122) && !(key[0] == '_'))
+	{
+		dprintf(STDERR_FILENO, "Bad identifier\n");
+		return (false);
+	}
 	if (cpy == NULL)
 		if (add_node_env(ctrl->environ, key, val) == false)
 			return (false);

@@ -6,7 +6,7 @@
 /*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 00:32:08 by ticasali          #+#    #+#             */
-/*   Updated: 2025/05/02 20:27:22 by ticasali         ###   ########.fr       */
+/*   Updated: 2025/05/02 22:20:39 by ticasali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ int	ft_echo(t_ctrl *ctrl, char **flag)
 	while (flag[ct] != NULL)
 	{
 		write(1, flag[ct], ft_strlen(flag[ct]));
+		if (flag[ct + 1] != NULL)
+			write(1, " ", 1);
 		++ct;
 	}
 	if (new_line == true)
