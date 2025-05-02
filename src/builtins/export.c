@@ -6,7 +6,7 @@
 /*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 00:32:45 by ticasali          #+#    #+#             */
-/*   Updated: 2025/05/02 18:59:30 by ticasali         ###   ########.fr       */
+/*   Updated: 2025/05/02 19:01:43 by ticasali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ int	ft_export(t_ctrl *ctrl, char **flag)
 	char	*key;
 	char	*val;
 
-	cpy = ctrl->environ;
+	cpy = lst;
 	check = false;
 	if (cpy == NULL)
 		if (add_node_env(ctrl->environ, ft_strdup(key), ft_strdup(val)) == false)
@@ -93,7 +93,7 @@ bool	add_node_env(t_env *lst, char *key, char *val)
 {
 	t_env	*cpy;
 	t_env	*node;
-	
+
 	node = malloc(sizeof(t_env));
 	if (node == NULL)
 		return (false);
