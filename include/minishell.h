@@ -6,7 +6,7 @@
 /*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 01:47:35 by ticasali          #+#    #+#             */
-/*   Updated: 2025/05/01 12:54:32 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/02 18:43:48 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 # include <stdbool.h>
 # include <unistd.h>
 
-# define VERBOSE 1
+# define VERBOSE 0
 
 extern short	g_sigval;
 

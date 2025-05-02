@@ -6,7 +6,7 @@
 /*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 00:32:45 by ticasali          #+#    #+#             */
-/*   Updated: 2025/05/01 00:55:57 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/02 18:43:08 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,8 @@ bool	ft_export(t_env *lst, char *key, char *val)
 	t_env	*cpy;
 	bool	check;
 
+	if (!val)
+		return (true);
 	cpy = lst;
 	check = false;
 	if (cpy == NULL)
@@ -89,7 +91,7 @@ bool	add_node_env(t_env *lst, char *key, char *val)
 {
 	t_env	*cpy;
 	t_env	*node;
-	
+
 	node = malloc(sizeof(t_env));
 	if (node == NULL)
 		return (false);
