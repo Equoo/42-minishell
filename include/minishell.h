@@ -6,7 +6,7 @@
 /*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 01:47:35 by ticasali          #+#    #+#             */
-/*   Updated: 2025/05/02 18:43:48 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/02 18:55:21 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ typedef struct s_ctrl
 	short		exit;
 	bool		end;
 }	t_ctrl;
+
+typedef	int			(*t_builtin)(t_ctrl *ctrl, char **args);
 
 int			load_ctrl(t_ctrl *ctrl, char **env);
 void		free_ctrl(t_ctrl *ctrl);

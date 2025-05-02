@@ -6,7 +6,7 @@
 /*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 06:22:53 by dderny            #+#    #+#             */
-/*   Updated: 2025/05/02 18:43:59 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/02 18:58:23 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,23 +65,17 @@ static int	check_and_execute(t_command *cmd, t_env *envs)
 
 static int	test_builtins(t_ctrl *ctrl, t_command *cmd)
 {
-	if (ft_strcmp(cmd->args[0], "echo") == 0)
-		ft_echo(cmd->args[1], STDOUT_FILENO, 1);
-	else if (ft_strcmp(cmd->args[0], "cd") == 0)
-		ft_cd(ctrl, cmd->args[1]);
-	else if (ft_strcmp(cmd->args[0], "pwd") == 0)
-		ft_pwd(STDOUT_FILENO);
-	else if (ft_strcmp(cmd->args[0], "export") == 0)
-		ft_export(ctrl->environ, cmd->args[1], cmd->args[2]);
-	else if (ft_strcmp(cmd->args[0], "unset") == 0)
-		ft_unset(ctrl->environ, cmd->args[1]);
-	else if (ft_strcmp(cmd->args[0], "env") == 0)
-		ft_env(ctrl->environ);
-	else if (ft_strcmp(cmd->args[0], "exit") == 0)
-		ft_exit(ctrl, cmd->args[1]);
-	else
-		return (0);
-	return (1);
+	const char		built_names[][32] = {"echo", "cd", "pwd", "export", "unset", "env", "exit"};
+	const t_builtin	built_funcs[] = {&ft_echo, &ft_cd, &ft_pwd, &ft_export, &ft_unset, &ft_env, &ft_exit};
+	int				i;
+
+	while (i < 7)
+	{
+		if (ft_strcmp(cmd->args[0], built_names[i]) == 0)
+			return (built_funcs[i](ctrl, cmd->args) + 1);
+		i++;
+	}
+	return (0);
 }
 
 static int	get_binary_path(t_ctrl *ctrl, t_command *cmd)
