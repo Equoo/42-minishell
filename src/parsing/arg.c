@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   arg.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
+/*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 13:44:01 by dderny            #+#    #+#             */
-/*   Updated: 2025/04/30 17:30:46 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/03 00:53:15 by ticasali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	parse_arg(t_ctrl *ctrl, char *str, t_vector *args)
 {
 	char			*token;
 	size_t			i;
-	
+
 	i = 0;
 	while (str[i] && ft_isspace(str[i]))
 		i++;

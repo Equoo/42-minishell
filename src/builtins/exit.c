@@ -6,7 +6,7 @@
 /*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 23:27:37 by ticasali          #+#    #+#             */
-/*   Updated: 2025/05/02 20:29:24 by ticasali         ###   ########.fr       */
+/*   Updated: 2025/05/03 00:20:53 by ticasali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,11 +49,8 @@ bool	check_ascii(char *str)
 		return (false);
 	if (str[ct] == '-' || str[ct] == '+')
 		++ct;
-	while (str[ct] == '0')
-	{
-		++ct;
+	while (str[ct++] == '0')
 		++check;
-	}
 	while (str[ct] != '\0')
 	{
 		if (str[ct] < 48 || str[ct] > 57)
@@ -65,14 +62,10 @@ bool	check_ascii(char *str)
 	return (true);
 }
 
-
 int	ft_exit(t_ctrl *ctrl, char **flag)
 {
 	if (ft_arraylen((void **)(flag)) > 2)
-	{
-		//perror (Bad Argument for Exit)
 		return (-1);
-	}
 	if (check_ascii(flag[1]) == false)
 	{
 		ctrl->exit = 2;

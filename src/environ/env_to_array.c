@@ -6,7 +6,7 @@
 /*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 01:08:31 by ticasali          #+#    #+#             */
-/*   Updated: 2025/05/01 08:35:00 by ticasali         ###   ########.fr       */
+/*   Updated: 2025/05/03 01:02:11 by ticasali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,17 +20,13 @@ static char	*concat_env(char *key, char *val)
 	size_t	ct;
 	size_t	ct_ret;
 
-	ct = 0;
-	ct_ret = 0;
+	ct = -1;
+	ct_ret = -1;
 	ret = malloc(sizeof(char) * ft_strlen(key) + ft_strlen(val) + 2);
 	if (ret == NULL)
 		return (NULL);
-	while (key[ct] != '\0')
-	{
-		ret[ct_ret] = key[ct];
-		++ct;
-		++ct_ret;
-	}
+	while (key[++ct] != '\0')
+		ret[++ct_ret] = key[ct];
 	ct = 0;
 	if (val != NULL)
 	{

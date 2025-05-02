@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   commands_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
+/*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 06:21:21 by dderny            #+#    #+#             */
-/*   Updated: 2025/05/01 14:39:52 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/03 00:38:19 by ticasali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,10 @@
 #include <stdio.h>
 #include <unistd.h>
 
-void commands_close_fds(t_commands cmds)
+void	commands_close_fds(t_commands cmds)
 {
 	t_command	*array;
-	size_t			i;
+	size_t		i;
 
 	array = cmds.array;
 	i = 0;
@@ -35,7 +35,7 @@ void commands_close_fds(t_commands cmds)
 	}
 }
 
-int open_file(char *path, int flags)
+int	open_file(char *path, int flags)
 {
 	int	fd;
 
@@ -51,9 +51,9 @@ int open_file(char *path, int flags)
 	return (fd);
 }
 
-int open_pipe(t_inout *in_pipe, t_inout *out_pipe)
+int	open_pipe(t_inout *in_pipe, t_inout *out_pipe)
 {
-	int pipefd[2];
+	int	pipefd[2];
 
 	if (pipe(pipefd) == -1)
 	{

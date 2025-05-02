@@ -6,7 +6,7 @@
 /*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 01:01:41 by ticasali          #+#    #+#             */
-/*   Updated: 2025/05/02 22:56:14 by ticasali         ###   ########.fr       */
+/*   Updated: 2025/05/03 00:21:35 by ticasali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,7 @@ char	*get_path_env(t_env *lst, char *to_find)
 	return (NULL);
 }
 
-
-int		ft_cd(t_ctrl *ctrl, char **flag)
+int	ft_cd(t_ctrl *ctrl, char **flag)
 {
 	char	*buffer;
 

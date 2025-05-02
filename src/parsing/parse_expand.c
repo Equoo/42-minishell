@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_expand.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
+/*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 13:49:26 by dderny            #+#    #+#             */
-/*   Updated: 2025/05/02 22:26:44 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/03 00:58:02 by ticasali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include <stddef.h>
 #include <libft.h>
 
-int parse_expand(t_env *lst, char *key, size_t *out_len, char **value)
+int	parse_expand(t_env *lst, char *key, size_t *out_len, char **value)
 {
 	char	oldone;
 	size_t	len;

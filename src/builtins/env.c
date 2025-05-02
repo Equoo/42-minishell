@@ -6,15 +6,14 @@
 /*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 05:04:12 by ticasali          #+#    #+#             */
-/*   Updated: 2025/05/02 20:20:26 by ticasali         ###   ########.fr       */
+/*   Updated: 2025/05/03 00:19:10 by ticasali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <libft.h>
 #include <unistd.h>
 #include "environ.h"
-# include "minishell.h"
-
+#include "minishell.h"
 
 int	ft_env(t_ctrl *ctrl, char **flag)
 {

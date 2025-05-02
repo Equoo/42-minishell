@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
+/*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 13:44:01 by dderny            #+#    #+#             */
-/*   Updated: 2025/05/01 12:14:08 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/03 00:57:14 by ticasali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,8 @@ int	parse_pipe(t_ctrl *ctrl, char *str, t_command *cmd, t_vector *args)
 		*args = vec_new(8, sizeof(char *));
 		if (!args->data)
 			return (-1);
-		*cmd = (t_command){.in.type = IO_PIPE, .in.fd = -1, .out.fd = -1, .args = NULL};
+		*cmd = (t_command){.in.type = IO_PIPE,
+			.in.fd = -1, .out.fd = -1, .args = NULL};
 		return (i);
 	}
 	token_error(NULL, '|');

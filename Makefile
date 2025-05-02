@@ -6,7 +6,7 @@
 #    By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/25 01:28:43 by ticasali          #+#    #+#              #
-#    Updated: 2025/05/02 17:22:57 by ticasali         ###   ########.fr        #
+#    Updated: 2025/05/03 00:27:31 by ticasali         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,6 +33,7 @@ SRCS =				$(DIR_SRCS)/main.c 				\
 					$(DIR_SRCS)/builtins/env.c 			\
 					$(DIR_SRCS)/builtins/exit.c 			\
 					$(DIR_SRCS)/builtins/export.c 			\
+					$(DIR_SRCS)/builtins/export_tools.c 	\
 					$(DIR_SRCS)/builtins/pwd.c 			\
 					$(DIR_SRCS)/builtins/unset.c 			\
 					$(DIR_SRCS)/parsing/parsing.c 			\

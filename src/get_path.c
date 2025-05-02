@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_path.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
+/*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 14:41:59 by ticasali          #+#    #+#             */
-/*   Updated: 2025/05/02 18:17:10 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/03 00:48:28 by ticasali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,6 @@ static bool	check_stat(char	*path)
 	return (true);
 }
 
-
 static char	*pars_path(char *path, char *to_find)
 {
 	size_t	ct;
@@ -113,4 +112,3 @@ char	*get_path(t_env *lst, char *command)
 	}
 	return (NULL);
 }
-

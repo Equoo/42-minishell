@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
+/*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 00:28:00 by dderny            #+#    #+#             */
-/*   Updated: 2025/05/02 16:22:37 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/03 00:56:40 by ticasali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@
 #include <stdlib.h>
 #include <sys/wait.h>
 
-static int	parse_per_types(t_ctrl *ctrl, char *strcmd, t_command *cmd, t_vector *args)
+static int	parse_per_types(t_ctrl *ctrl, char *strcmd,
+	t_command *cmd, t_vector *args)
 {
 	size_t			i;
 

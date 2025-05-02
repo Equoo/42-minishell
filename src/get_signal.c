@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   get_signal.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
+/*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 10:14:31 by ticasali          #+#    #+#             */
-/*   Updated: 2025/05/01 00:22:48 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/03 00:49:11 by ticasali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <signal.h>
 #include <stdbool.h>
 
-bool	set_signal()
+bool	set_signal(void)
 {
 	struct sigaction	sa;
 

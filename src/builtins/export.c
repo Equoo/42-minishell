@@ -6,7 +6,7 @@
 /*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 00:32:45 by ticasali          #+#    #+#             */
-/*   Updated: 2025/05/02 22:48:13 by ticasali         ###   ########.fr       */
+/*   Updated: 2025/05/03 00:37:05 by ticasali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include "minishell.h"
-
 
 static void	print_export(char **table)
 {
@@ -39,11 +38,11 @@ bool	ft_export_no_arg(t_env *lst)
 	size_t	ct;
 	size_t	ct_sort;
 
-	ct_sort = 0;
+	ct_sort = -1;
 	table = env_to_array(lst);
 	if (table == NULL)
 		return (false);
-	while (ct_sort < ft_envslen(lst) - 1)
+	while (++ct_sort < ft_envslen(lst) - 1)
 	{
 		ct = 0;
 		while (ct < ft_envslen(lst) - 1)
@@ -56,7 +55,6 @@ bool	ft_export_no_arg(t_env *lst)
 			}
 			++ct;
 		}
-		++ct_sort;
 	}
 	print_export(table);
 	return (true);
@@ -66,38 +64,20 @@ bool	ft_export_exec(t_ctrl *ctrl, char *key, char *val)
 {
 	t_env	*cpy;
 	bool	check;
-	size_t	ct;
 
-	ct = 0;
 	if (!val)
 		return (true);
 	cpy = ctrl->environ;
 	check = false;
-	if (!(key[0] >= 65 && key[0] <= 90) && !(key[0] >= 97 && key[0] <= 122) && !(key[0] == '_'))
-	{
-		ft_dprintf(STDERR_FILENO, "Bad identifier\n");
+	if (secure_export(key) == false)
 		return (false);
-	}
-	while (key[ct] != '\0')
-	{
-		if (!(key[ct] >= 48 && key[ct] <= 57) && !(key[ct] >= 65 && key[ct] <= 90) && !(key[ct] >= 97 && key[ct] <= 122) && !(key[ct] == '_'))
-		{
-			ft_dprintf(STDERR_FILENO, "Bad identifier\n");
-			return (false);
-		}
-		++ct;
-	}
 	if (cpy == NULL)
 		if (add_node_env(ctrl->environ, key, val) == false)
 			return (false);
 	while (cpy->next != NULL)
 	{
 		if (ft_strcmp(cpy->key, key) == 0)
-		{
-			free(cpy->value);
-			cpy->value = val;
-			check = true;
-		}
+			check = replace_node(cpy, key);
 		cpy = cpy->next;
 	}
 	if (check == false)

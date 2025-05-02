@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
+/*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 13:44:01 by dderny            #+#    #+#             */
-/*   Updated: 2025/05/02 17:20:53 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/03 00:57:50 by ticasali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-static t_token_type get_redir_type(char *str, size_t *i)
+static t_token_type	get_redir_type(char *str, size_t *i)
 {
 	t_token_type	type;
 

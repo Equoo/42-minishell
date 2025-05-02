@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   errors.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
+/*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 13:44:17 by dderny            #+#    #+#             */
-/*   Updated: 2025/04/30 13:48:20 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/03 00:55:07 by ticasali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,13 @@
 #include <unistd.h>
 #include <ft_printf.h>
 
-int token_error(char *path, char c)
+int	token_error(char *path, char c)
 {
 	if (path)
-		ft_dprintf(STDERR_FILENO, "Minishell: %s: %s\n", path, strerror(errno));
+		ft_dprintf(STDERR_FILENO,
+			"Minishell: %s: %s\n", path, strerror(errno));
 	else if (c)
-		ft_dprintf(STDERR_FILENO, "Minishell: Syntax error near unexpected token `%c'\n", c);
+		ft_dprintf(STDERR_FILENO,
+			"Minishell: Syntax error near unexpected token `%c'\n", c);
 	return (1);
 }

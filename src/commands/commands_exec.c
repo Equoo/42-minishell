@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   commands_exec.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
+/*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 06:22:53 by dderny            #+#    #+#             */
-/*   Updated: 2025/05/02 23:00:54 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/03 00:42:02 by ticasali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,12 +47,14 @@ static int	check_and_execute(t_command *cmd, t_env *envs)
 	stat(cmd->args[0], &info);
 	if (S_ISDIR(info.st_mode))
 	{
-		ft_dprintf(STDERR_FILENO, "minishell: %s: is a directory\n", cmd->args[0]);
+		ft_dprintf(STDERR_FILENO, "minishell: %s: is a directory\n",
+			cmd->args[0]);
 		return (126);
 	}
 	if (access(cmd->args[0], R_OK | X_OK))
 	{
-		ft_dprintf(STDERR_FILENO, "minishell: %s: %s\n", cmd->args[0], strerror(errno));
+		ft_dprintf(STDERR_FILENO, "minishell: %s: %s\n", cmd->args[0],
+			strerror(errno));
 		return (127);
 	}
 	environ = env_to_array(envs);
@@ -65,8 +67,10 @@ static int	check_and_execute(t_command *cmd, t_env *envs)
 
 static int	exec_builtins(t_ctrl *ctrl, t_command *cmd)
 {
-	const char		built_names[][32] = {"echo", "cd", "pwd", "export", "unset", "env", "exit"};
-	const t_builtin	built_funcs[] = {&ft_echo, &ft_cd, &ft_pwd, &ft_export, &ft_unset, &ft_env, &ft_exit};
+	const char		built_names[][32] = {"echo", "cd", "pwd",
+		"export", "unset", "env", "exit"};
+	const t_builtin	built_funcs[] = {&ft_echo, &ft_cd, &ft_pwd,
+		&ft_export, &ft_unset, &ft_env, &ft_exit};
 	int				i;
 	int				status;
 
@@ -97,9 +101,11 @@ static int	get_binary_path(t_ctrl *ctrl, t_command *cmd)
 	else
 	{
 		if (errno)
-			ft_dprintf(STDERR_FILENO, "minishell: %s: %s\n", cmd->args[0], strerror(errno));
+			ft_dprintf(STDERR_FILENO, "minishell: %s: %s\n",
+				cmd->args[0], strerror(errno));
 		else
-		 	ft_dprintf(STDERR_FILENO, "minishell: %s: command not found\n", cmd->args[0]);
+			ft_dprintf(STDERR_FILENO, "minishell: %s: command not found\n",
+				cmd->args[0]);
 		return (1);
 	}
 	return (0);
@@ -120,9 +126,6 @@ int	command_exec(void *ctrl, int i)
 		cmd->pid = child;
 		return (-1);
 	}
-	if (VERBOSE)
-		ft_printf("%s: in %d out %d\n", cmd->args[0], cmd->in.type ? cmd->in.fd :
-			-1, cmd->out.type ? cmd->out.fd : -1);
 	open_fds(cmd);
 	commands_close_fds(((t_ctrl *)ctrl)->commands);
 	status = check_and_execute(cmd, ((t_ctrl *)ctrl)->environ);

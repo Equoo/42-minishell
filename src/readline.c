@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   readline.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
+/*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:02:12 by ticasali          #+#    #+#             */
-/*   Updated: 2025/05/02 17:34:53 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/03 00:51:28 by ticasali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int	create_temp_file(char *tmp_file)
 
 	ft_strlcpy(tmp_file, "/tmp/", 6);
 	if (generate_tmp_name((u_char *)(tmp_file + 5), TMPFILE_LEN - 5))
-			return (-1);
+		return (-1);
 	while (access(tmp_file, F_OK) == 0)
 		if (generate_tmp_name((u_char *)(tmp_file + 5), TMPFILE_LEN - 5))
 			return (-1);
@@ -61,21 +61,22 @@ int	create_temp_file(char *tmp_file)
 	}
 	return (fd);
 }
+// if LIMITER in quotes, don't expand
 
-static int	do_heredoc(t_ctrl *ctrl, t_command *cmd) // if LIMITER in quotes, don't expand
+static int	do_heredoc(t_ctrl *ctrl, t_command *cmd)
 {
 	char	*input;
 	char	*expanded;
 	int		fd;
 
-	fd= create_temp_file(cmd->in.heredoc.tmpfile);
+	fd = create_temp_file(cmd->in.heredoc.tmpfile);
 	if (fd == -1)
 		return (0);
 	while (1)
 	{
 		input = readline(">");
 		if (!input)
-			break;
+			break ;
 		if (ft_strcmp(input, cmd->in.heredoc.end) == 0)
 		{
 			free(input);

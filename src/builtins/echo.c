@@ -6,7 +6,7 @@
 /*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 00:32:08 by ticasali          #+#    #+#             */
-/*   Updated: 2025/05/02 22:20:39 by ticasali         ###   ########.fr       */
+/*   Updated: 2025/05/03 00:18:49 by ticasali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 #include <stdbool.h>
 #include <unistd.h>
 #include "minishell.h"
-
 
 int	ft_echo(t_ctrl *ctrl, char **flag)
 {
@@ -31,7 +30,6 @@ int	ft_echo(t_ctrl *ctrl, char **flag)
 	}
 	if (ft_strcmp(flag[1], "$?") == 0)
 	{
-//		write(1, ctrl->exit, ft_strlen(flag[ct]));
 		ctrl->exit = 0;
 	}
 	while (flag[ct] != NULL)
