@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_path.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 14:41:59 by ticasali          #+#    #+#             */
-/*   Updated: 2025/05/03 00:48:28 by ticasali         ###   ########.fr       */
+/*   Updated: 2025/05/03 17:23:58 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,9 +63,11 @@ static bool	check_stat(char	*path)
 	struct stat	st;
 
 	if (stat(path, &st) == -1)
+	{
+		if (errno == ENOENT)
+			errno = 0;
 		return (false);
-	if (errno == ENOENT)
-		errno = 0;
+	}
 	if (S_ISDIR(st.st_mode))
 		return (false);
 	return (true);
@@ -90,7 +92,7 @@ static char	*pars_path(char *path, char *to_find)
 			return (ft_free_path(tab, NULL));
 		if (check_stat(temp) == true)
 		{
-			ft_free_path(tab, to_find);
+			ft_free_path(tab, NULL);
 			return (temp);
 		}
 		free(temp);

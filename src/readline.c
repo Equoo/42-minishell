@@ -6,7 +6,7 @@
 /*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:02:12 by ticasali          #+#    #+#             */
-/*   Updated: 2025/05/03 08:27:48 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/03 18:12:20 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "libft.h"
 #include "minishell.h"
 #include "parsing.h"
+#include <errno.h>
 #include <limits.h>
 #include <fcntl.h>
 #include <readline/history.h>
@@ -130,7 +131,8 @@ void	ft_readline(t_ctrl *ctrl)
 		ctrl->commands = commands_init(8);
 		if (ctrl->commands.array)
 			if (parse_command(ctrl, input) /*&& execute_heredocs(ctrl)*/)
-				execute_pipeline(ctrl);
+				if (execute_pipeline(ctrl) && errno)
+					ctrl->end = true;
 		commands_destroy(&ctrl->commands);
 		free(input);
 	}

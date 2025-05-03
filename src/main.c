@@ -6,7 +6,7 @@
 /*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 02:06:04 by ticasali          #+#    #+#             */
-/*   Updated: 2025/05/02 22:55:54 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/03 18:09:29 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,5 +31,5 @@ int	main(int ac, char **av, char **env)
 	}
 	ft_readline(&ctrl);
 	free_envs(ctrl.environ);
-	return (0);
+	return (ctrl.exit);
 }
