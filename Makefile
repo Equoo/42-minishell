@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+         #
+#    By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/25 01:28:43 by ticasali          #+#    #+#              #
-#    Updated: 2025/05/03 08:19:37 by dderny           ###   ########.fr        #
+#    Updated: 2025/05/03 17:21:00 by ticasali         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,7 +39,9 @@ SRCS =				$(DIR_SRCS)/main.c 				\
 					$(DIR_SRCS)/parsing/parsing.c 			\
 					$(DIR_SRCS)/parsing/errors.c 			\
 					$(DIR_SRCS)/parsing/pipe.c 			\
-					$(DIR_SRCS)/parsing/redirection.c 			\
+					$(DIR_SRCS)/parsing/expand.c 			\
+					$(DIR_SRCS)/parsing/redirection.c 		\
+					$(DIR_SRCS)/parsing/secure_parsing.c 	\
 
 DIR_OBJS =			.objs
 

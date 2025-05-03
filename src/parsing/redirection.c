@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
+/*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 13:44:01 by dderny            #+#    #+#             */
-/*   Updated: 2025/05/03 08:34:01 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/03 17:58:40 by ticasali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,8 +86,10 @@ int	parse_redirection(t_ctrl *ctrl, char *operator, char *value, t_command *cmd)
 {
 	t_token_type	type;
 	char			*path;
+	char			quotes[2];
 
 	type = get_redir_type(operator);
+	ft_bzero(quotes, 2);
 	if (type == TOKEN_NONE)
 	{
 		cmd->status = -1;
@@ -97,7 +99,7 @@ int	parse_redirection(t_ctrl *ctrl, char *operator, char *value, t_command *cmd)
 		return (set_cmd_heredoc(cmd, value));
 	if (cmd->status == -1)
 		return (1);
-	path = get_expanded(ctrl, value);
+	path = get_expanded(ctrl, value, quotes);
 	if (!path)
 		return (1);
 	if (type == TOKEN_RIN)
