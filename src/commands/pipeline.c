@@ -6,7 +6,7 @@
 /*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 00:32:21 by dderny            #+#    #+#             */
-/*   Updated: 2025/05/03 18:20:33 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/03 22:32:46 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,8 @@ static void	wait_for_children(t_commands *cmds)
 			if (VERBOSE)
 				ft_printf("%s exit with status: %d\n",
 					cmds->array[i].args[0], cmds->array[i].status);
+			if (cmds->array[i].in.type == IO_HEREDOC)
+				unlink(cmds->array[i].in.heredoc.tmpfile);
 		}
 		i++;
 	}
@@ -118,5 +120,7 @@ int	execute_pipeline(t_ctrl *ctrl)
 	if (res)
 		return (1);
 	wait_for_children(cmds);
+	if (cmds->len >= 1)
+		ctrl->exit = cmds->array[cmds->len - 1].status;
 	return (0);
 }

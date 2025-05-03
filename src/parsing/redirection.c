@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 13:44:01 by dderny            #+#    #+#             */
-/*   Updated: 2025/05/03 17:58:40 by ticasali         ###   ########.fr       */
+/*   Updated: 2025/05/03 22:21:06 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ static void	set_cmd_infile(t_command *cmd, char *token)
 static int	set_cmd_heredoc(t_command *cmd, char *limiter)
 {
 	cmd->in.type = IO_HEREDOC;
-	cmd->in.heredoc.end = limiter;
+	cmd->in.heredoc.end = ft_strdup(limiter);
 	return (0);
 }
 

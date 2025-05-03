@@ -6,7 +6,7 @@
 /*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 06:22:53 by dderny            #+#    #+#             */
-/*   Updated: 2025/05/03 18:25:45 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/03 22:33:15 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ static int exec_builtin(t_ctrl *ctrl, t_builtin builtin_func, t_command *cmd)
 		status = builtin_func(ctrl, cmd->args, cmd->out.fd);
 	else
 		status = builtin_func(ctrl, cmd->args, STDOUT_FILENO);
-	ctrl->exit = status;
+	cmd->status = status;
 	return (0);
 }
 

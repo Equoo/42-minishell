@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 00:32:45 by ticasali          #+#    #+#             */
-/*   Updated: 2025/05/03 16:40:07 by ticasali         ###   ########.fr       */
+/*   Updated: 2025/05/03 22:33:55 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ int	ft_export(t_ctrl *ctrl, char **flag, int fd)
 	}
 	key = ft_strdup_select(flag[1], '=');
 	if (key == NULL)
-		return (-1);
+		return (1);
 	while (flag[1][ct] != '\0' && flag[1][ct] != '=')
 		++ct;
 	if (flag[1][ct] == '\0')
@@ -106,5 +106,5 @@ int	ft_export(t_ctrl *ctrl, char **flag, int fd)
 	if (ft_export_exec(ctrl, key, val) == true)
 		return (0);
 	else
-		return (-1);
+		return (1);
 }

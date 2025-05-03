@@ -6,7 +6,7 @@
 /*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 01:47:35 by ticasali          #+#    #+#             */
-/*   Updated: 2025/05/03 18:12:57 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/03 20:47:09 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,5 +46,7 @@ bool			set_signal(t_ctrl *ctrl);
 void			free_node(t_env *node);
 void			free_lst(t_env *lst);
 void			ft_readline(t_ctrl *ctrl);
+
+int				execute_heredocs(t_ctrl *ctrl);\
 
 #endif

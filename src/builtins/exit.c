@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 23:27:37 by ticasali          #+#    #+#             */
-/*   Updated: 2025/05/03 19:49:25 by ticasali         ###   ########.fr       */
+/*   Updated: 2025/05/03 22:30:24 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,10 @@ int	ft_exit(t_ctrl *ctrl, char **flag, int fd)
 	if (check_ascii(flag[1]) == false)
 	{
 		ctrl->end = true;
+		ctrl->exit = 2;
 		return (2);
 	}
 	ctrl->end = true;
+	ctrl->exit = ft_atos(flag[1]);
 	return (ft_atos(flag[1]));
 }

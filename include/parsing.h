@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 13:54:09 by dderny            #+#    #+#             */
-/*   Updated: 2025/05/03 19:31:29 by ticasali         ###   ########.fr       */
+/*   Updated: 2025/05/03 20:46:09 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,8 @@ size_t			skip_backslash(char quotes[2], size_t i, char *str);
 int				last_command(t_command cmd, t_ctrl *ctrl, t_vector args);
 int				vec_secure(t_vector *vec, char *val);
 int				ft_isexpand(char c);
+
+char			*chunk_expand(t_ctrl *ctrl, char *str);
 
 
 #endif
