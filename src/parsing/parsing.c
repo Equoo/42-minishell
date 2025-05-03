@@ -6,7 +6,7 @@
 /*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 00:28:00 by dderny            #+#    #+#             */
-/*   Updated: 2025/05/03 10:35:41 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/03 16:57:01 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,9 +83,10 @@ char *get_expanded(t_ctrl *ctrl, char *str)
 			if (get_expand(ctrl->environ, str + i, &i, &expand))
 				outstr = vec_add(outstr, vec_from_string(expand));
 		}
-		else if (quotes[0] != str[i] && !(!quotes[0] && str[i] == '\\' && ft_strchr("<>|", str[i + 1])))
+		else if (quotes[0] != str[i])
 		{
-			__builtin_printf("%zu] = %c %c\n", i, str[i], str[i + 1]);
+			if (!quotes[0] && str[i] == '\\' && str[i + 1] && ft_strchr("<>|\\", str[i + 1]))
+				i++;
 			vec_append(&outstr, str + i);
 		}
 		i++;
@@ -241,7 +242,6 @@ static int	parse_per_types(t_ctrl *ctrl, t_vector array,
 	chunks = (char **)array.data;
 	while (!errno && i < array.actual_size)
 	{
-		__builtin_printf("chunks[%zu] = %s, on %zu\n", i, chunks[i], array.actual_size);
 		if (ft_strchr("<>", chunks[i][0]) && ++i)
 			parse_redirection(ctrl, chunks[i - 1], chunks[i], cmd);
 		else if (chunks[i][0] == '|')
