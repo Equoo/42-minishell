@@ -6,7 +6,7 @@
 /*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 13:54:09 by dderny            #+#    #+#             */
-/*   Updated: 2025/05/03 20:46:09 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/03 23:36:38 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ int				get_expand(t_ctrl *ctrl, char *key,
 size_t			skip_backslash(char quotes[2], size_t i, char *str);
 int				last_command(t_command cmd, t_ctrl *ctrl, t_vector args);
 int				vec_secure(t_vector *vec, char *val);
+char			*heredoc_expand(t_ctrl *ctrl, char *str);
 int				ft_isexpand(char c);
 
 char			*chunk_expand(t_ctrl *ctrl, char *str);
