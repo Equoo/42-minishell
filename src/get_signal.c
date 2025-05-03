@@ -6,36 +6,46 @@
 /*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 10:14:31 by ticasali          #+#    #+#             */
-/*   Updated: 2025/05/03 22:27:57 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/03 23:28:41 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <signal.h>
+#include <readline/readline.h>
+#include <signal.h>
 #include <stdbool.h>
+#include <unistd.h>
+#include "minishell.h"
+
+void	handle_signal(int sig)
+{
+	g_sigval = sig;
+
+	if (sig == SIGINT)
+	{
+		rl_replace_line("", 0);
+		write(STDOUT_FILENO, "\n", 1);
+		rl_on_new_line();
+		rl_redisplay();
+	}
+	else if (sig == SIGQUIT)
+	{
+		rl_on_new_line();
+		rl_redisplay();
+	}
+}
 
 bool	set_signal(void)
 {
 	struct sigaction	sa;
 
 	sigemptyset(&sa.sa_mask);
-	sigaddset(&sa.sa_mask, SIGPIPE);
-	sigaddset(&sa.sa_mask, SIGINT);
-	sigaddset(&sa.sa_mask, SIGTSTP);
-	sigaddset(&sa.sa_mask, SIGSYS);
-	sigaddset(&sa.sa_mask, SIGABRT);
-	sigaddset(&sa.sa_mask, SIGCHLD);
-	sa.sa_flags = SA_SIGINFO | SA_NODEFER;
-	if ((sigaction(SIGPIPE, &sa, 0)) == -1)
+	sigaddset(&sa.sa_mask, SIGQUIT);
+	sa.sa_flags = SA_RESTART;
+	sa.sa_handler = handle_signal;
+	if ((sigaction(SIGQUIT, &sa, 0)) == -1)
 		return (false);
 	if ((sigaction(SIGINT, &sa, 0)) == -1)
-		return (false);
-	if ((sigaction(SIGTSTP, &sa, 0)) == -1)
-		return (false);
-	if ((sigaction(SIGSYS, &sa, 0)) == -1)
-		return (false);
-	if ((sigaction(SIGABRT, &sa, 0)) == -1)
-		return (false);
-	if ((sigaction(SIGCHLD, &sa, 0)) == -1)
 		return (false);
 	return (true);
 }

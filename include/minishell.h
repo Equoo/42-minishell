@@ -6,7 +6,7 @@
 /*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 01:47:35 by ticasali          #+#    #+#             */
-/*   Updated: 2025/05/03 20:47:09 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/03 22:42:08 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ typedef struct s_ctrl
 typedef int		(*t_builtin)(t_ctrl *ctrl, char **args, int fd);
 
 int				load_ctrl(t_ctrl *ctrl, char **env);
+bool			set_signal(void);
 void			free_ctrl(t_ctrl *ctrl);
 
 int				execute_pipeline(t_ctrl *ctrl);
@@ -40,8 +41,6 @@ t_command		create_cmd(char *str);
 
 short			ft_atos(char *str);
 bool			check_ascii(char *str);
-
-bool			set_signal(t_ctrl *ctrl);
 
 void			free_node(t_env *node);
 void			free_lst(t_env *lst);

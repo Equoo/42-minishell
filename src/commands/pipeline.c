@@ -6,7 +6,7 @@
 /*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 00:32:21 by dderny            #+#    #+#             */
-/*   Updated: 2025/05/03 22:32:46 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/03 23:26:08 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,7 @@ static void	wait_for_children(t_commands *cmds)
 	{
 		if (cmds->array[i].pid > 0)
 		{
+			status = 0;
 			waitpid(cmds->array[i].pid, &status, 0);
 			if (WIFEXITED(status))
 				cmds->array[i].status = WEXITSTATUS(status);
