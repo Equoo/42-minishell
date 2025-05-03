@@ -6,7 +6,7 @@
 /*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 00:32:08 by ticasali          #+#    #+#             */
-/*   Updated: 2025/05/03 00:18:49 by ticasali         ###   ########.fr       */
+/*   Updated: 2025/05/03 07:57:59 by ticasali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,14 +23,12 @@ int	ft_echo(t_ctrl *ctrl, char **flag)
 	(void) ctrl;
 	ct = 1;
 	new_line = false;
-	if (ft_strcmp(flag[1], "-n") == 0)
+	if (flag[1] == NULL)
+		return (-1);
+	while (flag[ct] != NULL && ft_strcmp(flag[ct], "-n") == 0)
 	{
 		++ct;
 		new_line = true;
-	}
-	if (ft_strcmp(flag[1], "$?") == 0)
-	{
-		ctrl->exit = 0;
 	}
 	while (flag[ct] != NULL)
 	{
@@ -39,7 +37,7 @@ int	ft_echo(t_ctrl *ctrl, char **flag)
 			write(1, " ", 1);
 		++ct;
 	}
-	if (new_line == true)
+	if (new_line == false)
 		write(1, "\n", 1);
 	return (0);
 }

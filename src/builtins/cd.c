@@ -6,13 +6,42 @@
 /*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 01:01:41 by ticasali          #+#    #+#             */
-/*   Updated: 2025/05/03 00:21:35 by ticasali         ###   ########.fr       */
+/*   Updated: 2025/05/03 10:31:37 by ticasali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "builtin.h"
 #include "minishell.h"
+#include "ft_printf.h"
+
+bool	ft_export_cd(t_ctrl *ctrl, char *key, char *val)
+{
+	t_env	*cpy;
+	bool	check;
+
+	if (!val)
+		return (true);
+	cpy = ctrl->environ;
+	check = false;
+	if (secure_export(key) == false)
+		return (false);
+	if (cpy == NULL)
+		if (add_node_env(ctrl->environ, key, val) == false)
+			return (false);
+	while (cpy->next != NULL)
+	{
+		if (ft_strcmp(cpy->key, key) == 0)
+			check = replace_node(cpy, key, val);
+		cpy = cpy->next;
+	}
+	if (ft_strcmp(cpy->key, key) == 0)
+		check = replace_node(cpy, key, val);
+	if (check == false)
+		if (add_node_env(ctrl->environ, key, val) == false)
+			return (false);
+	return (true);
+}
 
 char	*get_path_env(t_env *lst, char *to_find)
 {
@@ -34,20 +63,30 @@ int	ft_cd(t_ctrl *ctrl, char **flag)
 
 	buffer = get_path_env(ctrl->environ, "PWD");
 	if (flag[1] == NULL)
-	{
-		if (chdir(get_path_env(ctrl->environ, "HOME")) == -1)
-			return (-1);
-		ft_export_exec(ctrl, ft_strdup("OLDPWD"), ft_strdup(buffer));
-		ft_export_exec(ctrl, ft_strdup("PWD"), getcwd(NULL, 0));
-		return (0);
-	}
+		return (ft_cd_no_arg(ctrl, buffer));
 	if (chdir(flag[1]) == -1)
 		return (-1);
 	else
 	{
-		ft_export_exec(ctrl, ft_strdup("OLDPWD"), ft_strdup(buffer));
-		ft_export_exec(ctrl, ft_strdup("PWD"), getcwd(NULL, 0));
+		if (buffer != NULL)
+			ft_export_cd(ctrl, ft_strdup("OLDPWD"), ft_strdup(buffer));
+		ft_export_cd(ctrl, ft_strdup("PWD"), getcwd(NULL, 0));
 		return (0);
 	}
 	return (-1);
+}
+
+int	ft_cd_no_arg(t_ctrl *ctrl, char *buffer)
+{
+	if (get_path_env(ctrl->environ, "HOME") == NULL)
+	{
+		ft_dprintf(STDERR_FILENO, "No Home Set\n");
+		return (-1);
+	}
+	if (chdir(get_path_env(ctrl->environ, "HOME")) == -1)
+		return (-1);
+	if (buffer != NULL)
+		ft_export_cd(ctrl, ft_strdup("OLDPWD"), ft_strdup(buffer));
+	ft_export_cd(ctrl, ft_strdup("PWD"), getcwd(NULL, 0));
+	return (0);
 }

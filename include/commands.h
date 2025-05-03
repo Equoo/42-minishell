@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   commands.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
+/*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 05:53:34 by dderny            #+#    #+#             */
-/*   Updated: 2025/05/02 22:56:23 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/03 10:29:33 by ticasali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ char				*get_path(t_env *lst, char *command);
 t_commands			commands_init(size_t size);
 int					commands_append(t_commands *cmds, t_command cmd);
 void				commands_destroy(t_commands *cmds);
+void				free_commands(t_commands *cmds);
 
 void				commands_close_fds(t_commands cmds);
 int					open_file(char *path, int flags);

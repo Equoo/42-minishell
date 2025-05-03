@@ -6,7 +6,7 @@
 /*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 10:14:31 by ticasali          #+#    #+#             */
-/*   Updated: 2025/05/03 00:49:11 by ticasali         ###   ########.fr       */
+/*   Updated: 2025/05/03 09:45:11 by ticasali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ bool	set_signal(void)
 	sigaddset(&sa.sa_mask, SIGABRT);
 	sigaddset(&sa.sa_mask, SIGCHLD);
 	sa.sa_flags = SA_SIGINFO | SA_NODEFER;
-//	sa.sa_sigaction = get_signal;
 	if ((sigaction(SIGPIPE, &sa, 0)) == -1)
 		return (false);
 	if ((sigaction(SIGINT, &sa, 0)) == -1)

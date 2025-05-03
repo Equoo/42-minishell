@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   commands.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
+/*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 05:53:23 by dderny            #+#    #+#             */
-/*   Updated: 2025/05/02 22:57:20 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/03 10:28:49 by ticasali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,11 @@ void	commands_destroy(t_commands *cmds)
 			free(cmds->array[i].out.file.path);
 		i++;
 	}
+	free_commands(cmds);
+}
+
+void	free_commands(t_commands *cmds)
+{
 	free(cmds->array);
 	cmds->array = NULL;
 	cmds->size = 0;

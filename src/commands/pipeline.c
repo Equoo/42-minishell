@@ -6,7 +6,7 @@
 /*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 00:32:21 by dderny            #+#    #+#             */
-/*   Updated: 2025/05/03 00:46:35 by ticasali         ###   ########.fr       */
+/*   Updated: 2025/05/03 10:27:06 by ticasali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,24 @@
 #include <fcntl.h>
 #include <stddef.h>
 #include <sys/wait.h>
+
+static void	pipeline_condition(t_command cmd)
+{
+	ft_printf("\tInput type: %d\n", cmd.in.type);
+	if (cmd.in.type == IO_INFILE)
+		ft_printf("\t\tInput file: %s\n", cmd.in.file.path);
+	else if (cmd.in.type == IO_HEREDOC)
+		ft_printf("\t\tInput heredoc: %s by %s\n",
+			cmd.in.heredoc.end, cmd.in.heredoc.tmpfile);
+	else if (cmd.in.type == IO_PIPE)
+		ft_printf("\t\tInput pipe from last\n");
+	ft_printf("\tOutput type: %d\n", cmd.out.type);
+	if (cmd.out.type == IO_OUTFILE)
+		ft_printf("\t\tOutput file: %s, append: %d\n",
+			cmd.out.file.path, cmd.out.file.append);
+	else if (cmd.out.type == IO_PIPE)
+		ft_printf("\t\tOutput pipe to next\n");
+}
 
 static int	verbose_pipeline(t_commands cmds)
 {
@@ -33,20 +51,7 @@ static int	verbose_pipeline(t_commands cmds)
 		ft_printf("\tArgs:\n");
 		while (cmd.args[++j])
 			ft_printf("\t\tArg %u: \"%s\"\n", j, cmd.args[j]);
-		ft_printf("\tInput type: %d\n", cmd.in.type);
-		if (cmd.in.type == IO_INFILE)
-			ft_printf("\t\tInput file: %s\n", cmd.in.file.path);
-		else if (cmd.in.type == IO_HEREDOC)
-			ft_printf("\t\tInput heredoc: %s by %s\n",
-				cmd.in.heredoc.end, cmd.in.heredoc.tmpfile);
-		else if (cmd.in.type == IO_PIPE)
-			ft_printf("\t\tInput pipe from last\n");
-		ft_printf("\tOutput type: %d\n", cmd.out.type);
-		if (cmd.out.type == IO_OUTFILE)
-			ft_printf("\t\tOutput file: %s, append: %d\n",
-				cmd.out.file.path, cmd.out.file.append);
-		else if (cmd.out.type == IO_PIPE)
-			ft_printf("\t\tOutput pipe to next\n");
+		pipeline_condition(cmd);
 		i++;
 	}
 	return (0);

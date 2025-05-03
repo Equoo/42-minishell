@@ -6,7 +6,7 @@
 /*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 00:23:22 by ticasali          #+#    #+#             */
-/*   Updated: 2025/05/02 20:28:01 by ticasali         ###   ########.fr       */
+/*   Updated: 2025/05/03 10:32:29 by ticasali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,21 +14,19 @@
 #include "libft.h"
 #include <stdlib.h>
 #include "minishell.h"
+#include "ft_printf.h"
+#include "builtin.h"
 
 int	ft_unset(t_ctrl *ctrl, char **flag)
 {
 	t_env	*cpy;
 	t_env	*del;
+	int		secure;
 
 	cpy = ctrl->environ;
-	if (cpy == NULL)
-		return (-1);
-	if (ft_strcmp(cpy->key, flag[1]) == 0)
-	{
-		del = cpy;
-		*ctrl->environ = *del->next;
-		free_env(del);
-	}
+	secure = ft_unset_secure(ctrl, cpy, flag);
+	if (secure != 1)
+		return (secure);
 	while (cpy->next != NULL)
 	{
 		if (ft_strcmp(cpy->next->key, flag[1]) == 0)
@@ -43,13 +41,34 @@ int	ft_unset(t_ctrl *ctrl, char **flag)
 	return (-1);
 }
 
+int	ft_unset_secure(t_ctrl *ctrl, t_env *cpy, char **flag)
+{
+	t_env	*del;
+
+	if (cpy == NULL)
+		return (-1);
+	if (flag[1] == NULL)
+	{
+		ft_dprintf(STDERR_FILENO, "No Arg for Unset\n");
+		return (-1);
+	}
+	if (ft_strcmp(cpy->key, flag[1]) == 0)
+	{
+		del = cpy;
+		ctrl->environ = del->next;
+		free_env(del);
+		return (0);
+	}
+	return (1);
+}
+
 void	free_env(t_env *node)
 {
 	if (node == NULL)
 		return ;
-	if (node->key)
+	if (node->key != NULL)
 		free(node->key);
-	if (node->value)
+	if (node->value != NULL)
 		free(node->value);
 	free(node);
 }

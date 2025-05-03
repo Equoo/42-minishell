@@ -6,7 +6,7 @@
 /*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 00:43:59 by ticasali          #+#    #+#             */
-/*   Updated: 2025/05/02 22:20:56 by ticasali         ###   ########.fr       */
+/*   Updated: 2025/05/03 05:08:10 by ticasali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,5 +30,6 @@ int	ft_pwd(t_ctrl *ctrl, char **flag)
 	}
 	write(1, buffer, ft_strlen(buffer));
 	write(1, "\n", 1);
+	free(buffer);
 	return (0);
 }

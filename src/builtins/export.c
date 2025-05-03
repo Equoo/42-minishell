@@ -6,7 +6,7 @@
 /*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 00:32:45 by ticasali          #+#    #+#             */
-/*   Updated: 2025/05/03 01:07:59 by ticasali         ###   ########.fr       */
+/*   Updated: 2025/05/03 10:16:34 by ticasali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,25 +18,9 @@
 #include "minishell.h"
 #include "builtin.h"
 
-void	print_export(char **table)
-{
-	size_t	ct;
-
-	ct = 0;
-	while (table[ct] != NULL)
-	{
-		ft_putstr_fd("declare -x ", STDOUT_FILENO);
-		ft_putstr_fd(table[ct], STDOUT_FILENO);
-		ft_putchar_fd('\n', STDOUT_FILENO);
-		++ct;
-	}
-}
-
 bool	ft_export_no_arg(t_env *lst)
 {
 	char	**table;
-	char	*save;
-	size_t	ct;
 	size_t	ct_sort;
 
 	ct_sort = -1;
@@ -44,20 +28,9 @@ bool	ft_export_no_arg(t_env *lst)
 	if (table == NULL)
 		return (false);
 	while (++ct_sort < ft_envslen(lst) - 1)
-	{
-		ct = 0;
-		while (ct < ft_envslen(lst) - 1)
-		{
-			if (ft_strcmp(table[ct], table[ct + 1]) > 0)
-			{
-				save = table[ct];
-				table[ct] = table[ct + 1];
-				table[ct + 1] = save;
-			}
-			++ct;
-		}
-	}
+		sort_table(lst, table);
 	print_export(table);
+	ft_freearray((void **)table);
 	return (true);
 }
 
@@ -66,8 +39,6 @@ bool	ft_export_exec(t_ctrl *ctrl, char *key, char *val)
 	t_env	*cpy;
 	bool	check;
 
-	if (!val)
-		return (true);
 	cpy = ctrl->environ;
 	check = false;
 	if (secure_export(key) == false)
@@ -78,9 +49,11 @@ bool	ft_export_exec(t_ctrl *ctrl, char *key, char *val)
 	while (cpy->next != NULL)
 	{
 		if (ft_strcmp(cpy->key, key) == 0)
-			check = replace_node(cpy, key);
+			check = replace_node(cpy, key, val);
 		cpy = cpy->next;
 	}
+	if (ft_strcmp(cpy->key, key) == 0)
+		check = replace_node(cpy, key, val);
 	if (check == false)
 		if (add_node_env(ctrl->environ, key, val) == false)
 			return (false);
@@ -120,6 +93,8 @@ int	ft_export(t_ctrl *ctrl, char **flag)
 		return (0);
 	}
 	key = ft_strdup_select(flag[1], '=');
+	if (key == NULL)
+		return (-1);
 	while (flag[1][ct] != '\0' && flag[1][ct] != '=')
 		++ct;
 	if (flag[1][ct] == '\0')
