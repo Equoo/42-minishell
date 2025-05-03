@@ -6,7 +6,7 @@
 /*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 23:27:37 by ticasali          #+#    #+#             */
-/*   Updated: 2025/05/03 07:10:05 by ticasali         ###   ########.fr       */
+/*   Updated: 2025/05/03 16:39:30 by ticasali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,8 +62,9 @@ bool	check_ascii(char *str)
 	return (true);
 }
 
-int	ft_exit(t_ctrl *ctrl, char **flag)
+int	ft_exit(t_ctrl *ctrl, char **flag, int fd)
 {
+	write(fd, "exit\n", 6);
 	if (flag[1] == NULL)
 	{
 		ctrl->end = true;

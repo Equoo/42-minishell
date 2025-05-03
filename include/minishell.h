@@ -6,7 +6,7 @@
 /*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 01:47:35 by ticasali          #+#    #+#             */
-/*   Updated: 2025/05/03 00:16:30 by ticasali         ###   ########.fr       */
+/*   Updated: 2025/05/03 16:52:14 by ticasali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ typedef struct s_ctrl
 	bool		end;
 }	t_ctrl;
 
-typedef int		(*t_builtin)(t_ctrl *ctrl, char **args);
+typedef int		(*t_builtin)(t_ctrl *ctrl, char **args, int fd);
 
 int				load_ctrl(t_ctrl *ctrl, char **env);
 void			free_ctrl(t_ctrl *ctrl);

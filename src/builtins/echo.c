@@ -6,7 +6,7 @@
 /*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 00:32:08 by ticasali          #+#    #+#             */
-/*   Updated: 2025/05/03 07:57:59 by ticasali         ###   ########.fr       */
+/*   Updated: 2025/05/03 16:37:53 by ticasali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include <unistd.h>
 #include "minishell.h"
 
-int	ft_echo(t_ctrl *ctrl, char **flag)
+int	ft_echo(t_ctrl *ctrl, char **flag, int fd)
 {
 	bool	new_line;
 	size_t	ct;
@@ -32,12 +32,12 @@ int	ft_echo(t_ctrl *ctrl, char **flag)
 	}
 	while (flag[ct] != NULL)
 	{
-		write(1, flag[ct], ft_strlen(flag[ct]));
+		write(fd, flag[ct], ft_strlen(flag[ct]));
 		if (flag[ct + 1] != NULL)
-			write(1, " ", 1);
+			write(fd, " ", 1);
 		++ct;
 	}
 	if (new_line == false)
-		write(1, "\n", 1);
+		write(fd, "\n", 1);
 	return (0);
 }

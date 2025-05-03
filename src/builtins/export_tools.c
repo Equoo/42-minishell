@@ -6,7 +6,7 @@
 /*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 00:24:15 by ticasali          #+#    #+#             */
-/*   Updated: 2025/05/03 10:32:48 by ticasali         ###   ########.fr       */
+/*   Updated: 2025/05/03 16:42:15 by ticasali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ bool	replace_node(t_env *node, char *new_key, char *new_value)
 	return (true);
 }
 
-void	print_export(char **table)
+void	print_export(char **table, int fd)
 {
 	size_t	ct;
 
@@ -79,32 +79,32 @@ void	print_export(char **table)
 	{
 		if (table[ct][0] != '_')
 		{
-			write(1, "declare -x ", 12);
-			print_var_export(table[ct]);
-			write(1, "\n", 1);
+			write(fd, "declare -x ", 12);
+			print_var_export(table[ct], fd);
+			write(fd, "\n", 1);
 		}
 		++ct;
 	}
 }
 
-void	print_var_export(char *str)
+void	print_var_export(char *str, int fd)
 {
 	size_t	ct;
 
 	ct = 0;
 	while (str[ct] != '\0' && str[ct] != '=')
 	{
-		write(1, &str[ct], 1);
+		write(fd, &str[ct], 1);
 		++ct;
 	}
 	if (str[ct] == '=' && str[ct + 1] == '\0')
-		ft_printf("%c%c", 34, 34);
+		ft_dprintf(fd, "%c%c", 34, 34);
 	else if (str[ct] != '\0' && str[ct + 1] != '\0')
 	{
-		write(1, &str[ct], 1);
-		ft_printf("%c", 34);
+		write(fd, &str[ct], 1);
+		ft_dprintf(fd, "%c", 34);
 		while (str[++ct] != '\0')
-			write(1, &str[ct], 1);
-		ft_printf("%c", 34);
+			write(fd, &str[ct], 1);
+		ft_dprintf(fd, "%c", 34);
 	}
 }

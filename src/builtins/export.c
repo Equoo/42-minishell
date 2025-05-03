@@ -6,7 +6,7 @@
 /*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 00:32:45 by ticasali          #+#    #+#             */
-/*   Updated: 2025/05/03 10:16:34 by ticasali         ###   ########.fr       */
+/*   Updated: 2025/05/03 16:40:07 by ticasali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 #include "minishell.h"
 #include "builtin.h"
 
-bool	ft_export_no_arg(t_env *lst)
+bool	ft_export_no_arg(t_env *lst, int fd)
 {
 	char	**table;
 	size_t	ct_sort;
@@ -29,7 +29,7 @@ bool	ft_export_no_arg(t_env *lst)
 		return (false);
 	while (++ct_sort < ft_envslen(lst) - 1)
 		sort_table(lst, table);
-	print_export(table);
+	print_export(table, fd);
 	ft_freearray((void **)table);
 	return (true);
 }
@@ -80,7 +80,7 @@ bool	add_node_env(t_env *lst, char *key, char *val)
 	return (true);
 }
 
-int	ft_export(t_ctrl *ctrl, char **flag)
+int	ft_export(t_ctrl *ctrl, char **flag, int fd)
 {
 	char	*key;
 	char	*val;
@@ -89,7 +89,7 @@ int	ft_export(t_ctrl *ctrl, char **flag)
 	ct = 0;
 	if (flag[1] == NULL)
 	{
-		ft_export_no_arg(ctrl->environ);
+		ft_export_no_arg(ctrl->environ, fd);
 		return (0);
 	}
 	key = ft_strdup_select(flag[1], '=');

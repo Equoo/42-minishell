@@ -6,7 +6,7 @@
 /*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 05:04:12 by ticasali          #+#    #+#             */
-/*   Updated: 2025/05/03 09:16:30 by ticasali         ###   ########.fr       */
+/*   Updated: 2025/05/03 16:38:25 by ticasali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include "environ.h"
 #include "minishell.h"
 
-int	ft_env(t_ctrl *ctrl, char **flag)
+int	ft_env(t_ctrl *ctrl, char **flag, int fd)
 {
 	t_env	*cpy;
 
@@ -26,10 +26,10 @@ int	ft_env(t_ctrl *ctrl, char **flag)
 	{
 		if (cpy->key != NULL && cpy->value != NULL)
 		{
-			ft_putstr_fd(cpy->key, STDOUT_FILENO);
-			ft_putchar_fd('=', STDOUT_FILENO);
-			ft_putstr_fd(cpy->value, STDOUT_FILENO);
-			ft_putchar_fd('\n', STDOUT_FILENO);
+			ft_putstr_fd(cpy->key, fd);
+			ft_putchar_fd('=', fd);
+			ft_putstr_fd(cpy->value, fd);
+			ft_putchar_fd('\n', fd);
 		}
 		cpy = cpy->next;
 	}

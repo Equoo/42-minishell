@@ -6,7 +6,7 @@
 /*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 00:23:22 by ticasali          #+#    #+#             */
-/*   Updated: 2025/05/03 10:32:29 by ticasali         ###   ########.fr       */
+/*   Updated: 2025/05/03 16:43:51 by ticasali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,13 @@
 #include "ft_printf.h"
 #include "builtin.h"
 
-int	ft_unset(t_ctrl *ctrl, char **flag)
+int	ft_unset(t_ctrl *ctrl, char **flag, int fd)
 {
 	t_env	*cpy;
 	t_env	*del;
 	int		secure;
 
+	(void) fd;
 	cpy = ctrl->environ;
 	secure = ft_unset_secure(ctrl, cpy, flag);
 	if (secure != 1)

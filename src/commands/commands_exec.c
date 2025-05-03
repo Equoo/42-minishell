@@ -6,7 +6,7 @@
 /*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 06:22:53 by dderny            #+#    #+#             */
-/*   Updated: 2025/05/03 03:05:56 by ticasali         ###   ########.fr       */
+/*   Updated: 2025/05/03 16:55:14 by ticasali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,10 @@ static int	exec_builtins(t_ctrl *ctrl, t_command *cmd)
 	{
 		if (ft_strcmp(cmd->args[0], built_names[i]) == 0)
 		{
-			status = built_funcs[i](ctrl, cmd->args);
+			if (cmd->out.type == IO_OUTFILE)
+				status = built_funcs[i](ctrl, cmd->args, cmd->out.fd);
+			else
+				status = built_funcs[i](ctrl, cmd->args, 1);
 			return (status + 1);
 		}
 		i++;
