@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+         #
+#    By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/25 01:28:43 by ticasali          #+#    #+#              #
-#    Updated: 2025/05/03 00:27:31 by ticasali         ###   ########.fr        #
+#    Updated: 2025/05/03 08:19:37 by dderny           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,14 +37,9 @@ SRCS =				$(DIR_SRCS)/main.c 				\
 					$(DIR_SRCS)/builtins/pwd.c 			\
 					$(DIR_SRCS)/builtins/unset.c 			\
 					$(DIR_SRCS)/parsing/parsing.c 			\
-					$(DIR_SRCS)/parsing/arg.c 			\
-					$(DIR_SRCS)/parsing/parse_expand.c 			\
-					$(DIR_SRCS)/parsing/expand_all.c 			\
 					$(DIR_SRCS)/parsing/errors.c 			\
 					$(DIR_SRCS)/parsing/pipe.c 			\
-					$(DIR_SRCS)/parsing/quotes.c 			\
 					$(DIR_SRCS)/parsing/redirection.c 			\
-					$(DIR_SRCS)/parsing/token.c 			\
 
 DIR_OBJS =			.objs
 
@@ -60,16 +55,13 @@ all:				libft
 					$(MAKE) -j $(nproc) $(NAME)
 
 libft:
-					@$(MAKE) -C libft
-
-exec:
-					$(MAKE) MODE=pipex
+					@$(MAKE) -C libft debug
 
 $(DIR_OBJS)/%.o:	$(DIR_SRCS)/%.c
 					@mkdir -p $(dir $@)
 					$(CC) $(CFLAGS) -c $< -o $@
 
-$(NAME):			$(OBJS)
+$(NAME):			$(OBJS) libft/libft.a
 					$(CC) $(CFLAGS) -o $@ $^ $(LIBS)
 
 clean:

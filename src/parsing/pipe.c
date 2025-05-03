@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 13:44:01 by dderny            #+#    #+#             */
-/*   Updated: 2025/05/03 00:57:14 by ticasali         ###   ########.fr       */
+/*   Updated: 2025/05/03 08:19:21 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,15 +22,11 @@
 
 int	parse_pipe(t_ctrl *ctrl, char *str, t_command *cmd, t_vector *args)
 {
-	const char		*null = NULL;
-	size_t			i;
-
-	i = 1;
-	while (str[i] && ft_isspace(str[i]))
-		i++;
+	if (ft_strcmp("|", str))
+		return (token_error(NULL, '|'));
 	if (args->actual_size > 0)
 	{
-		if (vec_append(args, &null))
+		if (vec_append_ulong(args, (uintptr_t)NULL))
 			return (-1);
 		cmd->args = (char **)args->data;
 		if (!cmd->out.type)
@@ -42,8 +38,8 @@ int	parse_pipe(t_ctrl *ctrl, char *str, t_command *cmd, t_vector *args)
 			return (-1);
 		*cmd = (t_command){.in.type = IO_PIPE,
 			.in.fd = -1, .out.fd = -1, .args = NULL};
-		return (i);
+		return (0);
 	}
 	token_error(NULL, '|');
-	return (-1);
+	return (1);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 13:44:01 by dderny            #+#    #+#             */
-/*   Updated: 2025/05/03 00:57:50 by ticasali         ###   ########.fr       */
+/*   Updated: 2025/05/03 08:34:01 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,21 +21,26 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-static t_token_type	get_redir_type(char *str, size_t *i)
+static t_token_type	get_redir_type(char *str)
 {
 	t_token_type	type;
+	size_t			i;
 
+	i = 0;
 	type = TOKEN_NONE;
-	if (str[*i] == '<' && ++(*i))
+	if (str[i] == '<' && ++i)
 		type = TOKEN_RIN;
-	else if (str[*i] == '>' && ++(*i))
+	else if (str[i] == '>' && ++i)
 		type = TOKEN_ROUT;
-	if (type == TOKEN_RIN && str[*i] == '<' && ++(*i))
+	if (type == TOKEN_RIN && str[i] == '<' && ++i)
 		type = TOKEN_HEREDOC;
-	else if (type == TOKEN_ROUT && str[*i] == '>' && ++(*i))
+	else if (type == TOKEN_ROUT && str[i] == '>' && ++i)
 		type = TOKEN_APPEND;
-	while (str[*i] && ft_isspace(str[*i]))
-		(*i)++;
+	if (str[i])
+	{
+		token_error(NULL, str[i]);
+		return (TOKEN_NONE);
+	}
 	return (type);
 }
 
@@ -70,33 +75,34 @@ static void	set_cmd_infile(t_command *cmd, char *token)
 	errno = 0;
 }
 
-static void	set_cmd_heredoc(t_command *cmd, char *token)
+static int	set_cmd_heredoc(t_command *cmd, char *limiter)
 {
 	cmd->in.type = IO_HEREDOC;
-	cmd->in.heredoc.end = token;
+	cmd->in.heredoc.end = limiter;
+	return (0);
 }
 
-int	parse_redirection(t_ctrl *ctrl, char *str, t_command *cmd)
+int	parse_redirection(t_ctrl *ctrl, char *operator, char *value, t_command *cmd)
 {
 	t_token_type	type;
-	char			*token;
-	size_t			i;
+	char			*path;
 
-	i = 0;
-	type = get_redir_type(str, &i);
-	token = sub_token(ctrl, str + i, &i, (type != TOKEN_HEREDOC));
-	if (!token)
-		return (-1);
-	if (cmd->status == -1)
+	type = get_redir_type(operator);
+	if (type == TOKEN_NONE)
 	{
-		free(token);
-		return (i);
+		cmd->status = -1;
+		return (1);
 	}
+	if (type == TOKEN_HEREDOC)
+		return (set_cmd_heredoc(cmd, value));
+	if (cmd->status == -1)
+		return (1);
+	path = get_expanded(ctrl, value);
+	if (!path)
+		return (1);
 	if (type == TOKEN_RIN)
-		set_cmd_infile(cmd, token);
-	else if (type == TOKEN_HEREDOC)
-		set_cmd_heredoc(cmd, token);
+		set_cmd_infile(cmd, path);
 	else if (type == TOKEN_ROUT || type == TOKEN_APPEND)
-		set_cmd_outfile(cmd, token, type);
-	return (i);
+		set_cmd_outfile(cmd, path, type);
+	return (0);
 }

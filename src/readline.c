@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   readline.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:02:12 by ticasali          #+#    #+#             */
-/*   Updated: 2025/05/03 00:51:28 by ticasali         ###   ########.fr       */
+/*   Updated: 2025/05/03 08:27:48 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,56 +63,56 @@ int	create_temp_file(char *tmp_file)
 }
 // if LIMITER in quotes, don't expand
 
-static int	do_heredoc(t_ctrl *ctrl, t_command *cmd)
-{
-	char	*input;
-	char	*expanded;
-	int		fd;
+//static int	do_heredoc(t_ctrl *ctrl, t_command *cmd)
+//{
+//	char	*input;
+//	char	*expanded;
+//	int		fd;
 
-	fd = create_temp_file(cmd->in.heredoc.tmpfile);
-	if (fd == -1)
-		return (0);
-	while (1)
-	{
-		input = readline(">");
-		if (!input)
-			break ;
-		if (ft_strcmp(input, cmd->in.heredoc.end) == 0)
-		{
-			free(input);
-			break ;
-		}
-		expanded = expand_all(ctrl, input);
-		if (!expanded)
-		{
-			free(input);
-			close(fd);
-			unlink(cmd->in.heredoc.tmpfile);
-			return (1);
-		}
-		expanded = ft_strjoin(expanded, "\n");
-		write(fd, expanded, ft_strlen(expanded));
-		free(input);
-	}
-	return (0);
-}
+//	fd = create_temp_file(cmd->in.heredoc.tmpfile);
+//	if (fd == -1)
+//		return (0);
+//	while (1)
+//	{
+//		input = readline(">");
+//		if (!input)
+//			break ;
+//		if (ft_strcmp(input, cmd->in.heredoc.end) == 0)
+//		{
+//			free(input);
+//			break ;
+//		}
+//		expanded = expand_all(ctrl, input);
+//		if (!expanded)
+//		{
+//			free(input);
+//			close(fd);
+//			unlink(cmd->in.heredoc.tmpfile);
+//			return (1);
+//		}
+//		expanded = ft_strjoin(expanded, "\n");
+//		write(fd, expanded, ft_strlen(expanded));
+//		free(input);
+//	}
+//	return (0);
+//}
 
-static int	execute_heredocs(t_ctrl *ctrl)
-{
-	t_command	*cmd;
-	size_t		i;
+//static int	execute_heredocs(t_ctrl *ctrl)
+//{
+//	t_command	*cmd;
+//	size_t		i;
 
-	i = 0;
-	while (i < ctrl->commands.len)
-	{
-		cmd = &ctrl->commands.array[i];
-		if (cmd->in.type == IO_HEREDOC)
-			if (do_heredoc(ctrl, cmd))
-				return (0);
-		i++;
-	}
-	return (1);
-}
+//	i = 0;
+//	while (i < ctrl->commands.len)
+//	{
+//		cmd = &ctrl->commands.array[i];
+//		if (cmd->in.type == IO_HEREDOC)
+//			if (do_heredoc(ctrl, cmd))
+//				return (0);
+//		i++;
+//	}
+//	return (1);
+//}
 
 void	ft_readline(t_ctrl *ctrl)
 {
@@ -129,7 +129,7 @@ void	ft_readline(t_ctrl *ctrl)
 		add_history(input);
 		ctrl->commands = commands_init(8);
 		if (ctrl->commands.array)
-			if (parse_command(ctrl, input) && execute_heredocs(ctrl))
+			if (parse_command(ctrl, input) /*&& execute_heredocs(ctrl)*/)
 				execute_pipeline(ctrl);
 		commands_destroy(&ctrl->commands);
 		free(input);
