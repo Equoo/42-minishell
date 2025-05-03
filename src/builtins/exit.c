@@ -6,7 +6,7 @@
 /*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 23:27:37 by ticasali          #+#    #+#             */
-/*   Updated: 2025/05/03 16:39:30 by ticasali         ###   ########.fr       */
+/*   Updated: 2025/05/03 19:49:25 by ticasali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,11 +72,9 @@ int	ft_exit(t_ctrl *ctrl, char **flag, int fd)
 	}
 	if (check_ascii(flag[1]) == false)
 	{
-		ctrl->exit = 2;
 		ctrl->end = true;
-		return (-1);
+		return (2);
 	}
-	ctrl->exit = ft_atos(flag[1]);
 	ctrl->end = true;
-	return (0);
+	return (ft_atos(flag[1]));
 }

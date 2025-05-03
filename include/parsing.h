@@ -6,7 +6,7 @@
 /*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 13:54:09 by dderny            #+#    #+#             */
-/*   Updated: 2025/05/03 19:09:09 by ticasali         ###   ########.fr       */
+/*   Updated: 2025/05/03 19:31:29 by ticasali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,12 @@ int				parse_command(t_ctrl *ctrl, char *strcmd);
 void			vector_expand(t_ctrl *ctrl, char *str, t_vector outstr);
 int				check_quotes(char c, char *surrounder, char *next_surrounder);
 int				array_expand_all(t_ctrl *ctrl, t_vector array);
-int				get_expand(t_env *lst, char *key,
+int				get_expand(t_ctrl *ctrl, char *key,
 					size_t *out_len, char **value);
 size_t			skip_backslash(char quotes[2], size_t i, char *str);
 int				last_command(t_command cmd, t_ctrl *ctrl, t_vector args);
 int				vec_secure(t_vector *vec, char *val);
+int				ft_isexpand(char c);
+
 
 #endif
