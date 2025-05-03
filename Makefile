@@ -6,7 +6,7 @@
 #    By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/25 01:28:43 by ticasali          #+#    #+#              #
-#    Updated: 2025/05/03 08:19:37 by dderny           ###   ########.fr        #
+#    Updated: 2025/05/03 17:21:21 by dderny           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,11 +18,11 @@ SRCS =				$(DIR_SRCS)/main.c 				\
 					$(DIR_SRCS)/load_ctrl.c 			\
 					$(DIR_SRCS)/get_signal.c 			\
 					$(DIR_SRCS)/readline.c 			\
-					$(DIR_SRCS)/get_path.c 			\
 					$(DIR_SRCS)/commands/commands_exec.c 			\
 					$(DIR_SRCS)/commands/commands_utils.c 			\
 					$(DIR_SRCS)/commands/commands.c 			\
 					$(DIR_SRCS)/commands/pipeline.c 			\
+					$(DIR_SRCS)/commands/get_path.c 			\
 					$(DIR_SRCS)/environ/env_init.c 			\
 					$(DIR_SRCS)/environ/env_to_array.c 			\
 					$(DIR_SRCS)/environ/get_env.c 			\

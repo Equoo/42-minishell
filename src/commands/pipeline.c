@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipeline.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 00:32:21 by dderny            #+#    #+#             */
-/*   Updated: 2025/05/03 10:27:06 by ticasali         ###   ########.fr       */
+/*   Updated: 2025/05/03 18:20:33 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ static int	execute_each(t_ctrl *ctrl, t_commands *cmds)
 		if (cmds->array[j].out.type & IO_PIPE && j + 1 < cmds->len
 			&& cmds->array[j + 1].in.type == IO_PIPE)
 			open_pipe(&cmds->array[j].out, &cmds->array[j + 1].in);
-		if (command_exec(ctrl, j) + 1)
+		if (command_exec(ctrl, j))
 			return (1);
 	}
 	return (0);
@@ -108,13 +108,15 @@ static void	wait_for_children(t_commands *cmds)
 int	execute_pipeline(t_ctrl *ctrl)
 {
 	t_commands	*cmds;
+	int			res;
 
 	cmds = &ctrl->commands;
 	if (VERBOSE)
 		verbose_pipeline(*cmds);
-	if (execute_each(ctrl, cmds))
-		return (1);
+	res = execute_each(ctrl, cmds);
 	commands_close_fds(*cmds);
+	if (res)
+		return (1);
 	wait_for_children(cmds);
 	return (0);
 }
