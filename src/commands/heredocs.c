@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredocs.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
+/*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 20:25:03 by dderny            #+#    #+#             */
-/*   Updated: 2025/05/03 23:37:04 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/04 10:13:08 by ticasali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,12 @@ static int	create_temp_file(char *tmp_file)
 	return (fd);
 }
 
+static void	print_expand(char *expanded, int fd)
+{
+	dprintf(fd, "%s\n", expanded);
+	free(expanded);
+}
+
 static int	do_heredoc(t_ctrl *ctrl, t_command *cmd)
 {
 	char	*input;
@@ -85,18 +91,15 @@ static int	do_heredoc(t_ctrl *ctrl, t_command *cmd)
 		}
 		expanded = heredoc_expand(ctrl, input);
 		if (expanded)
-		{
-			write(fd, expanded, ft_strlen(expanded));
-			write(fd, "\n", 1);
-			free(expanded);
-		}
+			print_expand(expanded, fd);
 		free(input);
 	}
 	close(fd);
-	if (errno)
-		unlink(cmd->in.heredoc.tmpfile);
 	return (0);
 }
+
+//if (errno)
+//unlink(cmd->in.heredoc.tmpfile);
 
 int	execute_heredocs(t_ctrl *ctrl)
 {
@@ -111,7 +114,8 @@ int	execute_heredocs(t_ctrl *ctrl)
 		{
 			if (cmd->in.heredoc.end == NULL)
 			{
-				dprintf(STDERR_FILENO, "minishell: heredoc: no end delimiter\n");
+				dprintf(STDERR_FILENO,
+					"minishell: heredoc: no end delimiter\n");
 				return (0);
 			}
 			if (do_heredoc(ctrl, cmd))

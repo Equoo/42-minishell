@@ -6,7 +6,7 @@
 /*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 17:20:35 by ticasali          #+#    #+#             */
-/*   Updated: 2025/05/03 19:27:54 by ticasali         ###   ########.fr       */
+/*   Updated: 2025/05/04 10:05:57 by ticasali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,6 @@
 #include <stdlib.h>
 #include <sys/wait.h>
 #include <errno.h>
-
-
 
 size_t	skip_backslash(char quotes[2], size_t i, char *str)
 {
@@ -70,4 +68,20 @@ int	vec_secure(t_vector *vec, char *val)
 int	ft_isexpand(char c)
 {
 	return (ft_isalpha(c) || c == '?' || c == '_');
+}
+
+t_vector	secure_expand_operators(char *str)
+{
+	t_vector	expand;
+	size_t		i;
+
+	expand = vec_from_string(str);
+	i = 0;
+	while (!errno && i < (size_t)expand.actual_size)
+	{
+		if (ft_strchr("<>|\\", ((char *)expand.data)[i]))
+			vec_insert_int(&expand, '\\', i++);
+		i++;
+	}
+	return (expand);
 }

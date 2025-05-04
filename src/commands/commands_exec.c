@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   commands_exec.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
+/*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 06:22:53 by dderny            #+#    #+#             */
-/*   Updated: 2025/05/03 22:33:15 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/04 10:31:30 by ticasali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,18 +23,6 @@
 #include <sys/stat.h>
 #include <libft.h>
 #include <unistd.h>
-
-static void	redir_fds(t_command *cmd)
-{
-	if (cmd->in.type && cmd->in.fd <= 0)
-		cmd->in.fd = open_file("/dev/null", O_RDONLY);
-	if (!errno && cmd->in.type)
-		dup2(cmd->in.fd, STDIN_FILENO);
-	if (!errno && cmd->out.type && cmd->out.fd <= 0)
-		cmd->out.fd = open_file("/dev/null", O_WRONLY);
-	if (!errno && cmd->out.type)
-		dup2(cmd->out.fd, STDOUT_FILENO);
-}
 
 static t_builtin	get_builtin(t_command *cmd)
 {
@@ -54,7 +42,8 @@ static t_builtin	get_builtin(t_command *cmd)
 	return (NULL);
 }
 
-static int	get_binary_or_builtin(t_ctrl *ctrl, t_command *cmd, t_builtin *builtin_func)
+static int	get_binary_or_builtin(t_ctrl *ctrl,
+	t_command *cmd, t_builtin *builtin_func)
 {
 	char		*path;
 
@@ -83,7 +72,7 @@ static int	get_binary_or_builtin(t_ctrl *ctrl, t_command *cmd, t_builtin *builti
 	return (0);
 }
 
-static int exec_builtin(t_ctrl *ctrl, t_builtin builtin_func, t_command *cmd)
+static int	exec_builtin(t_ctrl *ctrl, t_builtin builtin_func, t_command *cmd)
 {
 	int	status;
 
@@ -105,17 +94,9 @@ static int	check_and_execute(t_command *cmd, t_env *envs)
 	info = (struct stat){0};
 	stat(cmd->args[0], &info);
 	if (!cmd->binary && S_ISDIR(info.st_mode))
-	{
-		ft_dprintf(STDERR_FILENO, "minishell: %s: is a directory\n",
-			cmd->args[0]);
-		return (126);
-	}
+		return (print_error_exec(cmd->args[0], true));
 	if (!cmd->binary && access(cmd->args[0], R_OK | X_OK))
-	{
-		ft_dprintf(STDERR_FILENO, "minishell: %s: %s\n", cmd->args[0],
-			strerror(errno));
-		return (127);
-	}
+		return (print_error_exec(cmd->args[0], false));
 	environ = env_to_array(envs);
 	if (!environ)
 		return (1);
@@ -151,9 +132,5 @@ int	command_exec(void *ctrl, int i)
 		status = exec_builtin(ctrl, builtin_func, cmd);
 	else
 		status = check_and_execute(cmd, ((t_ctrl *)ctrl)->environ);
-	close(STDIN_FILENO);
-	close(STDOUT_FILENO);
-	free_ctrl(ctrl);
-	exit(status);
-	return (0);
+	return (exit_commands(ctrl, status));
 }

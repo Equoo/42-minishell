@@ -6,7 +6,7 @@
 /*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 06:21:21 by dderny            #+#    #+#             */
-/*   Updated: 2025/05/03 00:38:19 by ticasali         ###   ########.fr       */
+/*   Updated: 2025/05/04 10:20:30 by ticasali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include <stddef.h>
 #include <stdio.h>
 #include <unistd.h>
+#include <errno.h>
 
 void	commands_close_fds(t_commands cmds)
 {
@@ -63,4 +64,29 @@ int	open_pipe(t_inout *in_pipe, t_inout *out_pipe)
 	in_pipe->fd = pipefd[1];
 	out_pipe->fd = pipefd[0];
 	return (0);
+}
+
+void	redir_fds(t_command *cmd)
+{
+	if (cmd->in.type && cmd->in.fd <= 0)
+		cmd->in.fd = open_file("/dev/null", O_RDONLY);
+	if (!errno && cmd->in.type)
+		dup2(cmd->in.fd, STDIN_FILENO);
+	if (!errno && cmd->out.type && cmd->out.fd <= 0)
+		cmd->out.fd = open_file("/dev/null", O_WRONLY);
+	if (!errno && cmd->out.type)
+		dup2(cmd->out.fd, STDOUT_FILENO);
+}
+
+int	print_error_exec(char *str, bool check)
+{
+	if (check == true)
+	{
+		ft_dprintf(STDERR_FILENO, "minishell: %s: is a directory\n",
+			str);
+		return (126);
+	}
+	ft_dprintf(STDERR_FILENO, "minishell: %s: %s\n", str,
+		strerror(errno));
+	return (127);
 }

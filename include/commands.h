@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   commands.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
+/*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 05:53:34 by dderny            #+#    #+#             */
-/*   Updated: 2025/05/03 20:47:01 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/04 10:29:12 by ticasali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,5 +82,7 @@ int					open_file(char *path, int flags);
 int					open_pipe(t_inout *in_pipe, t_inout *out_pipe);
 
 int					command_exec(void *ctrl, int i);
+void				redir_fds(t_command *cmd);
+int					exit_commands(t_ctrl *ctrl, int status);
 
 #endif

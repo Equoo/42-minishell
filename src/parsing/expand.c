@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
+/*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 17:16:12 by ticasali          #+#    #+#             */
-/*   Updated: 2025/05/03 23:36:28 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/04 10:05:36 by ticasali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,22 +80,6 @@ char	*get_expanded(t_ctrl *ctrl, char *str, char quotes[2])
 	if (!errno)
 		vec_append_int(&outstr, 0);
 	return ((char *)outstr.data);
-}
-
-t_vector	secure_expand_operators(char *str)
-{
-	t_vector	expand;
-	size_t		i;
-
-	expand = vec_from_string(str);
-	i = 0;
-	while (!errno && i < (size_t)expand.actual_size)
-	{
-		if (ft_strchr("<>|\\", ((char *)expand.data)[i]))
-			vec_insert_int(&expand, '\\', i++);
-		i++;
-	}
-	return (expand);
 }
 
 char	*chunk_expand(t_ctrl *ctrl, char *str)

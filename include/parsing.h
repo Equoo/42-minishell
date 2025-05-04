@@ -3,16 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
+/*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 13:54:09 by dderny            #+#    #+#             */
-/*   Updated: 2025/05/03 23:36:38 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/04 10:31:12 by ticasali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PARSING_H
 # define PARSING_H
-
 # include "commands.h"
 # include "environ.h"
 # include "ft_vector.h"
@@ -53,5 +52,6 @@ int				ft_isexpand(char c);
 
 char			*chunk_expand(t_ctrl *ctrl, char *str);
 
+t_vector		secure_expand_operators(char *str);
 
 #endif

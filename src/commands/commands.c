@@ -6,7 +6,7 @@
 /*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 05:53:23 by dderny            #+#    #+#             */
-/*   Updated: 2025/05/03 10:28:49 by ticasali         ###   ########.fr       */
+/*   Updated: 2025/05/04 10:28:32 by ticasali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include <libft.h>
 #include <stddef.h>
 #include <stdlib.h>
+#include "minishell.h"
 
 t_commands	commands_init(size_t size)
 {
@@ -85,4 +86,13 @@ void	free_commands(t_commands *cmds)
 	cmds->array = NULL;
 	cmds->size = 0;
 	cmds->len = 0;
+}
+
+int	exit_commands(t_ctrl *ctrl, int status)
+{
+	close(STDIN_FILENO);
+	close(STDOUT_FILENO);
+	free_ctrl(ctrl);
+	exit(status);
+	return (0);
 }
