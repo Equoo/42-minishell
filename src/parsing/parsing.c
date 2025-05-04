@@ -6,7 +6,7 @@
 /*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 00:28:00 by dderny            #+#    #+#             */
-/*   Updated: 2025/05/04 17:59:29 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/04 18:24:50 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,23 +33,23 @@ static int	is_valid_command(char *str)
 
 	ft_bzero(qt, 2);
 	last_ops = -1;
-	i = 0;
-	while (str[i] && check_quotes(str[i], &qt[0], &qt[1]))
+	i = -1;
+	while (++i && str[i] && check_quotes(str[i], &qt[0], &qt[1]))
 	{
 		if (!qt[0] && ft_strchr("<>|", str[i]))
 		{
-			if (last_ops == -1 || (last_ops > 0 && str[i] == last_ops
-					&& (str[i - 1] == '|' || str[i - 1] != last_ops)))
+			if ((last_ops == -1 && str[i] == '|') || (last_ops > 0
+					&& str[i] == last_ops && (str[i - 1] == '|'
+						|| str[i - 1] != last_ops)))
 				return (token_error(NULL, str[i]));
 			last_ops = str[i];
 		}
 		else if (qt[0] || !isbashspace(str[i]))
 			last_ops = 0;
-		i++;
 	}
 	if (qt[1])
 		return (token_error(NULL, qt[1]));
-	else if (last_ops)
+	else if (last_ops > 0)
 		return (token_error(NULL, last_ops));
 	return (0);
 }
