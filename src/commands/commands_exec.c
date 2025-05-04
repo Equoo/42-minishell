@@ -6,7 +6,7 @@
 /*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 06:22:53 by dderny            #+#    #+#             */
-/*   Updated: 2025/05/04 21:40:00 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/04 21:54:19 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,8 @@ int	command_exec(void *ctrl, int i)
 	cmd = ((t_ctrl *)ctrl)->commands.array + i;
 	if (get_binary_or_builtin(ctrl, cmd, &builtin_func))
 		return (1);
-	if (builtin_func && cmd->out.type != IO_PIPE && cmd->in.type != IO_PIPE)
+	if (!cmd->status && builtin_func
+		&& cmd->out.type != IO_PIPE && cmd->in.type != IO_PIPE)
 		return (exec_builtin(ctrl, builtin_func, cmd));
 	child = fork();
 	if (child)
@@ -127,9 +128,11 @@ int	command_exec(void *ctrl, int i)
 	}
 	redir_fds(cmd);
 	commands_close_fds(((t_ctrl *)ctrl)->commands);
+	if (cmd->status)
+		return (exit_commands(ctrl, cmd->status));
 	if (builtin_func)
 		cmd->status = exec_builtin(ctrl, builtin_func, cmd);
-	else if (!cmd->status)
+	else
 		cmd->status = check_and_execute(cmd, ((t_ctrl *)ctrl)->environ);
 	return (exit_commands(ctrl, cmd->status));
 }

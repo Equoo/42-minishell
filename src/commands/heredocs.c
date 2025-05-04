@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredocs.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 20:25:03 by dderny            #+#    #+#             */
-/*   Updated: 2025/05/04 19:16:35 by ticasali         ###   ########.fr       */
+/*   Updated: 2025/05/04 21:59:01 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,8 @@ static int	do_heredoc(t_ctrl *ctrl, t_command *cmd)
 	if (fd == -1)
 		return (1);
 	while (!errno)
-		heredoc_getline(ctrl, cmd, fd);
+		if (heredoc_getline(ctrl, cmd, fd))
+			break ;
 	close(fd);
 	return (0);
 }

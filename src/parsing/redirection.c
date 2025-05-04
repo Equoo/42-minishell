@@ -6,7 +6,7 @@
 /*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 13:44:01 by dderny            #+#    #+#             */
-/*   Updated: 2025/05/04 21:34:47 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/04 21:58:07 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ int	parse_redirection(t_ctrl *ctrl, t_vector array, ssize_t i,
 	char			quotes[2];
 
 	chunks = (char **)array.data;
-	if (i + 1 >= array.actual_size || ft_strchr("<>", chunks[i + 1][0]))
+	if (i + 1 >= array.actual_size /*|| ft_strchr("<>", chunks[i + 1][0])*/)
 		return (-3);
 	type = get_redir_type(chunks[i]);
 	free(chunks[i]);
