@@ -6,9 +6,11 @@
 /*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 16:53:53 by dderny            #+#    #+#             */
-/*   Updated: 2025/05/04 17:01:18 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/04 22:37:54 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include <libft.h>
 
 int	isbashspace(char c)
 {
@@ -32,4 +34,9 @@ int	check_quotes(char c, char *surrounder, char *next_surrounder)
 			*next_surrounder = 0;
 	}
 	return (1);
+}
+
+int	ft_isexpand(char c)
+{
+	return (ft_isalpha(c) || c == '?' || c == '_');
 }

@@ -6,7 +6,7 @@
 /*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 17:20:35 by ticasali          #+#    #+#             */
-/*   Updated: 2025/05/04 18:37:25 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/04 22:50:55 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,20 @@ size_t	skip_backslash(char quotes[2], size_t i, char *str)
 	return (i);
 }
 
+static void	last_command_free(t_command cmd)
+{
+	if (cmd.in.fd >= 0)
+		close(cmd.in.fd);
+	if (cmd.out.fd >= 0)
+		close(cmd.out.fd);
+	if (cmd.in.type == IO_INFILE)
+		free(cmd.in.file.path);
+	if (cmd.out.type == IO_OUTFILE)
+		free(cmd.out.file.path);
+	if (cmd.in.type == IO_HEREDOC)
+		free(cmd.in.heredoc.end);
+}
+
 int	last_command(t_command cmd, t_ctrl *ctrl, t_vector args)
 {
 	if (cmd.status >= -1 && args.actual_size > 0)
@@ -48,15 +62,14 @@ int	last_command(t_command cmd, t_ctrl *ctrl, t_vector args)
 		}
 		return (1);
 	}
-	if (cmd.status == -2 || (cmd.in.type == IO_PIPE || cmd.out.type == IO_PIPE))
+	if (cmd.status == -2 || (cmd.in.type == IO_PIPE || (ctrl->commands.len > 0
+				&& ctrl->commands.array[ctrl->commands.len - 1]
+				.out.type == IO_PIPE)))
 		token_error(NULL, '|');
 	if (cmd.status == -3)
 		ft_dprintf(STDERR_FILENO,
-			"minishell: syntax error near unexpected token '<' or '>'\n");
-	if (cmd.in.type == IO_INFILE)
-		free(cmd.in.file.path);
-	if (cmd.out.type == IO_HEREDOC)
-		free(cmd.in.file.path);
+			"minishell: syntax error near unexpected token 'newline'\n");
+	last_command_free(cmd);
 	if (args.data)
 		ft_freearray((void **)args.data);
 	return (0);
@@ -71,11 +84,6 @@ int	vec_secure(t_vector *vec, char *val)
 	lo = (uintptr_t)(val);
 	vec_append(vec, &lo);
 	return (0);
-}
-
-int	ft_isexpand(char c)
-{
-	return (ft_isalpha(c) || c == '?' || c == '_');
 }
 
 t_vector	secure_expand_operators(char *str)

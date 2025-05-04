@@ -6,17 +6,19 @@
 /*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 06:21:21 by dderny            #+#    #+#             */
-/*   Updated: 2025/05/04 21:49:37 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/04 23:39:47 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "commands.h"
 #include <fcntl.h>
+#include <readline/chardefs.h>
 #include <stddef.h>
 #include <stdio.h>
 #include <unistd.h>
 #include <errno.h>
 #include "ft_printf.h"
+#include "minishell.h"
 #include <stdlib.h>
 #include <string.h>
 
@@ -75,16 +77,26 @@ int	open_pipe(t_inout *in_pipe, t_inout *out_pipe)
 	return (0);
 }
 
-void	redir_fds(t_command *cmd)
+void	redir_fds(t_ctrl *ctrl, t_command *cmd)
 {
 	if (cmd->in.type && cmd->in.fd <= 0)
 		cmd->in.fd = open_file("/dev/null", O_RDONLY);
 	if (!errno && cmd->in.type)
+	{
 		dup2(cmd->in.fd, STDIN_FILENO);
+		ctrl->close_in = 1;
+		close(cmd->in.fd);
+	}
 	if (!errno && cmd->out.type && cmd->out.fd <= 0)
 		cmd->out.fd = open_file("/dev/null", O_WRONLY);
 	if (!errno && cmd->out.type)
+	{
 		dup2(cmd->out.fd, STDOUT_FILENO);
+		ctrl->close_out = 1;
+		close(cmd->out.fd);
+	}
+	cmd->out.fd = -1;
+	cmd->in.fd = -1;
 }
 
 int	print_error_exec(char *str, bool check)

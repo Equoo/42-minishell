@@ -6,7 +6,7 @@
 /*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 06:22:53 by dderny            #+#    #+#             */
-/*   Updated: 2025/05/04 21:54:19 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/04 23:39:04 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,7 @@ int	command_exec(void *ctrl, int i)
 		cmd->pid = child;
 		return (0);
 	}
-	redir_fds(cmd);
+	redir_fds(ctrl, cmd);
 	commands_close_fds(((t_ctrl *)ctrl)->commands);
 	if (cmd->status)
 		return (exit_commands(ctrl, cmd->status));

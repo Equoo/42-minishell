@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredocs.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 20:25:03 by dderny            #+#    #+#             */
-/*   Updated: 2025/05/04 22:20:04 by ticasali         ###   ########.fr       */
+/*   Updated: 2025/05/05 00:27:40 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/types.h>
+#include <sys/wait.h>
 #include <unistd.h>
 
 static int	generate_tmp_name(u_char *str, size_t len)
@@ -90,16 +91,30 @@ static int	heredoc_getline(t_ctrl *ctrl, t_command *cmd, int fd)
 
 static int	do_heredoc(t_ctrl *ctrl, t_command *cmd)
 {
-	int		fd;
+	pid_t		child;
+	int			fd;
 
 	fd = create_temp_file(cmd->in.heredoc.tmpfile);
 	if (fd == -1)
 		return (1);
+	child = fork();
+	if (child == -1)
+	{
+		perror("minishell: heredoc");
+		return (1);
+	}
+	if (child)
+	{
+		waitpid(child, NULL, 0);
+		close(fd);
+		return (0);
+	}
 	while (!errno)
 		if (heredoc_getline(ctrl, cmd, fd))
 			break ;
 	free(cmd->in.heredoc.end);
 	close(fd);
+	exit_commands(ctrl, 0);
 	return (0);
 }
 

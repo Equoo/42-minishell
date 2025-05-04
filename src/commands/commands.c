@@ -6,7 +6,7 @@
 /*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 05:53:23 by dderny            #+#    #+#             */
-/*   Updated: 2025/05/04 13:25:06 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/04 23:42:38 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include <libft.h>
 #include <stddef.h>
 #include <stdlib.h>
+#include <unistd.h>
 #include "minishell.h"
 
 t_commands	commands_init(size_t size)
@@ -59,8 +60,8 @@ void	commands_destroy(t_commands *cmds)
 
 	if (!cmds->array)
 		return ;
-	i = 0;
-	while (i < cmds->len)
+	i = -1;
+	while (++i < cmds->len)
 	{
 		if (cmds->array[i].binary)
 			free(cmds->array[i].binary);
@@ -75,7 +76,8 @@ void	commands_destroy(t_commands *cmds)
 			free(cmds->array[i].in.file.path);
 		if (cmds->array[i].out.type & IO_OUTFILE)
 			free(cmds->array[i].out.file.path);
-		i++;
+		if (cmds->array[i].in.type & IO_HEREDOC)
+			free(cmds->array[i].in.heredoc.end);
 	}
 	free_commands(cmds);
 }
@@ -90,8 +92,10 @@ void	free_commands(t_commands *cmds)
 
 int	exit_commands(t_ctrl *ctrl, int status)
 {
-	close(STDIN_FILENO);
-	close(STDOUT_FILENO);
+	if (ctrl->close_in)
+		close(STDIN_FILENO);
+	if (ctrl->close_out)
+		close(STDOUT_FILENO);
 	free_ctrl(ctrl);
 	exit(status);
 	return (0);

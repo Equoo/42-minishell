@@ -6,7 +6,7 @@
 /*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 13:44:01 by dderny            #+#    #+#             */
-/*   Updated: 2025/05/04 21:58:07 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/05 00:27:16 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,8 @@ static void	set_cmd_outfile(t_command *cmd, char *token, t_token_type type)
 		cmd->status = 1;
 	}
 	cmd->out.type = IO_OUTFILE;
+	if (cmd->out.file.path)
+		free(cmd->out.file.path);
 	cmd->out.file.path = token;
 	cmd->out.file.append = (type == TOKEN_APPEND);
 	errno = 0;
@@ -72,6 +74,8 @@ static void	set_cmd_infile(t_command *cmd, char *token)
 	if (cmd->in.type == IO_PIPE)
 		cmd->in.oldfd = cmd->in.fd;
 	cmd->in.type = IO_INFILE;
+	if (cmd->in.file.path)
+		free(cmd->in.file.path);
 	cmd->in.file.path = token;
 	errno = 0;
 }
@@ -79,6 +83,8 @@ static void	set_cmd_infile(t_command *cmd, char *token)
 static int	set_cmd_heredoc(t_command *cmd, char *limiter)
 {
 	cmd->in.type = IO_HEREDOC;
+	if (cmd->in.heredoc.end)
+		free(cmd->in.heredoc.end);
 	cmd->in.heredoc.end = ft_strdup(limiter);
 	return (0);
 }
@@ -92,7 +98,7 @@ int	parse_redirection(t_ctrl *ctrl, t_vector array, ssize_t i,
 	char			quotes[2];
 
 	chunks = (char **)array.data;
-	if (i + 1 >= array.actual_size /*|| ft_strchr("<>", chunks[i + 1][0])*/)
+	if (i + 1 >= array.actual_size)
 		return (-3);
 	type = get_redir_type(chunks[i]);
 	free(chunks[i]);

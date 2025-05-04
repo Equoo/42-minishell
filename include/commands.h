@@ -6,7 +6,7 @@
 /*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 05:53:34 by dderny            #+#    #+#             */
-/*   Updated: 2025/05/04 21:21:32 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/04 23:39:12 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,6 @@ int					open_file(char *path, int flags);
 int					open_pipe(t_inout *in_pipe, t_inout *out_pipe);
 
 int					command_exec(void *ctrl, int i);
-void				redir_fds(t_command *cmd);
 t_command			create_cmd(char *str);
 int					print_error_exec(char *str, bool check);
 
