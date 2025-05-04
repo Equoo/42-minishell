@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_tools.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
+/*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 00:24:15 by ticasali          #+#    #+#             */
-/*   Updated: 2025/05/04 13:13:46 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/04 14:39:23 by ticasali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ void	sort_table(t_env *lst, char **table)
 
 	ct = 0;
 	ct = 0;
+	if (ft_envslen(lst) == 0 || ft_envslen(lst) == 1)
+		return ;
 	while (ct < ft_envslen(lst) - 1)
 	{
 		if (ft_strcmp(table[ct], table[ct + 1]) > 0)
@@ -77,6 +79,8 @@ void	print_export(char **table, int fd)
 	size_t	ct;
 
 	ct = 0;
+	if (table == NULL)
+		return ;
 	while (table[ct] != NULL)
 	{
 		if (table[ct][0] != '_')

@@ -6,7 +6,7 @@
 /*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 01:08:31 by ticasali          #+#    #+#             */
-/*   Updated: 2025/05/03 10:21:47 by ticasali         ###   ########.fr       */
+/*   Updated: 2025/05/04 14:42:56 by ticasali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,8 @@ char	**env_to_array(t_env *lst)
 	ct = 0;
 	ret = malloc(sizeof(char *) * (ft_envslen(cpy) + 1));
 	if (ret == NULL)
+		return (NULL);
+	if (cpy == NULL)
 		return (NULL);
 	while (cpy != NULL)
 	{

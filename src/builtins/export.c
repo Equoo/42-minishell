@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
+/*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 00:32:45 by ticasali          #+#    #+#             */
-/*   Updated: 2025/05/04 13:16:18 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/04 15:00:02 by ticasali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,11 @@ bool	ft_export_exec(t_ctrl *ctrl, char *key, char *val)
 	if (secure_export(key) == false)
 		return (false);
 	if (cpy == NULL)
-		if (add_node_env(ctrl->environ, key, val) == false)
+	{
+		if (add_node_env(&ctrl->environ, key, val) == false)
 			return (false);
+		return (true);
+	}
 	while (cpy->next != NULL)
 	{
 		if (ft_strcmp(cpy->key, key) == 0)
@@ -56,12 +59,12 @@ bool	ft_export_exec(t_ctrl *ctrl, char *key, char *val)
 	if (ft_strcmp(cpy->key, key) == 0)
 		check = replace_node(cpy, key, val);
 	if (check == false)
-		if (add_node_env(ctrl->environ, key, val) == false)
+		if (add_node_env(&ctrl->environ, key, val) == false)
 			return (false);
 	return (true);
 }
 
-bool	add_node_env(t_env *lst, char *key, char *val)
+bool	add_node_env(t_env **lst, char *key, char *val)
 {
 	t_env	*cpy;
 	t_env	*node;
@@ -72,9 +75,12 @@ bool	add_node_env(t_env *lst, char *key, char *val)
 	node->next = NULL;
 	node->key = key;
 	node->value = val;
-	cpy = lst;
+	cpy = *lst;
 	if (cpy == NULL)
-		*lst = *node;
+	{
+		*lst = node;
+		return (true);
+	}
 	while (cpy->next != NULL)
 		cpy = cpy->next;
 	cpy->next = node;

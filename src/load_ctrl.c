@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   load_ctrl.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
+/*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 17:33:05 by ticasali          #+#    #+#             */
-/*   Updated: 2025/05/01 16:53:16 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/04 14:13:23 by ticasali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,12 @@
 #include "environ.h"
 #include <stdlib.h>
 #include <libft.h>
+#include "errno.h"
 
 int	load_ctrl(t_ctrl *ctrl, char **env)
 {
 	ctrl->environ = env_init(env);
-	if (ctrl->environ == NULL)
+	if (errno)
 		return (1);
 	ctrl->exit = 0;
 	ctrl->end = false;

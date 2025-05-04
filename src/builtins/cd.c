@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
+/*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 01:01:41 by ticasali          #+#    #+#             */
-/*   Updated: 2025/05/04 13:13:54 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/04 15:05:06 by ticasali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,11 @@ bool	ft_export_cd(t_ctrl *ctrl, char *key, char *val)
 	if (secure_export(key) == false)
 		return (false);
 	if (cpy == NULL)
-		if (add_node_env(ctrl->environ, key, val) == false)
+	{
+		if (add_node_env(&ctrl->environ, key, val) == false)
 			return (false);
+		return (true);
+	}
 	while (cpy->next != NULL)
 	{
 		if (ft_strcmp(cpy->key, key) == 0)
@@ -40,7 +43,7 @@ bool	ft_export_cd(t_ctrl *ctrl, char *key, char *val)
 	if (ft_strcmp(cpy->key, key) == 0)
 		check = replace_node(cpy, key, val);
 	if (check == false)
-		if (add_node_env(ctrl->environ, key, val) == false)
+		if (add_node_env(&ctrl->environ, key, val) == false)
 			return (false);
 	return (true);
 }
@@ -93,7 +96,12 @@ int	ft_cd_no_arg(t_ctrl *ctrl, char *buffer)
 		return (1);
 	}
 	if (chdir(get_path_env(ctrl->environ, "HOME")) == -1)
+	{
+		ft_dprintf(STDERR_FILENO,
+			"minishell: cd: %s: %s\n",
+			get_path_env(ctrl->environ, "HOME"), strerror(errno));
 		return (1);
+	}
 	if (buffer != NULL)
 		ft_export_cd(ctrl, ft_strdup("OLDPWD"), ft_strdup(buffer));
 	ft_export_cd(ctrl, ft_strdup("PWD"), getcwd(NULL, 0));

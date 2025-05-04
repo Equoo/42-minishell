@@ -6,7 +6,7 @@
 /*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 05:54:54 by dderny            #+#    #+#             */
-/*   Updated: 2025/05/03 00:15:52 by ticasali         ###   ########.fr       */
+/*   Updated: 2025/05/04 15:00:15 by ticasali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,6 @@ char	*ft_strdup_select(char *str, char c);
 
 char	*get_env(t_env *lst, char *to_find);
 size_t	ft_strlen_select(char *str, char c);
-bool	add_node_env(t_env *lst, char *key, char *val);
+bool	add_node_env(t_env **lst, char *key, char *val);
 
 #endif
