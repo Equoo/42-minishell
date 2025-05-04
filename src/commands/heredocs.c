@@ -6,7 +6,7 @@
 /*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 20:25:03 by dderny            #+#    #+#             */
-/*   Updated: 2025/05/05 00:27:40 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/05 00:57:25 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
-static int	generate_tmp_name(u_char *str, size_t len)
+int	generate_tmp_name(u_char *str, size_t len)
 {
 	int		rand_fd;
 	size_t	i;
@@ -50,12 +50,6 @@ static int	create_temp_file(char *tmp_file)
 {
 	int		fd;
 
-	ft_strlcpy(tmp_file, "/tmp/", 6);
-	if (generate_tmp_name((u_char *)(tmp_file + 5), TMPFILE_LEN - 5))
-		return (-1);
-	while (access(tmp_file, F_OK) == 0)
-		if (generate_tmp_name((u_char *)(tmp_file + 5), TMPFILE_LEN - 5))
-			return (-1);
 	errno = 0;
 	fd = open(tmp_file, O_RDWR | O_CREAT | O_EXCL, 0644);
 	if (fd == -1)
@@ -66,7 +60,7 @@ static int	create_temp_file(char *tmp_file)
 	return (fd);
 }
 
-static int	heredoc_getline(t_ctrl *ctrl, t_command *cmd, int fd)
+static int	heredoc_getline(t_ctrl *ctrl, t_heredoc *hd, int fd)
 {
 	char	*input;
 	char	*expanded;
@@ -74,7 +68,7 @@ static int	heredoc_getline(t_ctrl *ctrl, t_command *cmd, int fd)
 	input = readline(">");
 	if (!input || errno)
 		return (1);
-	if (ft_strcmp(input, cmd->in.heredoc.end) == 0)
+	if (ft_strcmp(input, hd->end) == 0)
 	{
 		free(input);
 		return (1);
@@ -89,12 +83,12 @@ static int	heredoc_getline(t_ctrl *ctrl, t_command *cmd, int fd)
 	return (0);
 }
 
-static int	do_heredoc(t_ctrl *ctrl, t_command *cmd)
+static int	do_heredoc(t_ctrl *ctrl, t_heredoc *hd)
 {
 	pid_t		child;
 	int			fd;
 
-	fd = create_temp_file(cmd->in.heredoc.tmpfile);
+	fd = create_temp_file(hd->tmpfile);
 	if (fd == -1)
 		return (1);
 	child = fork();
@@ -110,9 +104,8 @@ static int	do_heredoc(t_ctrl *ctrl, t_command *cmd)
 		return (0);
 	}
 	while (!errno)
-		if (heredoc_getline(ctrl, cmd, fd))
+		if (heredoc_getline(ctrl, hd, fd))
 			break ;
-	free(cmd->in.heredoc.end);
 	close(fd);
 	exit_commands(ctrl, 0);
 	return (0);
@@ -120,24 +113,21 @@ static int	do_heredoc(t_ctrl *ctrl, t_command *cmd)
 
 int	each_heredocs(t_ctrl *ctrl)
 {
-	t_command	*cmd;
-	size_t		i;
+	t_heredoc	*hd;
+	ssize_t		i;
 
 	i = 0;
-	while (i < ctrl->commands.len)
+	while (i < ctrl->heredocs.actual_size)
 	{
-		cmd = &ctrl->commands.array[i];
-		if (cmd->in.type == IO_HEREDOC)
+		hd = &((t_heredoc *)ctrl->heredocs.data)[i];
+		if (hd->end == NULL)
 		{
-			if (cmd->in.heredoc.end == NULL)
-			{
-				ft_dprintf(STDERR_FILENO,
-					"minishell: heredoc: no end delimiter\n");
-				return (0);
-			}
-			if (do_heredoc(ctrl, cmd))
-				return (0);
+			ft_dprintf(STDERR_FILENO,
+				"minishell: heredoc: no end delimiter\n");
+			return (0);
 		}
+		if (do_heredoc(ctrl, hd))
+			return (0);
 		i++;
 	}
 	return (1);

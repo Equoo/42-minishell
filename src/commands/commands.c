@@ -6,7 +6,7 @@
 /*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 05:53:23 by dderny            #+#    #+#             */
-/*   Updated: 2025/05/04 23:42:38 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/05 00:52:24 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include <stddef.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include "ft_vector.h"
 #include "minishell.h"
 
 t_commands	commands_init(size_t size)
@@ -76,8 +77,6 @@ void	commands_destroy(t_commands *cmds)
 			free(cmds->array[i].in.file.path);
 		if (cmds->array[i].out.type & IO_OUTFILE)
 			free(cmds->array[i].out.file.path);
-		if (cmds->array[i].in.type & IO_HEREDOC)
-			free(cmds->array[i].in.heredoc.end);
 	}
 	free_commands(cmds);
 }

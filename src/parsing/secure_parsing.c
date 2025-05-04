@@ -6,7 +6,7 @@
 /*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 17:20:35 by ticasali          #+#    #+#             */
-/*   Updated: 2025/05/04 22:50:55 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/05 01:03:35 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,6 @@ static void	last_command_free(t_command cmd)
 		free(cmd.in.file.path);
 	if (cmd.out.type == IO_OUTFILE)
 		free(cmd.out.file.path);
-	if (cmd.in.type == IO_HEREDOC)
-		free(cmd.in.heredoc.end);
 }
 
 int	last_command(t_command cmd, t_ctrl *ctrl, t_vector args)

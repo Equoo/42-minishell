@@ -6,11 +6,12 @@
 /*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:02:12 by ticasali          #+#    #+#             */
-/*   Updated: 2025/05/04 23:56:37 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/05 00:56:54 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
+#include "ft_vector.h"
 #include "minishell.h"
 #include "parsing.h"
 #include <asm-generic/errno.h>
@@ -24,10 +25,15 @@ static void	use_line(t_ctrl *ctrl, char *input)
 	add_history(input);
 	ctrl->commands = commands_init(8);
 	if (ctrl->commands.array)
-		if (parse_command(ctrl, input) /*&& each_heredocs(ctrl)*/)
+		ctrl->heredocs = vec_new(8, sizeof(t_heredoc));
+	if (ctrl->heredocs.data && ctrl->commands.array)
+		if (parse_command(ctrl, input) && each_heredocs(ctrl))
 			if (execute_pipeline(ctrl) && errno)
 				ctrl->end = true;
-	commands_destroy(&ctrl->commands);
+	if (ctrl->heredocs.data)
+		anihilate_heredocs(&ctrl->heredocs);
+	if (ctrl->commands.array)
+		commands_destroy(&ctrl->commands);
 }
 
 void	ft_readline(t_ctrl *ctrl)
