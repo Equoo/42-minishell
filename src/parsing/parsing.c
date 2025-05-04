@@ -6,7 +6,7 @@
 /*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 00:28:00 by dderny            #+#    #+#             */
-/*   Updated: 2025/05/04 21:25:03 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/04 21:48:43 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,6 @@ static t_vector	split_spaces_ops(char *strcmd,
 	t_vector	array;
 
 	array = vec_new(8, sizeof(char *));
-	if (!array.data)
-		return (array);
 	ft_bzero(qt, 2);
 	while (!errno && strcmd[++i] && check_quotes(strcmd[i], &qt[0], &qt[1]))
 	{
@@ -80,7 +78,7 @@ static t_vector	split_spaces_ops(char *strcmd,
 		else if (*qt || !isbashspace(strcmd[i]))
 			len++;
 	}
-	if (len)
+	if (!errno && len)
 		vec_secure(&array, ft_substr(strcmd, i - len, len));
 	return (array);
 }
