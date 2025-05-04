@@ -6,24 +6,44 @@
 /*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 10:14:31 by ticasali          #+#    #+#             */
-/*   Updated: 2025/05/04 19:38:33 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/04 20:48:29 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <signal.h>
+#include "minishell.h"
 #include <readline/readline.h>
 #include <signal.h>
 #include <stdbool.h>
+#include <termios.h>
 #include <unistd.h>
-#include "minishell.h"
+
+static void	disable_echoctl(bool not )
+{
+	struct termios	term;
+
+	if (tcgetattr(STDIN_FILENO, &term) == -1)
+	{
+		perror("minishell: tcgetattr");
+		return ;
+	}
+	if (not)
+		term.c_lflag &= ~ECHOCTL;
+	else
+		term.c_lflag |= ECHOCTL;
+	if (tcsetattr(STDIN_FILENO, TCSANOW, &term) == -1)
+	{
+		perror("minishell: tcsetattr");
+	}
+}
 
 void	handle_signal(int sig)
 {
 	if (sig == SIGINT)
 	{
 		g_sigval = 2;
-		rl_replace_line("", 0);
+		write(STDOUT_FILENO, "-->^C", 5);
 		write(STDOUT_FILENO, "\n", 1);
+		rl_replace_line("", 0);
 		rl_on_new_line();
 		rl_redisplay();
 	}
@@ -39,15 +59,16 @@ void	no_handle_signal(int sig)
 	if (sig == SIGINT)
 	{
 		rl_replace_line("", 0);
-		write(STDOUT_FILENO, "\n",1);
+		write(STDOUT_FILENO, "\n", 1);
 		rl_redisplay();
 	}
 }
 
-bool	set_signal(bool	check)
+bool	set_signal(bool check)
 {
 	struct sigaction	sa;
 
+	disable_echoctl(check);
 	sigemptyset(&sa.sa_mask);
 	sigaddset(&sa.sa_mask, SIGQUIT);
 	sa.sa_flags = SA_RESTART;

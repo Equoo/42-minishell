@@ -6,7 +6,7 @@
 /*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 00:28:00 by dderny            #+#    #+#             */
-/*   Updated: 2025/05/04 19:36:16 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/04 21:25:03 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,6 +150,7 @@ int	parse_command(t_ctrl *ctrl, char *strcmd)
 	t_command		cmd;
 	t_vector		args;
 
+	args = (t_vector){0};
 	if (is_valid_command(strcmd) == -1)
 		return (0);
 	array = split_spaces_ops(strcmd, true, -1, 0);
@@ -159,7 +160,7 @@ int	parse_command(t_ctrl *ctrl, char *strcmd)
 		array_split_chunks(&array);
 	if (!errno)
 		args = vec_new(8, sizeof(char *));
-	cmd = (t_command){.in.fd = -1, .out.fd = -1, .args = NULL};
+	cmd = (t_command){.in.oldfd = -1, .in.fd = -1, .out.fd = -1, .args = NULL};
 	if (!args.data || parse_per_types(ctrl, array, &cmd, &args))
 		return (0);
 	return (last_command(cmd, ctrl, args));

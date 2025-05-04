@@ -3,16 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   readline.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:02:12 by ticasali          #+#    #+#             */
-/*   Updated: 2025/05/04 19:30:18 by ticasali         ###   ########.fr       */
+/*   Updated: 2025/05/04 20:31:24 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 #include "minishell.h"
 #include "parsing.h"
+#include <asm-generic/errno.h>
 #include <errno.h>
 #include <readline/history.h>
 #include <readline/readline.h>
@@ -33,10 +34,13 @@ void	ft_readline(t_ctrl *ctrl)
 {
 	char	*input;
 
+	input = NULL;
 	while (ctrl->end == false)
 	{
 		set_signal(true);
 		input = readline("-->");
+		if (errno == EINTR)
+			errno = 0;
 		if (!input || errno || !set_signal(false))
 		{
 			if (errno)
@@ -50,6 +54,7 @@ void	ft_readline(t_ctrl *ctrl)
 		if (*input)
 			use_line(ctrl, input);
 		free(input);
+		errno = 0;
 		g_sigval = 0;
 	}
 }

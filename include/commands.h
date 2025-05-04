@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   commands.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 05:53:34 by dderny            #+#    #+#             */
-/*   Updated: 2025/05/04 10:37:24 by ticasali         ###   ########.fr       */
+/*   Updated: 2025/05/04 21:21:32 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ typedef struct s_inout
 {
 	t_inout_type	type;
 	int				fd;
+	int				oldfd;
 	union
 	{
 		t_filerdir	file;

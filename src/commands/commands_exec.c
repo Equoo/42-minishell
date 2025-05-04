@@ -6,7 +6,7 @@
 /*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 06:22:53 by dderny            #+#    #+#             */
-/*   Updated: 2025/05/04 19:15:32 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/04 21:40:00 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,6 @@ static int	get_binary_or_builtin(t_ctrl *ctrl,
 				ft_dprintf(STDERR_FILENO, "minishell: %s: command not found\n",
 					cmd->args[0]);
 				cmd->status = 127;
-				ctrl->exit = 127;
 			}
 		}
 	}

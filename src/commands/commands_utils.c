@@ -6,7 +6,7 @@
 /*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 06:21:21 by dderny            #+#    #+#             */
-/*   Updated: 2025/05/04 18:12:52 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/04 21:40:02 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@
 #include <unistd.h>
 #include <errno.h>
 #include "ft_printf.h"
-#include "libft.h"
 #include <stdlib.h>
 #include <string.h>
 
@@ -30,6 +29,8 @@ void	commands_close_fds(t_commands cmds)
 	i = 0;
 	while (i < cmds.len)
 	{
+		if (array[i].in.type != IO_PIPE && array[i].in.oldfd >= 0)
+			close(array[i].in.oldfd);
 		if (array[i].in.fd && array[i].in.fd != -1)
 			close(array[i].in.fd);
 		if (array[i].out.fd && array[i].out.fd != -1)
@@ -50,7 +51,8 @@ int	open_file(char *path, int flags)
 		fd = open(path, flags);
 	if (fd == -1)
 	{
-		perror(path);
+		ft_dprintf(STDERR_FILENO, "minishell: %s: %s\n", path,
+			strerror(errno));
 		return (-1);
 	}
 	return (fd);
@@ -62,11 +64,14 @@ int	open_pipe(t_inout *in_pipe, t_inout *out_pipe)
 
 	if (pipe(pipefd) == -1)
 	{
-		perror("pipe");
+		perror("minishell: pipe");
 		return (-1);
 	}
 	in_pipe->fd = pipefd[1];
-	out_pipe->fd = pipefd[0];
+	if (out_pipe->type != IO_PIPE)
+		out_pipe->oldfd = pipefd[0];
+	else
+		out_pipe->fd = pipefd[0];
 	return (0);
 }
 
@@ -86,8 +91,8 @@ int	print_error_exec(char *str, bool check)
 {
 	if (check == true)
 	{
-		ft_dprintf(STDERR_FILENO, "minishell: %s: is a directory\n",
-			str);
+		ft_dprintf(STDERR_FILENO, "minishell: %s: %s\n",
+			str, strerror(EISDIR));
 		return (126);
 	}
 	ft_dprintf(STDERR_FILENO, "minishell: %s: %s\n", str,

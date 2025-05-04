@@ -6,7 +6,7 @@
 /*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 23:27:37 by ticasali          #+#    #+#             */
-/*   Updated: 2025/05/04 13:02:47 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/04 20:03:08 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ bool	check_ascii(char *str)
 
 int	ft_exit(t_ctrl *ctrl, char **flag, int fd)
 {
-	write(fd, "exit\n", 6);
+	(void)fd;
 	if (flag[1] == NULL)
 	{
 		ctrl->end = true;
