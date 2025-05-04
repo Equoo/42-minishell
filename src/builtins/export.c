@@ -6,11 +6,12 @@
 /*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 00:32:45 by ticasali          #+#    #+#             */
-/*   Updated: 2025/05/03 22:33:55 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/04 13:16:18 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "environ.h"
+#include <errno.h>
 #include <libft.h>
 #include "ft_printf.h"
 #include <stdlib.h>
@@ -80,31 +81,54 @@ bool	add_node_env(t_env *lst, char *key, char *val)
 	return (true);
 }
 
-int	ft_export(t_ctrl *ctrl, char **flag, int fd)
+static int	parse_n_export(t_ctrl *ctrl, char *flag)
 {
 	char	*key;
 	char	*val;
 	size_t	ct;
 
 	ct = 0;
+	key = ft_strdup_select(flag, '=');
+	if (key == NULL)
+		return (1);
+	while (flag[ct] != '\0' && flag[ct] != '=')
+		++ct;
+	if (flag[ct] == '\0')
+		val = NULL;
+	else if (flag[ct + 1] == '\0')
+		val = ft_calloc(sizeof(char), 1);
+	else
+		val = ft_strdup(&flag[ct + 1]);
+	if (ft_export_exec(ctrl, key, val) == true)
+		return (0);
+	else
+	{
+		free(key);
+		free(val);
+		return (1);
+	}
+}
+
+int	ft_export(t_ctrl *ctrl, char **flag, int fd)
+{
+	int	status;
+
+	status = 0;
 	if (flag[1] == NULL)
 	{
 		ft_export_no_arg(ctrl->environ, fd);
 		return (0);
 	}
-	key = ft_strdup_select(flag[1], '=');
-	if (key == NULL)
-		return (1);
-	while (flag[1][ct] != '\0' && flag[1][ct] != '=')
-		++ct;
-	if (flag[1][ct] == '\0')
-		val = NULL;
-	else if (flag[1][ct + 1] == '\0')
-		val = ft_calloc(sizeof(char), 1);
-	else
-		val = ft_strdup(&flag[1][ct + 1]);
-	if (ft_export_exec(ctrl, key, val) == true)
-		return (0);
-	else
-		return (1);
+	while (*flag)
+	{
+		if (parse_n_export(ctrl, *flag))
+			status = 1;
+		if (errno)
+		{
+			ft_dprintf(STDERR_FILENO, "minishell: export: %s\n", *flag);
+			return (1);
+		}
+		flag++;
+	}
+	return (status);
 }

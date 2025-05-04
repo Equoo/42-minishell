@@ -6,7 +6,7 @@
 /*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 13:44:01 by dderny            #+#    #+#             */
-/*   Updated: 2025/05/03 22:21:06 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/04 13:51:32 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,7 @@ int	parse_redirection(t_ctrl *ctrl, char *operator, char *value, t_command *cmd)
 	char			quotes[2];
 
 	type = get_redir_type(operator);
+	free(operator);
 	ft_bzero(quotes, 2);
 	if (type == TOKEN_NONE)
 	{

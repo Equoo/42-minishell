@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredocs.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 20:25:03 by dderny            #+#    #+#             */
-/*   Updated: 2025/05/04 10:13:08 by ticasali         ###   ########.fr       */
+/*   Updated: 2025/05/04 12:39:31 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,44 +64,43 @@ static int	create_temp_file(char *tmp_file)
 	return (fd);
 }
 
-static void	print_expand(char *expanded, int fd)
+static int	heredoc_getline(t_ctrl *ctrl,  t_command *cmd, int fd)
 {
-	dprintf(fd, "%s\n", expanded);
-	free(expanded);
+	char	*input;
+	char	*expanded;
+
+	input = readline(">");
+	if (!input || errno)
+		return (1);
+	if (ft_strcmp(input, cmd->in.heredoc.end) == 0)
+	{
+		free(input);
+		return (1);
+	}
+	expanded = heredoc_expand(ctrl, input);
+	if (expanded)
+	{
+		dprintf(fd, "%s\n", expanded);
+		free(expanded);
+	}
+	free(input);
+	return (0);
 }
 
 static int	do_heredoc(t_ctrl *ctrl, t_command *cmd)
 {
-	char	*input;
-	char	*expanded;
 	int		fd;
 
 	fd = create_temp_file(cmd->in.heredoc.tmpfile);
 	if (fd == -1)
-		return (0);
+		return (1);
 	while (!errno)
-	{
-		input = readline(">");
-		if (!input || errno)
-			break ;
-		if (ft_strcmp(input, cmd->in.heredoc.end) == 0)
-		{
-			free(input);
-			break ;
-		}
-		expanded = heredoc_expand(ctrl, input);
-		if (expanded)
-			print_expand(expanded, fd);
-		free(input);
-	}
+		heredoc_getline(ctrl, cmd, fd);
 	close(fd);
 	return (0);
 }
 
-//if (errno)
-//unlink(cmd->in.heredoc.tmpfile);
-
-int	execute_heredocs(t_ctrl *ctrl)
+int	each_heredocs(t_ctrl *ctrl)
 {
 	t_command	*cmd;
 	size_t		i;

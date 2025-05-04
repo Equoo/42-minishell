@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_tools.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 00:24:15 by ticasali          #+#    #+#             */
-/*   Updated: 2025/05/03 16:42:15 by ticasali         ###   ########.fr       */
+/*   Updated: 2025/05/04 13:13:46 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,8 @@ bool	secure_export(char *key)
 	if (!(key[0] >= 65 && key[0] <= 90)
 		&& !(key[0] >= 97 && key[0] <= 122) && !(key[0] == '_'))
 	{
-		ft_dprintf(STDERR_FILENO, "Bad identifier\n");
+		ft_dprintf(STDERR_FILENO,
+			"minishell: export: `%s': not a valid identifier\n", key);
 		return (false);
 	}
 	while (key[ct] != '\0')
@@ -53,7 +54,8 @@ bool	secure_export(char *key)
 			&& !(key[ct] >= 65 && key[ct] <= 90)
 			&& !(key[ct] >= 97 && key[ct] <= 122) && !(key[ct] == '_'))
 		{
-			ft_dprintf(STDERR_FILENO, "Bad identifier\n");
+			ft_dprintf(STDERR_FILENO,
+				"minishell: export: `%s': not a valid identifier\n", key);
 			return (false);
 		}
 		++ct;

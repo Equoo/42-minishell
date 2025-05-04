@@ -6,13 +6,12 @@
 /*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 23:27:37 by ticasali          #+#    #+#             */
-/*   Updated: 2025/05/03 22:30:24 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/04 13:02:47 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "limits.h"
-#include "libft.h"
 
 short	ft_atos(char *str)
 {

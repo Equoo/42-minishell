@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 01:47:35 by ticasali          #+#    #+#             */
-/*   Updated: 2025/05/04 10:35:50 by ticasali         ###   ########.fr       */
+/*   Updated: 2025/05/04 12:34:15 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void			free_node(t_env *node);
 void			free_lst(t_env *lst);
 void			ft_readline(t_ctrl *ctrl);
 
-int				execute_heredocs(t_ctrl *ctrl);
+int				each_heredocs(t_ctrl *ctrl);
 int				exit_commands(t_ctrl *ctrl, int status);
 
 #endif

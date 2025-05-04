@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 01:01:41 by ticasali          #+#    #+#             */
-/*   Updated: 2025/05/03 16:37:22 by ticasali         ###   ########.fr       */
+/*   Updated: 2025/05/04 13:13:54 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 #include "builtin.h"
 #include "minishell.h"
 #include "ft_printf.h"
+#include <errno.h>
+#include <string.h>
 
 bool	ft_export_cd(t_ctrl *ctrl, char *key, char *val)
 {
@@ -66,28 +68,36 @@ int	ft_cd(t_ctrl *ctrl, char **flag, int fd)
 	if (flag[1] == NULL)
 		return (ft_cd_no_arg(ctrl, buffer));
 	if (chdir(flag[1]) == -1)
-		return (-1);
+	{
+		ft_dprintf(STDERR_FILENO,
+			"minishell: cd: %s: %s\n", flag[1], strerror(errno));
+		return (1);
+	}
 	else
 	{
 		if (buffer != NULL)
 			ft_export_cd(ctrl, ft_strdup("OLDPWD"), ft_strdup(buffer));
 		ft_export_cd(ctrl, ft_strdup("PWD"), getcwd(NULL, 0));
-		return (0);
+		if (errno)
+			ft_dprintf(STDERR_FILENO, "minishell: cd: %s\n", strerror(errno));
+		return (errno);
 	}
-	return (-1);
+	return (1);
 }
 
 int	ft_cd_no_arg(t_ctrl *ctrl, char *buffer)
 {
 	if (get_path_env(ctrl->environ, "HOME") == NULL)
 	{
-		ft_dprintf(STDERR_FILENO, "No Home Set\n");
-		return (-1);
+		ft_dprintf(STDERR_FILENO, "minishell: cd: HOME not set\n");
+		return (1);
 	}
 	if (chdir(get_path_env(ctrl->environ, "HOME")) == -1)
-		return (-1);
+		return (1);
 	if (buffer != NULL)
 		ft_export_cd(ctrl, ft_strdup("OLDPWD"), ft_strdup(buffer));
 	ft_export_cd(ctrl, ft_strdup("PWD"), getcwd(NULL, 0));
-	return (0);
+	if (errno)
+		ft_dprintf(STDERR_FILENO, "minishell: cd: %s\n", strerror(errno));
+	return (errno);
 }
