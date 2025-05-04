@@ -6,7 +6,7 @@
 /*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 06:21:21 by dderny            #+#    #+#             */
-/*   Updated: 2025/05/04 10:20:30 by ticasali         ###   ########.fr       */
+/*   Updated: 2025/05/04 10:39:16 by ticasali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,10 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <errno.h>
+#include "ft_printf.h"
+#include "libft.h"
+#include <stdlib.h>
+#include <string.h>
 
 void	commands_close_fds(t_commands cmds)
 {
