@@ -6,7 +6,7 @@
 /*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 13:44:01 by dderny            #+#    #+#             */
-/*   Updated: 2025/05/04 18:07:11 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/04 18:40:41 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 
 int	parse_pipe(t_ctrl *ctrl, char *str, t_command *cmd, t_vector *args)
 {
+	__builtin_printf("parse_pipe %s\n", str);
 	if (ft_strcmp("|", str))
 		return (-2);
 	if (args->actual_size > 0)

@@ -6,7 +6,7 @@
 /*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 00:32:21 by dderny            #+#    #+#             */
-/*   Updated: 2025/05/04 18:04:27 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/04 19:35:30 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ static void	wait_for_children(t_commands *cmds)
 			if (WIFEXITED(status))
 				cmds->array[i].status = WEXITSTATUS(status);
 			else
-				cmds->array[i].status = 1;
+				cmds->array[i].status = 128 + WTERMSIG(status);
 			if (VERBOSE)
 				ft_printf("%s exit with status: %d\n",
 					cmds->array[i].args[0], cmds->array[i].status);

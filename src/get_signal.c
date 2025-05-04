@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_signal.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 10:14:31 by ticasali          #+#    #+#             */
-/*   Updated: 2025/05/04 19:25:20 by ticasali         ###   ########.fr       */
+/*   Updated: 2025/05/04 19:38:33 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,12 @@ void	handle_signal(int sig)
 
 void	no_handle_signal(int sig)
 {
-	(void)sig;
+	if (sig == SIGINT)
+	{
+		rl_replace_line("", 0);
+		write(STDOUT_FILENO, "\n",1);
+		rl_redisplay();
+	}
 }
 
 bool	set_signal(bool	check)
