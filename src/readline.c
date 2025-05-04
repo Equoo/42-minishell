@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   readline.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
+/*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:02:12 by ticasali          #+#    #+#             */
-/*   Updated: 2025/05/04 13:24:52 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/04 17:23:57 by ticasali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,9 @@ void	ft_readline(t_ctrl *ctrl)
 
 	while (ctrl->end == false)
 	{
+		set_signal(true);
 		input = readline("-->");
-		if (!input || errno)
+		if (!input || errno || !set_signal(false))
 		{
 			if (errno)
 				ft_dprintf(STDERR_FILENO, "minishell: %s\n", strerror(errno));

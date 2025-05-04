@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
+/*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 01:47:35 by ticasali          #+#    #+#             */
-/*   Updated: 2025/05/04 12:34:15 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/04 17:25:28 by ticasali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ typedef struct s_ctrl
 typedef int		(*t_builtin)(t_ctrl *ctrl, char **args, int fd);
 
 int				load_ctrl(t_ctrl *ctrl, char **env);
-bool			set_signal(void);
+bool			set_signal(bool check);
 void			free_ctrl(t_ctrl *ctrl);
 
 int				execute_pipeline(t_ctrl *ctrl);
