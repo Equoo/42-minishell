@@ -6,10 +6,11 @@
 /*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 17:20:35 by ticasali          #+#    #+#             */
-/*   Updated: 2025/05/04 14:05:52 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/04 17:51:29 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "ft_printf.h"
 #include "parsing.h"
 #include "commands.h"
 #include "ft_vector.h"
@@ -24,6 +25,7 @@
 #include <stdlib.h>
 #include <sys/wait.h>
 #include <errno.h>
+#include <unistd.h>
 
 size_t	skip_backslash(char quotes[2], size_t i, char *str)
 {
@@ -35,7 +37,7 @@ size_t	skip_backslash(char quotes[2], size_t i, char *str)
 
 int	last_command(t_command cmd, t_ctrl *ctrl, t_vector args)
 {
-	if (args.actual_size > 0)
+	if (cmd.status >= -1 && args.actual_size > 0)
 	{
 		cmd.args = (char **)args.data;
 		if (vec_append_ulong(&args, (uintptr_t) NULL)
@@ -44,14 +46,20 @@ int	last_command(t_command cmd, t_ctrl *ctrl, t_vector args)
 			ft_freearray((void **)cmd.args);
 			return (0);
 		}
+		return (1);
 	}
-	else if (cmd.in.type == IO_PIPE || cmd.out.type == IO_PIPE)
-	{
+	if (cmd.status == -2 || (cmd.in.type == IO_PIPE || cmd.out.type == IO_PIPE))
 		token_error(NULL, '|');
-		ft_freearray((void **)cmd.args);
-		return (0);
-	}
-	return (1);
+	if (cmd.status == -3)
+		ft_dprintf(STDERR_FILENO,
+			"minishell: syntax error near unexpected token '<' or '>'\n");
+	if (cmd.in.type == IO_INFILE)
+		free(cmd.in.file.path);
+	if (cmd.out.type == IO_HEREDOC)
+		free(cmd.in.file.path);
+	if (args.data)
+		ft_freearray((void **)args.data);
+	return (0);
 }
 
 int	vec_secure(t_vector *vec, char *val)

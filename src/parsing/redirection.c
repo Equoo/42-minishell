@@ -6,7 +6,7 @@
 /*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 13:44:01 by dderny            #+#    #+#             */
-/*   Updated: 2025/05/04 13:51:32 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/04 17:58:30 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ static void	set_cmd_outfile(t_command *cmd, char *token, t_token_type type)
 
 static void	set_cmd_infile(t_command *cmd, char *token)
 {
-	if (access(token, R_OK))
+	if (!cmd->status && access(token, R_OK))
 	{
 		token_error(token, 0);
 		cmd->status = -1;
@@ -82,30 +82,30 @@ static int	set_cmd_heredoc(t_command *cmd, char *limiter)
 	return (0);
 }
 
-int	parse_redirection(t_ctrl *ctrl, char *operator, char *value, t_command *cmd)
+int	parse_redirection(t_ctrl *ctrl, t_vector array, ssize_t i,
+	t_command *cmd)
 {
+	char			**chunks;
 	t_token_type	type;
 	char			*path;
 	char			quotes[2];
 
-	type = get_redir_type(operator);
-	free(operator);
+	chunks = (char **)array.data;
+	if (i + 1 >= array.actual_size || ft_strchr("<>", chunks[i + 1][0]))
+		return (-3);
+	type = get_redir_type(chunks[i]);
+	free(chunks[i]);
 	ft_bzero(quotes, 2);
-	if (type == TOKEN_NONE)
-	{
-		cmd->status = -1;
-		return (1);
-	}
 	if (type == TOKEN_HEREDOC)
-		return (set_cmd_heredoc(cmd, value));
-	if (cmd->status == -1)
-		return (1);
-	path = get_expanded(ctrl, value, quotes);
+		return (set_cmd_heredoc(cmd, chunks[i + 1]));
+	if (cmd->status == -1 || type == TOKEN_NONE)
+		return (-1);
+	path = get_expanded(ctrl, chunks[i + 1], quotes);
 	if (!path)
-		return (1);
+		return (-1);
 	if (type == TOKEN_RIN)
 		set_cmd_infile(cmd, path);
 	else if (type == TOKEN_ROUT || type == TOKEN_APPEND)
 		set_cmd_outfile(cmd, path, type);
-	return (0);
+	return (cmd->status);
 }

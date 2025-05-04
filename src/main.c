@@ -3,14 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 02:06:04 by ticasali          #+#    #+#             */
-/*   Updated: 2025/05/04 17:24:09 by ticasali         ###   ########.fr       */
+/*   Updated: 2025/05/04 18:19:44 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "builtin.h"
 #include "environ.h"
+#include "libft.h"
 #include "minishell.h"
 #include <stdio.h>
 
@@ -31,6 +33,8 @@ int	main(int ac, char **av, char **env)
 		perror("Error: Failed to load environment\n");
 		return (-1);
 	}
+	ft_export_exec(&ctrl, ft_strdup("PWD"),
+		getcwd(NULL, 0));
 	ft_readline(&ctrl);
 	free_envs(ctrl.environ);
 	return (ctrl.exit);

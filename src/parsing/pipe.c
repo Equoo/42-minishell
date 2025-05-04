@@ -6,7 +6,7 @@
 /*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 13:44:01 by dderny            #+#    #+#             */
-/*   Updated: 2025/05/04 13:27:20 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/04 18:07:11 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 int	parse_pipe(t_ctrl *ctrl, char *str, t_command *cmd, t_vector *args)
 {
 	if (ft_strcmp("|", str))
-		return (token_error(NULL, '|'));
+		return (-2);
 	if (args->actual_size > 0)
 	{
 		if (vec_append_ulong(args, (uintptr_t) NULL))
@@ -40,6 +40,5 @@ int	parse_pipe(t_ctrl *ctrl, char *str, t_command *cmd, t_vector *args)
 			.in.fd = -1, .out.fd = -1, .args = NULL};
 		return (0);
 	}
-	token_error(NULL, '|');
-	return (1);
+	return (-2);
 }

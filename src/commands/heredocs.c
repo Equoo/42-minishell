@@ -6,11 +6,12 @@
 /*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 20:25:03 by dderny            #+#    #+#             */
-/*   Updated: 2025/05/04 12:39:31 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/04 17:20:54 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "commands.h"
+#include "ft_printf.h"
 #include "libft.h"
 #include "minishell.h"
 #include "parsing.h"
@@ -80,7 +81,7 @@ static int	heredoc_getline(t_ctrl *ctrl,  t_command *cmd, int fd)
 	expanded = heredoc_expand(ctrl, input);
 	if (expanded)
 	{
-		dprintf(fd, "%s\n", expanded);
+		ft_dprintf(fd, "%s\n", expanded);
 		free(expanded);
 	}
 	free(input);
@@ -113,7 +114,7 @@ int	each_heredocs(t_ctrl *ctrl)
 		{
 			if (cmd->in.heredoc.end == NULL)
 			{
-				dprintf(STDERR_FILENO,
+				ft_dprintf(STDERR_FILENO,
 					"minishell: heredoc: no end delimiter\n");
 				return (0);
 			}

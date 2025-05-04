@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   commands_exec.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 06:22:53 by dderny            #+#    #+#             */
-/*   Updated: 2025/05/04 10:31:30 by ticasali         ###   ########.fr       */
+/*   Updated: 2025/05/04 18:11:53 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ static int	get_binary_or_builtin(t_ctrl *ctrl,
 					cmd->args[0]);
 				ctrl->exit = 127;
 			}
-			return (1);
+			cmd->status = 1;
 		}
 	}
 	return (0);
@@ -113,7 +113,6 @@ int	command_exec(void *ctrl, int i)
 	t_command	*cmd;
 	pid_t		child;
 	t_builtin	builtin_func;
-	int			status;
 
 	cmd = ((t_ctrl *)ctrl)->commands.array + i;
 	if (get_binary_or_builtin(ctrl, cmd, &builtin_func))
@@ -129,8 +128,8 @@ int	command_exec(void *ctrl, int i)
 	redir_fds(cmd);
 	commands_close_fds(((t_ctrl *)ctrl)->commands);
 	if (builtin_func)
-		status = exec_builtin(ctrl, builtin_func, cmd);
-	else
-		status = check_and_execute(cmd, ((t_ctrl *)ctrl)->environ);
-	return (exit_commands(ctrl, status));
+		cmd->status = exec_builtin(ctrl, builtin_func, cmd);
+	else if (!cmd->status)
+		cmd->status = check_and_execute(cmd, ((t_ctrl *)ctrl)->environ);
+	return (exit_commands(ctrl, cmd->status));
 }

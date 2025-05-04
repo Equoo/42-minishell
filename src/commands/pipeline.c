@@ -6,7 +6,7 @@
 /*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 00:32:21 by dderny            #+#    #+#             */
-/*   Updated: 2025/05/03 23:26:08 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/04 18:04:27 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,8 @@ static int	execute_each(t_ctrl *ctrl, t_commands *cmds)
 			cmds->array[j].in.fd = open_file(cmds->array[j].in.heredoc.tmpfile,
 					O_RDONLY);
 		if (cmds->array[j].out.type & IO_PIPE && j + 1 < cmds->len
-			&& cmds->array[j + 1].in.type == IO_PIPE)
+			&& cmds->array[j + 1].in.type == IO_PIPE
+			&& !cmds->array[j + 1].status)
 			open_pipe(&cmds->array[j].out, &cmds->array[j + 1].in);
 		if (command_exec(ctrl, j))
 			return (1);

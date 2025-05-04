@@ -6,13 +6,12 @@
 /*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 00:28:00 by dderny            #+#    #+#             */
-/*   Updated: 2025/05/04 14:04:58 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/04 17:59:29 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
 #include "commands.h"
-#include "ft_printf.h"
 #include "ft_vector.h"
 #include "libft.h"
 #include "minishell.h"
@@ -26,21 +25,33 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
-int	check_quotes(char c, char *surrounder, char *next_surrounder)
+static int	is_valid_command(char *str)
 {
-	if (!*next_surrounder)
-		*surrounder = 0;
-	if (c == '\'' || c == '"')
+	char		qt[2];
+	char		last_ops;
+	size_t		i;
+
+	ft_bzero(qt, 2);
+	last_ops = -1;
+	i = 0;
+	while (str[i] && check_quotes(str[i], &qt[0], &qt[1]))
 	{
-		if (*surrounder == 0)
+		if (!qt[0] && ft_strchr("<>|", str[i]))
 		{
-			*surrounder = c;
-			*next_surrounder = c;
+			if (last_ops == -1 || (last_ops > 0 && str[i] == last_ops
+					&& (str[i - 1] == '|' || str[i - 1] != last_ops)))
+				return (token_error(NULL, str[i]));
+			last_ops = str[i];
 		}
-		else if (*surrounder == c)
-			*next_surrounder = 0;
+		else if (qt[0] || !isbashspace(str[i]))
+			last_ops = 0;
+		i++;
 	}
-	return (1);
+	if (qt[1])
+		return (token_error(NULL, qt[1]));
+	else if (last_ops)
+		return (token_error(NULL, last_ops));
+	return (0);
 }
 
 static t_vector	split_spaces_ops(char *strcmd,
@@ -55,7 +66,7 @@ static t_vector	split_spaces_ops(char *strcmd,
 	ft_bzero(qt, 2);
 	while (!errno && strcmd[++i] && check_quotes(strcmd[i], &qt[0], &qt[1]))
 	{
-		if (len && (!*qt && ft_isspace(strcmd[i])))
+		if (len && (!*qt && isbashspace(strcmd[i])))
 			len = vec_secure(&array, ft_substr(strcmd, i - len, len));
 		else if (!*qt && operators && ft_strchr("<>|", strcmd[i]))
 		{
@@ -65,7 +76,7 @@ static t_vector	split_spaces_ops(char *strcmd,
 				i++;
 			len = vec_secure(&array, ft_substr(strcmd, i-- - len, len));
 		}
-		else if (*qt || !ft_isspace(strcmd[i]))
+		else if (*qt || !isbashspace(strcmd[i]))
 			len++;
 	}
 	if (len)
@@ -73,7 +84,7 @@ static t_vector	split_spaces_ops(char *strcmd,
 	return (array);
 }
 
-int	array_split_chunks(t_vector *array)
+static int	array_split_chunks(t_vector *array)
 {
 	t_vector	subchunks;
 	ssize_t		i;
@@ -115,10 +126,10 @@ static int	parse_per_types(t_ctrl *ctrl, t_vector array,
 	chunks = (char **)array.data;
 	while (!errno && ++i < array.actual_size)
 	{
-		if (i + 1 < array.actual_size && ft_strchr("<>", chunks[i][0]) && ++i)
-			parse_redirection(ctrl, chunks[i - 1], chunks[i], cmd);
+		if (ft_strchr("<>", chunks[i][0]) && ++i)
+			cmd->status = parse_redirection(ctrl, array, i - 1, cmd);
 		else if (chunks[i][0] == '|')
-			parse_pipe(ctrl, chunks[i], cmd, args);
+			cmd->status = parse_pipe(ctrl, chunks[i], cmd, args);
 		else
 		{
 			expanded = get_expanded(ctrl, chunks[i], quotes);
@@ -138,6 +149,8 @@ int	parse_command(t_ctrl *ctrl, char *strcmd)
 	t_command		cmd;
 	t_vector		args;
 
+	if (is_valid_command(strcmd) == -1)
+		return (0);
 	array = split_spaces_ops(strcmd, true, -1, 0);
 	if (!errno)
 		array_expand_all(ctrl, array);

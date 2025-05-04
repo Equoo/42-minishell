@@ -6,7 +6,7 @@
 /*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 13:54:09 by dderny            #+#    #+#             */
-/*   Updated: 2025/05/04 12:34:01 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/04 16:58:59 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,13 @@ typedef enum e_token_type
 	TOKEN_VAR,
 }				t_token_type;
 
+int				isbashspace(char c);
+
 int				token_error(char *path, char c);
 char			*get_expanded(t_ctrl *ctrl, char *str, char quotes[2]);
 
-int				parse_redirection(t_ctrl *ctrl, char *operator,
-					char *file, t_command *cmd);
+int				parse_redirection(t_ctrl *ctrl, t_vector array, ssize_t index,
+					t_command *cmd);
 int				parse_pipe(t_ctrl *ctrl, char *operator, t_command *cmd,
 					t_vector *args);
 

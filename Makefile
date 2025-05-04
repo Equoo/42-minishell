@@ -6,7 +6,7 @@
 #    By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/25 01:28:43 by ticasali          #+#    #+#              #
-#    Updated: 2025/05/03 20:47:21 by dderny           ###   ########.fr        #
+#    Updated: 2025/05/04 16:59:29 by dderny           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,6 +39,7 @@ SRCS =				$(DIR_SRCS)/main.c 				\
 					$(DIR_SRCS)/builtins/unset.c 			\
 					$(DIR_SRCS)/parsing/parsing.c 			\
 					$(DIR_SRCS)/parsing/errors.c 			\
+					$(DIR_SRCS)/parsing/utils.c 			\
 					$(DIR_SRCS)/parsing/pipe.c 			\
 					$(DIR_SRCS)/parsing/expand.c 			\
 					$(DIR_SRCS)/parsing/redirection.c 		\
