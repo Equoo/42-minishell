@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredocs.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
+/*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 20:25:03 by dderny            #+#    #+#             */
-/*   Updated: 2025/05/04 17:20:54 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/04 19:16:35 by ticasali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ static int	create_temp_file(char *tmp_file)
 	return (fd);
 }
 
-static int	heredoc_getline(t_ctrl *ctrl,  t_command *cmd, int fd)
+static int	heredoc_getline(t_ctrl *ctrl, t_command *cmd, int fd)
 {
 	char	*input;
 	char	*expanded;

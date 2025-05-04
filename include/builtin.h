@@ -6,7 +6,7 @@
 /*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 23:38:28 by dderny            #+#    #+#             */
-/*   Updated: 2025/05/03 16:42:40 by ticasali         ###   ########.fr       */
+/*   Updated: 2025/05/04 19:11:31 by ticasali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	print_var_export(char *str, int fd);
 
 bool	secure_export(char *key);
 bool	replace_node(t_env *node, char *new_key, char *new_value);
-bool	ft_export_cd(t_ctrl *ctrl, char *key, char *val);
+bool	ft_export_cd(t_ctrl *ctrl, char *key, char *val, bool check);
 void	sort_table(t_env *lst, char **table);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 10:14:31 by ticasali          #+#    #+#             */
-/*   Updated: 2025/05/04 17:32:28 by ticasali         ###   ########.fr       */
+/*   Updated: 2025/05/04 19:25:20 by ticasali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,9 @@
 
 void	handle_signal(int sig)
 {
-	g_sigval = sig;
 	if (sig == SIGINT)
 	{
+		g_sigval = 2;
 		rl_replace_line("", 0);
 		write(STDOUT_FILENO, "\n", 1);
 		rl_on_new_line();

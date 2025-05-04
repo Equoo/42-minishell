@@ -6,7 +6,7 @@
 /*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 01:01:41 by ticasali          #+#    #+#             */
-/*   Updated: 2025/05/04 15:05:06 by ticasali         ###   ########.fr       */
+/*   Updated: 2025/05/04 19:10:04 by ticasali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,15 +17,13 @@
 #include <errno.h>
 #include <string.h>
 
-bool	ft_export_cd(t_ctrl *ctrl, char *key, char *val)
+bool	ft_export_cd(t_ctrl *ctrl, char *key, char *val, bool check)
 {
 	t_env	*cpy;
-	bool	check;
 
 	if (!val)
 		return (true);
 	cpy = ctrl->environ;
-	check = false;
 	if (secure_export(key) == false)
 		return (false);
 	if (cpy == NULL)
@@ -79,8 +77,8 @@ int	ft_cd(t_ctrl *ctrl, char **flag, int fd)
 	else
 	{
 		if (buffer != NULL)
-			ft_export_cd(ctrl, ft_strdup("OLDPWD"), ft_strdup(buffer));
-		ft_export_cd(ctrl, ft_strdup("PWD"), getcwd(NULL, 0));
+			ft_export_cd(ctrl, ft_strdup("OLDPWD"), ft_strdup(buffer), false);
+		ft_export_cd(ctrl, ft_strdup("PWD"), getcwd(NULL, 0), false);
 		if (errno)
 			ft_dprintf(STDERR_FILENO, "minishell: cd: %s\n", strerror(errno));
 		return (errno);
@@ -103,8 +101,8 @@ int	ft_cd_no_arg(t_ctrl *ctrl, char *buffer)
 		return (1);
 	}
 	if (buffer != NULL)
-		ft_export_cd(ctrl, ft_strdup("OLDPWD"), ft_strdup(buffer));
-	ft_export_cd(ctrl, ft_strdup("PWD"), getcwd(NULL, 0));
+		ft_export_cd(ctrl, ft_strdup("OLDPWD"), ft_strdup(buffer), false);
+	ft_export_cd(ctrl, ft_strdup("PWD"), getcwd(NULL, 0), false);
 	if (errno)
 		ft_dprintf(STDERR_FILENO, "minishell: cd: %s\n", strerror(errno));
 	return (errno);

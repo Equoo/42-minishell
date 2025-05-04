@@ -6,7 +6,7 @@
 /*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:02:12 by ticasali          #+#    #+#             */
-/*   Updated: 2025/05/04 17:23:57 by ticasali         ###   ########.fr       */
+/*   Updated: 2025/05/04 19:30:18 by ticasali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,11 @@ void	ft_readline(t_ctrl *ctrl)
 			ctrl->end = true;
 			break ;
 		}
+		if (g_sigval)
+			ctrl->exit = 130;
 		if (*input)
 			use_line(ctrl, input);
 		free(input);
+		g_sigval = 0;
 	}
 }
