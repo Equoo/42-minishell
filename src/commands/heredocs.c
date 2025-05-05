@@ -6,7 +6,7 @@
 /*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 20:25:03 by dderny            #+#    #+#             */
-/*   Updated: 2025/05/05 02:36:54 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/05 08:34:22 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,10 +65,12 @@ static int	heredoc_getline(t_ctrl *ctrl, t_heredoc *hd, int fd)
 	char	*input;
 	char	*expanded;
 
+	set_signal(2);
 	input = readline(">");
 	if (!input || errno)
 		return (1);
-	if (ft_strcmp(input, hd->end) == 0)
+	set_signal(0);
+	if (ft_strcmp(input, hd->end) == 0 || g_sigval == 2)
 	{
 		free(input);
 		return (1);
@@ -78,16 +80,15 @@ static int	heredoc_getline(t_ctrl *ctrl, t_heredoc *hd, int fd)
 	else
 		expanded = input;
 	if (expanded)
-	{
 		ft_dprintf(fd, "%s\n", expanded);
-		if (!hd->expand)
-			free(expanded);
-	}
-	free(input);
+	if (!hd->expand)
+		free(expanded);
+	if (input)
+		free(input);
 	return (0);
 }
 
-static int	do_heredoc(t_ctrl *ctrl, t_heredoc *hd)
+static int	do_heredoc(t_ctrl *ctrl, t_heredoc *hd, int *status)
 {
 	pid_t		child;
 	int			fd;
@@ -96,23 +97,22 @@ static int	do_heredoc(t_ctrl *ctrl, t_heredoc *hd)
 	if (fd == -1)
 		return (1);
 	child = fork();
-	if (child == -1)
+	if (child && (!errno || ft_dprintf(STDERR_FILENO,
+				"minishell: heredoc, %s\n", strerror(errno))))
 	{
-		perror("minishell: heredoc");
-		return (1);
-	}
-	if (child)
-	{
-		waitpid(child, NULL, 0);
+		if (child)
+			waitpid(child, status, 0);
 		close(fd);
-		return (0);
+		return (errno);
 	}
 	while (!errno)
 		if (heredoc_getline(ctrl, hd, fd))
 			break ;
 	close(fd);
+	if (g_sigval)
+		unlink(hd->tmpfile);
 	commands_close_fds(ctrl->commands);
-	exit_commands(ctrl, 0);
+	exit_commands(ctrl, g_sigval);
 	return (0);
 }
 
@@ -120,9 +120,11 @@ int	each_heredocs(t_ctrl *ctrl)
 {
 	t_heredoc	*hd;
 	ssize_t		i;
+	int			status;
 
 	i = 0;
-	while (i < ctrl->heredocs.actual_size)
+	status = 0;
+	while (i < ctrl->heredocs.actual_size && WEXITSTATUS(status) != 2)
 	{
 		hd = &((t_heredoc *)ctrl->heredocs.data)[i];
 		if (hd->end == NULL)
@@ -131,7 +133,11 @@ int	each_heredocs(t_ctrl *ctrl)
 				"minishell: heredoc: no end delimiter\n");
 			return (0);
 		}
-		if (do_heredoc(ctrl, hd))
+		if (do_heredoc(ctrl, hd, &status))
+			return (0);
+		if (WEXITSTATUS(status) == 2)
+			ctrl->exit = 130;
+		if (WEXITSTATUS(status) == 2)
 			return (0);
 		i++;
 	}

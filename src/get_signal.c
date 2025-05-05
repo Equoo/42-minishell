@@ -6,7 +6,7 @@
 /*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 10:14:31 by ticasali          #+#    #+#             */
-/*   Updated: 2025/05/05 03:34:51 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/05 08:17:42 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	handle_signal(int sig)
 	if (sig == SIGINT)
 	{
 		g_sigval = 2;
-		write(STDOUT_FILENO, "-->^C", 5);
+		write(STDOUT_FILENO, "^C", 2);
 		write(STDOUT_FILENO, "\n", 1);
 		rl_replace_line("", 0);
 		rl_on_new_line();
@@ -49,7 +49,6 @@ void	handle_signal(int sig)
 	}
 	else if (sig == SIGQUIT)
 	{
-		rl_on_new_line();
 		rl_redisplay();
 	}
 }
@@ -64,7 +63,20 @@ void	no_handle_signal(int sig)
 	}
 }
 
-bool	set_signal(bool check)
+void	heredoc_handle_signal(int sig)
+{
+	if (sig == SIGINT)
+	{
+		g_sigval = 2;
+		rl_done = 1;
+	}
+	else if (sig == SIGQUIT)
+	{
+		rl_redisplay();
+	}
+}
+
+bool	set_signal(int check)
 {
 	struct sigaction	sa;
 
@@ -74,15 +86,18 @@ bool	set_signal(bool check)
 	sigaddset(&sa.sa_mask, SIGINT);
 	sigaddset(&sa.sa_mask, SIGPIPE);
 	sa.sa_flags = SA_RESTART;
-	if (check == true)
+	sa.sa_handler = SIG_IGN;
+	if (check == 1)
 		sa.sa_handler = handle_signal;
-	if (check == false)
+	if (check == 0)
 		sa.sa_handler = no_handle_signal;
+	if (check == 2)
+		sa.sa_handler = heredoc_handle_signal;
 	if ((sigaction(SIGQUIT, &sa, 0)) == -1)
 		return (false);
-	if ((sigaction(SIGINT, &sa, 0)) == -1)
-		return (false);
 	if ((sigaction(SIGPIPE, &sa, 0)) == -1)
+		return (false);
+	if ((sigaction(SIGINT, &sa, 0)) == -1)
 		return (false);
 	return (true);
 }

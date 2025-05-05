@@ -6,7 +6,7 @@
 /*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 02:06:04 by ticasali          #+#    #+#             */
-/*   Updated: 2025/05/04 20:25:50 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/05 07:46:59 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 #include <stdio.h>
 #include <unistd.h>
 
-short	g_sigval = 0;
+volatile short	g_sigval = 0;
 
 int	main(int ac, char **av, char **env)
 {

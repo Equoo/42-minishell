@@ -6,7 +6,7 @@
 /*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 01:47:35 by ticasali          #+#    #+#             */
-/*   Updated: 2025/05/05 00:57:13 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/05 07:47:27 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 
 # define VERBOSE 0
 
-extern short	g_sigval;
+extern volatile short	g_sigval;
 
 typedef struct s_ctrl
 {
@@ -36,7 +36,7 @@ typedef struct s_ctrl
 typedef int		(*t_builtin)(t_ctrl *ctrl, char **args, int fd);
 
 int				load_ctrl(t_ctrl *ctrl, char **env);
-bool			set_signal(bool check);
+bool			set_signal(int check);
 void			free_ctrl(t_ctrl *ctrl);
 
 int				execute_pipeline(t_ctrl *ctrl);
