@@ -6,7 +6,7 @@
 /*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:02:12 by ticasali          #+#    #+#             */
-/*   Updated: 2025/05/05 00:56:54 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/05 06:09:19 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,18 +45,18 @@ void	ft_readline(t_ctrl *ctrl)
 	{
 		set_signal(true);
 		input = readline("-->");
+		if (g_sigval)
+			ctrl->exit = 130;
 		if (errno == EINTR)
 			errno = 0;
 		if (!input || errno || !set_signal(false))
 		{
-			if (errno)
-				ft_dprintf(STDERR_FILENO, "minishell: %s\n", strerror(errno));
-			ctrl->exit = 1;
+			if (errno && ft_dprintf(STDERR_FILENO,
+					"minishell: %s\n", strerror(errno)))
+				ctrl->exit = errno;
 			ctrl->end = true;
 			break ;
 		}
-		if (g_sigval)
-			ctrl->exit = 130;
 		if (*input)
 			use_line(ctrl, input);
 		free(input);

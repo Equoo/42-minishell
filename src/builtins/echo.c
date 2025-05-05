@@ -6,7 +6,7 @@
 /*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 00:32:08 by ticasali          #+#    #+#             */
-/*   Updated: 2025/05/05 03:20:02 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/05 05:24:58 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,6 @@ int	ft_echo(t_ctrl *ctrl, char **flag, int fd)
 	(void) ctrl;
 	ct = 1;
 	new_line = false;
-	if (flag[1] == NULL)
-		return (-1);
 	while (flag[ct] != NULL && ft_strcmp(flag[ct], "-n") == 0)
 	{
 		++ct;

@@ -6,7 +6,7 @@
 /*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 13:44:01 by dderny            #+#    #+#             */
-/*   Updated: 2025/05/05 02:36:47 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/05 06:15:05 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ static void	set_cmd_outfile(t_command *cmd, char *token, t_token_type type)
 		cmd->out.fd = open(token, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	else
 		cmd->out.fd = open(token, O_WRONLY | O_CREAT | O_APPEND, 0644);
-	if (cmd->out.fd == -1)
+	if (!cmd->status && cmd->out.fd == -1)
 	{
 		token_error(token, 0);
 		cmd->status = 1;
@@ -70,6 +70,7 @@ static void	set_cmd_infile(t_command *cmd, char *token)
 {
 	if (!cmd->status && access(token, R_OK))
 	{
+		token_error(token, 0);
 		cmd->status = 1;
 	}
 	if (cmd->in.type == IO_PIPE)

@@ -6,7 +6,7 @@
 /*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 00:32:45 by ticasali          #+#    #+#             */
-/*   Updated: 2025/05/05 04:18:06 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/05 05:29:54 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ bool	ft_export_exec(t_ctrl *ctrl, char *key, char *val)
 
 	cpy = ctrl->environ;
 	check = false;
-	if (secure_export(key) == false)
+	if (!val)
 		return (false);
 	if (cpy == NULL)
 	{
@@ -95,24 +95,25 @@ static int	parse_n_export(t_ctrl *ctrl, char *flag)
 
 	ct = 0;
 	key = ft_strdup_select(flag, '=');
-	if (key == NULL)
-		return (1);
 	while (flag[ct] != '\0' && flag[ct] != '=')
 		++ct;
-	if (flag[ct] == '\0')
-		val = NULL;
-	else if (flag[ct + 1] == '\0')
-		val = ft_calloc(sizeof(char), 1);
-	else
-		val = ft_strdup(&flag[ct + 1]);
-	if (val && ft_export_exec(ctrl, key, val) == true)
-		return (0);
-	else
+	if (key && flag[ct] == '=')
+		val = ft_strdup(flag + ct + 1);
+	if (!key || (flag[ct] == '=' && !val) || !secure_export(key))
 	{
-		free(key);
-		free(val);
+		if (key)
+			free(key);
+		if (flag[ct] == '=' && val)
+			free(val);
 		return (1);
 	}
+	if (flag[ct] == '=' && ft_export_exec(ctrl, key, val))
+		return (0);
+	if (key)
+		free(key);
+	if (flag[ct] == '=' && val)
+		free(val);
+	return (flag[ct] == '=');
 }
 
 int	ft_export(t_ctrl *ctrl, char **flag, int fd)

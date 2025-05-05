@@ -6,7 +6,7 @@
 /*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 00:28:00 by dderny            #+#    #+#             */
-/*   Updated: 2025/05/05 03:06:45 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/05 06:15:35 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,11 +126,11 @@ static int	parse_per_types(t_ctrl *ctrl, t_vector array,
 	chunks = (char **)array.data;
 	while (!errno && ++i < array.actual_size)
 	{
-		if (ft_strchr("<>", chunks[i][0]) && ++i)
+		if (chunks[i][0] && ft_strchr("<>", chunks[i][0]) && ++i)
 			cmd->status = parse_redirection(ctrl, array, i - 1, cmd);
 		else if (chunks[i][0] == '|')
 			cmd->status = parse_pipe(ctrl, chunks[i], cmd, args);
-		else
+		else if (chunks[i][0])
 		{
 			expanded = get_expanded(ctrl, chunks[i], quotes);
 			if (!expanded)
