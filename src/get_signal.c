@@ -6,7 +6,7 @@
 /*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 10:14:31 by ticasali          #+#    #+#             */
-/*   Updated: 2025/05/04 23:00:08 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/05 03:19:10 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,8 @@ bool	set_signal(bool check)
 	disable_echoctl(check);
 	sigemptyset(&sa.sa_mask);
 	sigaddset(&sa.sa_mask, SIGQUIT);
+	sigaddset(&sa.sa_mask, SIGINT);
+	sigaddset(&sa.sa_mask, SIGPIPE);
 	sa.sa_flags = SA_RESTART;
 	if (check == true)
 		sa.sa_handler = handle_signal;
@@ -79,6 +81,8 @@ bool	set_signal(bool check)
 	if ((sigaction(SIGQUIT, &sa, 0)) == -1)
 		return (false);
 	if ((sigaction(SIGINT, &sa, 0)) == -1)
+		return (false);
+	if ((sigaction(SIGPIPE, &sa, 0)) == -1)
 		return (false);
 	return (true);
 }

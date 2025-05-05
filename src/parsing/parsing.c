@@ -6,7 +6,7 @@
 /*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 00:28:00 by dderny            #+#    #+#             */
-/*   Updated: 2025/05/05 01:15:29 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/05 03:06:45 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,9 +72,9 @@ static t_vector	split_spaces_ops(char *strcmd,
 				len = vec_secure(&array, ft_substr(strcmd, i - len, len));
 			while (strcmd[i + len] == strcmd[i])
 				len++;
-			len = vec_secure(&array, ft_substr(strcmd, i, len));
 			if (strcmd[i + len + 1])
-				i += len + 1;
+				i += len - 1;
+			len = vec_secure(&array, ft_substr(strcmd, i - len + 1, len));
 		}
 		else if (*qt || !isbashspace(strcmd[i]))
 			len++;
