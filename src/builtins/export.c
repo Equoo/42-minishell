@@ -6,7 +6,7 @@
 /*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 00:32:45 by ticasali          #+#    #+#             */
-/*   Updated: 2025/05/05 05:29:54 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/05 06:48:38 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,11 +52,11 @@ bool	ft_export_exec(t_ctrl *ctrl, char *key, char *val)
 	}
 	while (cpy->next != NULL)
 	{
-		if (ft_strcmp(cpy->key, key) == 0)
+		if (!ft_strncmp(cpy->key, key, ft_strlen(key) + 1))
 			check = replace_node(cpy, key, val);
 		cpy = cpy->next;
 	}
-	if (ft_strcmp(cpy->key, key) == 0)
+	if (!ft_strncmp(cpy->key, key, ft_strlen(key) + 1))
 		check = replace_node(cpy, key, val);
 	if (check == false)
 		if (add_node_env(&ctrl->environ, key, val) == false)
