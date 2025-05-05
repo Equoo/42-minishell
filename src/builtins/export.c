@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 00:32:45 by ticasali          #+#    #+#             */
-/*   Updated: 2025/05/04 15:00:02 by ticasali         ###   ########.fr       */
+/*   Updated: 2025/05/05 04:18:06 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ static int	parse_n_export(t_ctrl *ctrl, char *flag)
 		val = ft_calloc(sizeof(char), 1);
 	else
 		val = ft_strdup(&flag[ct + 1]);
-	if (ft_export_exec(ctrl, key, val) == true)
+	if (val && ft_export_exec(ctrl, key, val) == true)
 		return (0);
 	else
 	{
@@ -125,6 +125,7 @@ int	ft_export(t_ctrl *ctrl, char **flag, int fd)
 		ft_export_no_arg(ctrl->environ, fd);
 		return (0);
 	}
+	flag++;
 	while (*flag)
 	{
 		if (parse_n_export(ctrl, *flag))
