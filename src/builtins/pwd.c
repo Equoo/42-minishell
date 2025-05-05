@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
+/*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 00:43:59 by ticasali          #+#    #+#             */
-/*   Updated: 2025/05/05 03:38:09 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/05 07:27:53 by ticasali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	ft_pwd(t_ctrl *ctrl, char **flag, int fd)
 	if (buffer == NULL)
 	{
 		perror("minishell: pwd");
-		return (-1);
+		return (1);
 	}
 	write(fd, buffer, ft_strlen(buffer));
 	write(fd, "\n", 1);

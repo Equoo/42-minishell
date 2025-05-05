@@ -6,7 +6,7 @@
 /*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 00:23:22 by ticasali          #+#    #+#             */
-/*   Updated: 2025/05/03 16:43:51 by ticasali         ###   ########.fr       */
+/*   Updated: 2025/05/05 07:32:34 by ticasali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	ft_unset(t_ctrl *ctrl, char **flag, int fd)
 	(void) fd;
 	cpy = ctrl->environ;
 	secure = ft_unset_secure(ctrl, cpy, flag);
-	if (secure != 1)
+	if (secure >= 0)
 		return (secure);
 	while (cpy->next != NULL)
 	{
@@ -39,7 +39,7 @@ int	ft_unset(t_ctrl *ctrl, char **flag, int fd)
 		}
 		cpy = cpy->next;
 	}
-	return (-1);
+	return (1);
 }
 
 int	ft_unset_secure(t_ctrl *ctrl, t_env *cpy, char **flag)
@@ -47,11 +47,11 @@ int	ft_unset_secure(t_ctrl *ctrl, t_env *cpy, char **flag)
 	t_env	*del;
 
 	if (cpy == NULL)
-		return (-1);
+		return (1);
 	if (flag[1] == NULL)
 	{
 		ft_dprintf(STDERR_FILENO, "No Arg for Unset\n");
-		return (-1);
+		return (1);
 	}
 	if (ft_strcmp(cpy->key, flag[1]) == 0)
 	{
@@ -60,7 +60,7 @@ int	ft_unset_secure(t_ctrl *ctrl, t_env *cpy, char **flag)
 		free_env(del);
 		return (0);
 	}
-	return (1);
+	return (-1);
 }
 
 void	free_env(t_env *node)
