@@ -6,7 +6,7 @@
 /*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 00:28:00 by dderny            #+#    #+#             */
-/*   Updated: 2025/05/04 22:10:13 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/05 01:15:29 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static int	is_valid_command(char *str)
 	ft_bzero(qt, 2);
 	last_ops = -1;
 	i = -1;
-	while (++i && str[i] && check_quotes(str[i], &qt[0], &qt[1]))
+	while ((++i + 1) && str[i] && check_quotes(str[i], &qt[0], &qt[1]))
 	{
 		if (!qt[0] && ft_strchr("<>|", str[i]))
 		{

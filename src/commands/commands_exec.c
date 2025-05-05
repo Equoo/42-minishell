@@ -6,7 +6,7 @@
 /*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 06:22:53 by dderny            #+#    #+#             */
-/*   Updated: 2025/05/04 23:39:04 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/05 01:59:42 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ static int	get_binary_or_builtin(t_ctrl *ctrl,
 	char		*path;
 
 	*builtin_func = NULL;
-	if (!ft_strchr(cmd->args[0], '/'))
+	if (cmd->args[0] && !ft_strchr(cmd->args[0], '/'))
 	{
 		*builtin_func = get_builtin(cmd);
 		if (*builtin_func)
@@ -128,7 +128,7 @@ int	command_exec(void *ctrl, int i)
 	}
 	redir_fds(ctrl, cmd);
 	commands_close_fds(((t_ctrl *)ctrl)->commands);
-	if (cmd->status)
+	if (cmd->status || !cmd->args[0])
 		return (exit_commands(ctrl, cmd->status));
 	if (builtin_func)
 		cmd->status = exec_builtin(ctrl, builtin_func, cmd);

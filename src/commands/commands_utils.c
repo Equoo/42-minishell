@@ -6,7 +6,7 @@
 /*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 06:21:21 by dderny            #+#    #+#             */
-/*   Updated: 2025/05/04 23:39:47 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/05 02:25:57 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,13 @@ void	commands_close_fds(t_commands cmds)
 	i = 0;
 	while (i < cmds.len)
 	{
-		if (array[i].in.type != IO_PIPE && array[i].in.oldfd >= 0)
+		if (array[i].in.type != IO_PIPE && array[i].in.oldfd > 0)
 			close(array[i].in.oldfd);
-		if (array[i].in.fd && array[i].in.fd != -1)
+		if (array[i].in.fd > 0)
 			close(array[i].in.fd);
-		if (array[i].out.fd && array[i].out.fd != -1)
+		if (array[i].out.fd > 0)
 			close(array[i].out.fd);
+		array[i].in.oldfd = -1;
 		array[i].in.fd = -1;
 		array[i].out.fd = -1;
 		i++;
@@ -79,24 +80,24 @@ int	open_pipe(t_inout *in_pipe, t_inout *out_pipe)
 
 void	redir_fds(t_ctrl *ctrl, t_command *cmd)
 {
-	if (cmd->in.type && cmd->in.fd <= 0)
+	if (cmd->args[0] && cmd->in.type && cmd->in.fd <= 0)
 		cmd->in.fd = open_file("/dev/null", O_RDONLY);
-	if (!errno && cmd->in.type)
+	if (!errno && cmd->in.type && cmd->in.fd > 0)
 	{
 		dup2(cmd->in.fd, STDIN_FILENO);
 		ctrl->close_in = 1;
 		close(cmd->in.fd);
+		cmd->in.fd = -1;
 	}
-	if (!errno && cmd->out.type && cmd->out.fd <= 0)
+	if (cmd->args[0] && !errno && cmd->out.type && cmd->out.fd <= 0)
 		cmd->out.fd = open_file("/dev/null", O_WRONLY);
-	if (!errno && cmd->out.type)
+	if (!errno && cmd->out.type && cmd->out.fd > 0)
 	{
 		dup2(cmd->out.fd, STDOUT_FILENO);
 		ctrl->close_out = 1;
 		close(cmd->out.fd);
+		cmd->out.fd = -1;
 	}
-	cmd->out.fd = -1;
-	cmd->in.fd = -1;
 }
 
 int	print_error_exec(char *str, bool check)

@@ -6,7 +6,7 @@
 /*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 13:44:01 by dderny            #+#    #+#             */
-/*   Updated: 2025/05/05 00:57:56 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/05 02:36:47 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,9 @@ static int	set_cmd_heredoc(t_ctrl *ctrl, t_command *cmd, char *limiter)
 {
 	t_heredoc	hd;
 
+	if (cmd->in.type == IO_INFILE)
+		free(cmd->in.file.path);
+	cmd->in.file.path = NULL;
 	cmd->in.type = IO_HEREDOC;
 	ft_strlcpy(cmd->in.heredoc.tmpfile, "/tmp/", 6);
 	if (generate_tmp_name((u_char *)(cmd->in.heredoc.tmpfile + 5),
@@ -95,7 +98,9 @@ static int	set_cmd_heredoc(t_ctrl *ctrl, t_command *cmd, char *limiter)
 			TMPFILE_LEN - 5))
 			return (0);
 	errno = 0;
-	cmd->in.heredoc.end = ft_strdup(limiter);
+	if (ft_strchr(limiter, '\'') || ft_strchr(limiter, '"'))
+		cmd->in.heredoc.expand = true;
+	cmd->in.heredoc.end = heredoc_expand(ctrl, limiter, true);
 	hd = cmd->in.heredoc;
 	vec_append(&ctrl->heredocs, &hd);
 	return (0);

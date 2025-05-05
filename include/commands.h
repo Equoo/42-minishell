@@ -6,7 +6,7 @@
 /*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 05:53:34 by dderny            #+#    #+#             */
-/*   Updated: 2025/05/05 00:42:47 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/05 02:24:42 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ typedef struct s_heredoc
 {
 	char			tmpfile[TMPFILE_LEN];
 	char			*end;
+	bool			expand;
 }					t_heredoc;
 
 typedef struct s_inout
@@ -47,11 +48,8 @@ typedef struct s_inout
 	t_inout_type	type;
 	int				fd;
 	int				oldfd;
-	union
-	{
-		t_filerdir	file;
-		t_heredoc	heredoc;
-	};
+	t_filerdir		file;
+	t_heredoc		heredoc;
 }					t_inout;
 
 typedef struct s_command

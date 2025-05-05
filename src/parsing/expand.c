@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 17:16:12 by ticasali          #+#    #+#             */
-/*   Updated: 2025/05/04 19:28:12 by ticasali         ###   ########.fr       */
+/*   Updated: 2025/05/05 02:38:24 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,24 +111,25 @@ char	*chunk_expand(t_ctrl *ctrl, char *str)
 	return ((char *)outstr.data);
 }
 
-char	*heredoc_expand(t_ctrl *ctrl, char *str)
+char	*heredoc_expand(t_ctrl *ctrl, char *str, bool limiter)
 {
+	char		quotes[2];
 	char		*expand;
 	t_vector	outstr;
 	size_t		i;
 
 	outstr = vec_new(64, sizeof(char));
-	if (!outstr.data)
-		return (NULL);
+	ft_bzero(quotes, 2);
 	i = 0;
 	while (!errno && str[i])
 	{
-		if (str[i] == '$' && ft_isexpand(str[i + 1]))
+		check_quotes(str[i], &quotes[0], &quotes[1]);
+		if (!limiter && str[i] == '$' && ft_isexpand(str[i + 1]))
 		{
 			if (get_expand(ctrl, str + i, &i, &expand))
 				outstr = vec_add(outstr, vec_from_string(expand));
 		}
-		else
+		else if (!limiter || quotes[0] != str[i])
 			vec_append(&outstr, str + i);
 		i++;
 	}

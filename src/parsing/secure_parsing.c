@@ -6,7 +6,7 @@
 /*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 17:20:35 by ticasali          #+#    #+#             */
-/*   Updated: 2025/05/05 01:03:35 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/05 01:06:04 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,10 @@ static void	last_command_free(t_command cmd)
 
 int	last_command(t_command cmd, t_ctrl *ctrl, t_vector args)
 {
-	if (cmd.status >= -1 && args.actual_size > 0)
+	if (cmd.status >= -1)
 	{
+		if (args.actual_size <= 0)
+			cmd.status = 1;
 		cmd.args = (char **)args.data;
 		if (vec_append_ulong(&args, (uintptr_t) NULL)
 			|| commands_append(&ctrl->commands, cmd))

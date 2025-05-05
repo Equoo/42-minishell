@@ -6,7 +6,7 @@
 /*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 05:53:23 by dderny            #+#    #+#             */
-/*   Updated: 2025/05/05 00:52:24 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/05 02:24:51 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 #include <stddef.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include "ft_vector.h"
 #include "minishell.h"
 
 t_commands	commands_init(size_t size)

@@ -6,7 +6,7 @@
 /*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 20:25:03 by dderny            #+#    #+#             */
-/*   Updated: 2025/05/05 00:57:25 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/05 02:36:54 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,11 +73,15 @@ static int	heredoc_getline(t_ctrl *ctrl, t_heredoc *hd, int fd)
 		free(input);
 		return (1);
 	}
-	expanded = heredoc_expand(ctrl, input);
+	if (!hd->expand)
+		expanded = heredoc_expand(ctrl, input, false);
+	else
+		expanded = input;
 	if (expanded)
 	{
 		ft_dprintf(fd, "%s\n", expanded);
-		free(expanded);
+		if (!hd->expand)
+			free(expanded);
 	}
 	free(input);
 	return (0);
@@ -107,6 +111,7 @@ static int	do_heredoc(t_ctrl *ctrl, t_heredoc *hd)
 		if (heredoc_getline(ctrl, hd, fd))
 			break ;
 	close(fd);
+	commands_close_fds(ctrl->commands);
 	exit_commands(ctrl, 0);
 	return (0);
 }
