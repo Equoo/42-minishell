@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
+/*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 23:27:37 by ticasali          #+#    #+#             */
-/*   Updated: 2025/05/04 20:03:08 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/05 07:51:35 by ticasali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "limits.h"
+#include "ft_printf.h"
 
 short	ft_atos(char *str)
 {
@@ -71,6 +72,7 @@ int	ft_exit(t_ctrl *ctrl, char **flag, int fd)
 	}
 	if (check_ascii(flag[1]) == false)
 	{
+		ft_dprintf(STDERR_FILENO, "Bad Arg for exit\n");
 		ctrl->end = true;
 		ctrl->exit = 2;
 		return (2);
