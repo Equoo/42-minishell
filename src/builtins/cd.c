@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ticasali <ticasali@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 01:01:41 by ticasali          #+#    #+#             */
-/*   Updated: 2025/05/04 19:10:04 by ticasali         ###   ########.fr       */
+/*   Updated: 2025/05/05 03:48:16 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,9 @@ int	ft_cd(t_ctrl *ctrl, char **flag, int fd)
 	{
 		if (buffer != NULL)
 			ft_export_cd(ctrl, ft_strdup("OLDPWD"), ft_strdup(buffer), false);
-		ft_export_cd(ctrl, ft_strdup("PWD"), getcwd(NULL, 0), false);
+		buffer = getcwd(NULL, 0);
+		if (buffer)
+			ft_export_cd(ctrl, ft_strdup("PWD"), buffer, false);
 		if (errno)
 			ft_dprintf(STDERR_FILENO, "minishell: cd: %s\n", strerror(errno));
 		return (errno);
@@ -102,7 +104,9 @@ int	ft_cd_no_arg(t_ctrl *ctrl, char *buffer)
 	}
 	if (buffer != NULL)
 		ft_export_cd(ctrl, ft_strdup("OLDPWD"), ft_strdup(buffer), false);
-	ft_export_cd(ctrl, ft_strdup("PWD"), getcwd(NULL, 0), false);
+	buffer = getcwd(NULL, 0);
+	if (buffer)
+		ft_export_cd(ctrl, ft_strdup("PWD"), buffer, false);
 	if (errno)
 		ft_dprintf(STDERR_FILENO, "minishell: cd: %s\n", strerror(errno));
 	return (errno);
