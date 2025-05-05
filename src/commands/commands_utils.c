@@ -6,7 +6,7 @@
 /*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 06:21:21 by dderny            #+#    #+#             */
-/*   Updated: 2025/05/05 06:00:52 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/05 08:45:23 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,5 +110,9 @@ int	print_error_exec(char *str, bool check)
 	}
 	ft_dprintf(STDERR_FILENO, "minishell: %s: %s\n", str,
 		strerror(errno));
+	if (errno == ENOENT)
+		return (127);
+	if (errno == EACCES || errno == ENOTDIR || errno == EISDIR)
+		return (126);
 	return (127);
 }

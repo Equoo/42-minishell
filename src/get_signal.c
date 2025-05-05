@@ -6,7 +6,7 @@
 /*   By: dderny <dderny@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 10:14:31 by ticasali          #+#    #+#             */
-/*   Updated: 2025/05/05 08:17:42 by dderny           ###   ########.fr       */
+/*   Updated: 2025/05/05 08:40:16 by dderny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include <stdbool.h>
 #include <termios.h>
 #include <unistd.h>
+#include <libft.h>
 
 static void	disable_echoctl(bool not )
 {
@@ -41,6 +42,10 @@ void	handle_signal(int sig)
 	if (sig == SIGINT)
 	{
 		g_sigval = 2;
+		if (rl_prompt)
+			write(STDOUT_FILENO, rl_prompt, ft_strlen(rl_prompt));
+		if (rl_line_buffer)
+			write(STDOUT_FILENO, rl_line_buffer, ft_strlen(rl_line_buffer));
 		write(STDOUT_FILENO, "^C", 2);
 		write(STDOUT_FILENO, "\n", 1);
 		rl_replace_line("", 0);
@@ -49,6 +54,7 @@ void	handle_signal(int sig)
 	}
 	else if (sig == SIGQUIT)
 	{
+		rl_on_new_line();
 		rl_redisplay();
 	}
 }
